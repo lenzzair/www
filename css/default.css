@@ -1,0 +1,109 @@
+	
+/****************************************/
+	
+/* Reset                                */
+	
+/****************************************/
+	
+@charset "UTF-8";	
+*, *::before, *::after
+{
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+body{
+
+    font-family: arial;
+	font-size: 1em;  
+	font-family: 'Roboto', sans-serif;
+ 
+}
+h1{
+	
+	font-size: 3.5em;
+	font-weight: 700;
+	margin-top: 0.5em;
+	font-family: 'Questrial', sans-serif;
+	
+}
+h2{
+	font-size: 1.5em;
+	text-transform: capitalize;
+	color: #2c3e50;
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+}
+h3{
+	
+	font-size: 1.2em;
+	text-transform: uppercase;
+	
+}
+h2 , h3{
+	
+	font-weight:bold;
+	margin-top: 0.8em;
+	margin-bottom: 0.5em;
+	color: #2c3e50;
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	
+}
+p{
+	margin-top: 0.7em;
+	line-height: 1.5;
+	text-indent: 1.5em;
+}
+ul , ol{ 
+	margin-bottom: 1em;
+	margin-left: 1.2em;
+	
+}
+ul ol , ol ul , ol ol , ul ul{
+	
+	margin-bottom: 0.5em;
+	margin-left: 1.2em;  
+}
+
+li li{
+	
+	margin-top: 0.2em;
+	line-height: 1.5;
+}
+
+li{
+	line-height: 1.5;
+	margin-top: 0.5em;
+
+}
+figure{
+	
+	text-align: center;
+	margin-top: 2em;
+	margin-bottom: 2em;	
+}
+
+figcaption{
+	
+	
+	font-style: italic;
+	font-weight: bold;
+	margin-top: 0.5em;
+}
+figure img{
+	
+	max-width: 100%;
+}
+strong{
+	
+	font-weight: bold;
+}
+a{
+	text-decoration: none; /* Retirer le souligné par défaut */
+	font-weight: 600; /* Légèrement gras pour les liens */
+    transition: color 0.3s ease; /* Effet de transition pour les interactions */
+}
+a:hover {
+    color: #1abc9c; /* Changement de couleur au survol */
+
+}

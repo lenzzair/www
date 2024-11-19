@@ -1,29 +1,96 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+/**************************************/
+/**  VARIABLES                           */
+/**************************************/
+const TO_UPDATE = document.getElementById("to_update");
+const UPDATE = document.getElementById("update");
 
-// Wait for the deviceready event before using any of Cordova's device APIs.
-// See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#deviceready
-document.addEventListener('deviceready', onDeviceReady, false);
 
+
+/**************************************/
+/** Event Listeners                   */
+/**************************************/
+document.addEventListener("deviceready", onDeviceReady);
+document.addEventListener("pause", onPause);
+document.addEventListener("resume", onResume);
+document.addEventListener("backbutton", onBackButton);
+UPDATE.addEventListener("click", update);
+
+
+
+/**************************************/
+/** MAIN                              */
+/**************************************/
+
+
+
+/**************************************/
+/** Functions                         */
+/**************************************/
 function onDeviceReady() {
-    // Cordova is now initialized. Have fun!
+    console.log("Running cordova-" + cordova.platformId + "@" + cordova.version);
+    console.log("onDeviceReady");
+    document.getElementById("deviceready").style.display= "block";
 
-    console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
-    document.getElementById('deviceready').classList.add('ready');
+}
+          
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function onPause()
+{
+	console.log("onPause");
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+function onResume()
+{
+	console.log("onResume");
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function onBackButton()
+{
+	console.log("onBackButton");
+}
+
+
+/**************************************/
+/** Appelle API                       */
+/**************************************/
+
+function update(){
+    console.log("Update appelle");
+    get("http://88.126.180.103:16800/system/cpu");
+    
+}
+
+function get(url)
+{
+    console.log("URL appelle");
+    const XHR = new XMLHttpRequest();
+    XHR.onreadystatechange = statechange ;
+    XHR.open ("GET", url);
+    XHR.send();
+}
+function statechange(event)
+{
+	const XHR = event.target;
+	
+	switch(XHR.readyState)
+	{
+		case 0: console.log("Requête non initialisée"); break
+		case 1: console.log("Connexion établie avec le serveur"); break;
+		case 2: console.log("Requête reçue"); break;
+		case 3: console.log("Requête en cours de traitement"); break;
+		case 4:
+			console.log("Requête terminée et réponse prête");
+
+            if(XHR.status == 200)
+            {
+                console.log("Traitement local de la réponse");
+                console.log(XHR.reponseText);
+
+                TO_UPDATE.innerHTML = XHR.reponseText;
+            }
+    
+        }
+
+
 }
