@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="../css/style_info_srv.css">
+    <link rel="stylesheet" href="../css/default.css">
+    <script defer src="../js/info_srv.js"></script>
+    <!--  Importation du framework bootstrap css et js   -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!--  Importation du framework bootstrap css  et js -->
+    <title>L2zCore</title>
+</head>
+
+<body>
+
+    <div class="app">
+        <!-- NAV BARRE -->
+        <nav class="navbar bg-body-tertiary fixed-top Ready">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#"><i class="bi bi-building-check"></i> L2zCore</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                    aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="../index.html">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="../login.html">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Voir toutes les infos</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Info serveur
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">CPU</a></li>
+                                    <li><a class="dropdown-item" href="#">MEMORY</a></li>
+                                    <li><a class="dropdown-item" href="#">DISQUE</a></li>
+                                    <li><a class="dropdown-item" href="#">TIME UP</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- NAV BARRE -->
+
+
+        <!-- ======================================= -->
+        <!-- BOUTTON POUR RÉCUPERER LES INFO SERVEUR API  -->
+        <!-- ======================================= -->
+
+
+        <div class="info_srv">
+            <!-- S'affiche que si ondeviceReady == true -->
+            <div id="deviceready" class="Ready Button-envoie">
+
+                <!-- Utilisation de bootstrap pour faire un bouton "colapse" qui affiche les données -->
+
+                <!-- Premier button qui appelle un event listener qui va récuperer les inforamtion CPU de l'api serveur -->
+                <p class="d-inline-flex gap-1">
+                    <a id="update" class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCPU" role="button"
+                        aria-expanded="false" aria-controls="collapseCPU">
+                        <i class="bi bi-cpu"></i> Info CPU
+                    </a>
+
+                </p>
+
+                <!-- Deuxième button qui appelle un event listener qui va récuperer les inforamtion Memory de l'api serveur -->
+                <p class="d-inline-flex gap-1">
+                    <a id="update" class="btn btn-primary" data-bs-toggle="collapse" href="#collapseMEMORY"
+                        role="button" aria-expanded="false" aria-controls="collapseMEMORY">
+                        <i class="bi bi-memory"></i> Info MEMORY
+                    </a>
+
+                </p>
+
+                <div class="collapse" id="collapseCPU">
+                    <div id="to_update" class="card card-body ">
+                        <!-- DIV qui où le contenue js va être afficher -->
+                    </div>
+                    
+                </div>
+
+                <div class="collapse" id="collapseMEMORY">
+                    <div id="to_update" class="card card-body ">
+                        <!-- DIV qui où le contenue js va être afficher -->
+                         info:DISQUE
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
