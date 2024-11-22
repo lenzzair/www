@@ -87,36 +87,68 @@
 
                 <!-- Premier button qui appelle un event listener qui va récuperer les inforamtion CPU de l'api serveur -->
                 <p class="d-inline-flex gap-1">
-                    <a id="update" class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCPU" role="button"
-                        aria-expanded="false" aria-controls="collapseCPU">
-                        <i class="bi bi-cpu"></i> Info CPU
+                    <a id="update_cpu" class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCPU" role="button"
+                        aria-expanded="false" aria-controls="collapseCPU"><i class="bi bi-cpu"></i> Info CPU
                     </a>
 
                 </p>
 
                 <!-- Deuxième button qui appelle un event listener qui va récuperer les inforamtion Memory de l'api serveur -->
                 <p class="d-inline-flex gap-1">
-                    <a id="update" class="btn btn-primary" data-bs-toggle="collapse" href="#collapseMEMORY"
-                        role="button" aria-expanded="false" aria-controls="collapseMEMORY">
-                        <i class="bi bi-memory"></i> Info MEMORY
+                    <a id="update_memory" class="btn btn-primary" data-bs-toggle="collapse" href="#collapseMEMORY"
+                        role="button" aria-expanded="false" aria-controls="collapseMEMORY"><i class="bi bi-memory"></i> Info MEMORY
                     </a>
 
                 </p>
 
                 <div class="collapse" id="collapseCPU">
-                    <div id="to_update" class="card card-body ">
+                    <div id="to_update_cpu" class="card card-body ">
                         <!-- DIV qui où le contenue js va être afficher -->
                     </div>
                     
                 </div>
 
                 <div class="collapse" id="collapseMEMORY">
-                    <div id="to_update" class="card card-body ">
+                    <div id="to_update_memory" class="card card-body ">
                         <!-- DIV qui où le contenue js va être afficher -->
-                         info:DISQUE
+                         
                     </div>
                 </div>
+
+
+                <!-- Deuxième ligne de boutton -->
+                <p class="d-inline-flex gap-1">
+                    <a id="update_disk" class="btn btn-primary" data-bs-toggle="collapse" href="#collapseDISK" role="button"
+                        aria-expanded="false" aria-controls="collapseDISK"><i class="bi bi-hdd"></i> Info DISK
+                    </a>
+
+                </p>
             
+                <p class="d-inline-flex gap-1">
+                    <a id="update_uptime" class="btn btn-primary" data-bs-toggle="collapse" href="#collapseUPTIME" role="button"
+                        aria-expanded="false" aria-controls="collapseUPTIME"><i class="bi bi-clock-history"></i> Info UP TIME
+                    </a>
+
+                </p>
+
+
+
+
+                <div class="collapse" id="collapseDISK">
+                    <div id="to_update_disk" class="card card-body ">
+                        <!-- DIV qui où le contenue js va être afficher -->
+                         
+                    </div>
+                </div>
+
+                
+                <div class="collapse" id="collapseUPTIME">
+                    <div id="to_update_uptime" class="card card-body ">
+                        <!-- DIV qui où le contenue js va être afficher -->
+                         
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
