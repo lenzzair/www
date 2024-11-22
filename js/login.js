@@ -1,5 +1,6 @@
-console.log("JS charger");
 const BTN_ENVOIE = document.getElementById("btn-envoie");
+const EXPIRATION = 30 * 60;
+
 // Boutton submit du formulaire
 
 /**************************************/
@@ -31,26 +32,25 @@ function post(url) {
     let mdp = document.getElementById("Password1").value;
 
     // Envoie de donnée en x-www-form-urlencoded
-    const params = new URLSearchParams();
-    params.append("grant_type", "password");
-    params.append("username", login);
-    params.append("password", mdp);
-    params.append("scope", "");
-    params.append("client_id", "string");
-    params.append("client_secret", "string");
-
-    console.log("Données envoyées :", params.toString()); // Données à envoyer
+    // prépare la requete pour récuperer un token JWT sur le serveur 
+    const params =
+        "grant_type=password" +
+        "&username=" + encodeURIComponent(login) +
+        "&password=" + encodeURIComponent(mdp) +
+        "&scope=" + encodeURIComponent("") +
+        "&client_id=" + encodeURIComponent("string") +
+        "&client_secret=" + encodeURIComponent("string");
 
     const XHR = new XMLHttpRequest();
     XHR.onreadystatechange = statechange;
     XHR.open("POST", url, true);
     XHR.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");  // Utilisez uniquement "application/x-www-form-urlencoded"
-    XHR.setRequestHeader("Accept", "application/json");  // Ajoutez "Accept" pour accepter le JSON
+    XHR.setRequestHeader("Accept", "application/json");  // accepter le JSON
 
-    console.log("En-têtes configurés : Content-Type et Accept");
 
     // Envoie la requête avec les données
-    XHR.send(params.toString()); // Paramètres encodés comme x-www-form-urlencoded
+    XHR.send(params);
+
     console.log("Requête envoyée.");
 }
 
@@ -75,17 +75,55 @@ function statechange(event) {
             console.log("Requête terminée et réponse prête");
 
             console.log("Statut HTTP :", XHR.status);
-            console.log("Réponse brute :", XHR.responseText);
+
 
             if (XHR.status === 200) {
                 console.log("Traitement local de la réponse");
 
                 let reponse = JSON.parse(XHR.responseText);
+                console.log(reponse);
 
-                console.log("Token obtenue: " + reponse.access_token);
+                // Appelle la fonction qui rajoute le cookie
+                set_cookie(reponse["access_token"]);
+                // Appelle la fonction qui affiche une alerte de connection
+                afficherAlerte("Vous êtes connecté avec success !", "success");
+
             } else {
                 console.error("Erreur :", XHR.status, XHR.responseText);
+                // Appelle la fonction qui affiche une alerte de connection
+                afficherAlerte("Echec de connexion !", "danger");
             }
             break;
     }
+}
+
+
+function set_cookie(token)
+// ============================================================
+// Fonction qui set un cookie avec le token utilisateur
+// ============================================================
+{
+
+    document.cookie = `token_access=${token}; path=/; Max-Age=${EXPIRATION}`;
+
+}
+
+function afficherAlerte(message, type) {
+    let alertContainer = document.getElementById("alert-container");
+
+    // Crée une alerte Bootstrap
+    let alertHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+
+    // Ajoute l'alerte au conteneur
+    alertContainer.innerHTML = alertHTML;
+
+    // Optionnel : Supprimer automatiquement l'alerte après quelques secondes
+    setTimeout(() => {
+        alertContainer.innerHTML = ""; // Efface l'alerte après 5 secondes
+    }, 10000);
 }
