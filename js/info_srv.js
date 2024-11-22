@@ -15,14 +15,15 @@ const UPDATE_UPTIME = document.getElementById("update_uptime");
 
 
 /**************************************/
-/** COOKIES                           */
+/** Vérife                            */
 /**************************************/
-let connected;
-try {
-    
-} catch (error) {
-    
+
+if (document.cookie) {
+    afficherAlerte("Vous êtes connecter en tant qu'Administrateur", "success");
+}else{
+    afficherAlerte("Vous n'êtes pas connecter ! Vous n'aurez pas acces a tous. <a href=../login.html>Login</a>", "secondary");
 }
+
 
 /**************************************/
 /** Event Listeners                   */
@@ -42,26 +43,39 @@ function get_cpu() {
     get("https://cheveux-bleus.fr:16800/system/cpu", param);
 }
 
-function get_memory(){
-   console.log("MEMORY appelle");
-   param = "MEMORY"
-   get("https://cheveux-bleus.fr:16800/system/memory", param); 
+function get_memory() {
+    console.log("MEMORY appelle");
+    param = "MEMORY"
+    get("https://cheveux-bleus.fr:16800/system/memory", param);
 }
 
-function get_disk()
-{
+function get_disk() {
     console.log("DISK appelle");
     param = "DISK";
     get("https://cheveux-bleus.fr:16800/system/disk", param);
 }
 
-function get_uptime(){
+function get_uptime() {
     console.log("UPTIME Appelle");
     param = "UPTIME";
     get("https://cheveux-bleus.fr:16800/system/uptime", param);
 }
 
+function afficherAlerte(message, type) {
+    let alertContainer = document.getElementById("alert-container");
 
+    // Crée une alerte Bootstrap
+    let alertHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+
+    // Ajoute l'alerte au conteneur
+    alertContainer.innerHTML = alertHTML;
+
+}
 /**************************************/
 /** Appelle API                       */
 /**************************************/
@@ -125,11 +139,11 @@ function statechange(event) {
                     case "MEMORY":
                         console.log("Reponse MEMORY" + XHR.param);
                         // reset de la memory
-                        TO_UPDATE_MEMORY.innerHTML = ""; 
-                        
+                        TO_UPDATE_MEMORY.innerHTML = "";
+
                         // On parcoure le dictionnaire
-                        for (let [index, nom] of Object.entries(reponse_objet)){
-                             
+                        for (let [index, nom] of Object.entries(reponse_objet)) {
+
                             // On affiche l'index et le nom
                             TO_UPDATE_MEMORY.innerHTML += `<strong>${index} : </strong> ${nom}<br>`;
                         }
@@ -140,27 +154,21 @@ function statechange(event) {
 
                         TO_UPDATE_DISK.innerHTML = "";
 
-                        for (let [index, nom] of Object.entries(reponse_objet)){
+                        for (let [index, nom] of Object.entries(reponse_objet)) {
 
                             TO_UPDATE_DISK.innerHTML += `<strong>${index} : </strong> ${nom}<br>`;
                         }
                         break
-                    
+
                     case "UPTIME":
                         console.log("Reponse UPTIME" + XHR.param);
                         TO_UPDATE_UPTIME.innerHTML = "";
 
-                        for (let [key, valeur] of Object.entries(reponse_objet)){
-                            
+                        for (let [key, valeur] of Object.entries(reponse_objet)) {
+
                             TO_UPDATE_UPTIME.innerHTML += `<strong>${key} : </strong> ${valeur}<br>`;
                         }
                 }
-
-
-
             }
-
     }
-
-
 }

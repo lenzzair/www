@@ -88,6 +88,8 @@ function statechange(event) {
                 // Appelle la fonction qui affiche une alerte de connection
                 afficherAlerte("Vous êtes connecté avec success !", "success");
 
+                mdp.value = "";
+
             } else {
                 console.error("Erreur :", XHR.status, XHR.responseText);
                 // Appelle la fonction qui affiche une alerte de connection
