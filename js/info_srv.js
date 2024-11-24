@@ -1,6 +1,9 @@
 /**************************************/
 /**  VARIABLES                        */
 /**************************************/
+// const UL = document.createElement("ul");
+// const LI = document.createElement("li");
+
 const TO_UPDATE_CPU = document.getElementById("to_update_cpu");
 const UPDATE_CPU = document.getElementById("update_cpu");
 
@@ -13,17 +16,8 @@ const UPDATE_DISK = document.getElementById("update_disk");
 const TO_UPDATE_UPTIME = document.getElementById("to_update_uptime");
 const UPDATE_UPTIME = document.getElementById("update_uptime");
 
-
-/**************************************/
-/** Vérife                            */
-/**************************************/
-
-if (document.cookie) {
-    afficherAlerte("Vous êtes connecter en tant qu'Administrateur", "success");
-}else{
-    afficherAlerte("Vous n'êtes pas connecter ! Vous n'aurez pas acces a tous. <a href=../login.html>Login</a>", "secondary");
-}
-
+const TO_UPDATE_NETWORK = document.getElementById("to_update_network");
+const UPDATE_NETWORK = document.getElementById("update_network");
 
 /**************************************/
 /** Event Listeners                   */
@@ -33,10 +27,34 @@ UPDATE_CPU.addEventListener("click", get_cpu);;
 UPDATE_MEMORY.addEventListener("click", get_memory);
 UPDATE_DISK.addEventListener("click", get_disk);
 UPDATE_UPTIME.addEventListener("click", get_uptime);
+UPDATE_NETWORK.addEventListener("click", get_network);
+
+verif();// verifie si on est connecter en temp qu'admin
 
 /**************************************/
 /** Functions                         */
 /**************************************/
+function get_cookie(name) {
+    let cookies = document.cookie.split("; ");
+    for (let cookie of cookies) {
+        let [key, value] = cookie.split("=");
+        if (key == name) {
+            return value;
+        }
+    }
+}
+
+function verif() {
+    if (document.cookie) {
+        afficherAlerte("Vous êtes connecter en tant qu'Administrateur", "success");
+        UPDATE_NETWORK.ariaDisabled = "false";
+        UPDATE_NETWORK.className = "btn btn-outline-success";
+
+    } else {
+        afficherAlerte("Vous n'êtes pas connecter ! Vous n'aurez pas acces a tous. <a href=../login.html>Login</a>", "secondary");
+    }
+}
+
 function get_cpu() {
     console.log("CPU Appelle");
     param = "CPU"
@@ -61,6 +79,15 @@ function get_uptime() {
     get("https://cheveux-bleus.fr:16800/system/uptime", param);
 }
 
+// Fonction admin
+
+function get_network() {
+    console.log("NETWORK Appelle");
+    param = "NETWORK";
+    token = get_cookie("token_access");
+    get("https://cheveux-bleus.fr:16800/network/connections", param, token);
+}
+
 function afficherAlerte(message, type) {
     let alertContainer = document.getElementById("alert-container");
 
@@ -81,7 +108,7 @@ function afficherAlerte(message, type) {
 /**************************************/
 
 
-function get(url, param)
+function get(url, param, token)
 // ============================================================
 // Fonction pour effectuer une requête HTTP GET vers une URL donnée.
 // Paramètres d'entrée :
@@ -94,6 +121,8 @@ function get(url, param)
     XHR.param = param;
     XHR.onreadystatechange = statechange;
     XHR.open("GET", url);
+    XHR.setRequestHeader("Accept", "application/json");
+    XHR.setRequestHeader("Authorization", `Bearer ${token}`);
     XHR.send();
 }
 function statechange(event) {
@@ -158,7 +187,7 @@ function statechange(event) {
 
                             TO_UPDATE_DISK.innerHTML += `<strong>${index} : </strong> ${nom}<br>`;
                         }
-                        break
+                        break;
 
                     case "UPTIME":
                         console.log("Reponse UPTIME" + XHR.param);
@@ -168,6 +197,27 @@ function statechange(event) {
 
                             TO_UPDATE_UPTIME.innerHTML += `<strong>${key} : </strong> ${valeur}<br>`;
                         }
+                        break;
+
+                    case "NETWORK":
+                        console.log("Reponse NETWORK" + XHR.param);
+                        TO_UPDATE_NETWORK.innerHTML = "";
+
+
+
+                        let ul = document.querySelector("#to_update_network");
+                        ul = document.createElement("ul");
+                        TO_UPDATE_NETWORK.appendChild(ul);
+                        // Ajoute la liste au document
+
+                        // Parcourir les données et créer une nouvelle balise <li> pour chaque objet
+                        reponse_objet.forEach((item, index) => {
+                            let li = document.createElement("li"); // Crée un élément <li>
+                            li.textContent = `Item ${index + 1}: Local Address: ${item.local_address.join(", Port:")} | Status: ${item.status}`;
+                            ul.appendChild(li); // Ajoute chaque élément <li> à la liste <ul>
+                        });
+
+
                 }
             }
     }
