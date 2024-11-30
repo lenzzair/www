@@ -9,3 +9,14 @@
 
     margin-top: 6em;
 }
+
+.tableau_bord{
+    border: 2px solid black;
+    border-radius: 2px;
+    padding: 1.5em;
+    display: none;
+}
+.tableau_bord section{
+    margin-top: 1em;
+    
+}
