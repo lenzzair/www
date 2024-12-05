@@ -35,10 +35,10 @@ verif();// verifie si on est connecter en temp qu'admin
 /** Functions                         */
 /**************************************/
 function get_cookie(name) {
-// ============================================================
-// Fonction qui return la valeur du cookie qui correspond au token du serveur
-// en param le nom "key" du cookie
-// ============================================================
+    // ============================================================
+    // Fonction qui return la valeur du cookie qui correspond au token du serveur
+    // en param le nom "key" du cookie
+    // ============================================================
     let cookies = document.cookie.split("; ");
     for (let cookie of cookies) {
         let [key, value] = cookie.split("=");
@@ -49,9 +49,9 @@ function get_cookie(name) {
 }
 
 function verif() {
-// ============================================================
-// Fonction qui vérifie qu'il y a bien le cookie token 
-// ============================================================
+    // ============================================================
+    // Fonction qui vérifie qu'il y a bien le cookie token 
+    // ============================================================
     if (document.cookie) {
         afficherAlerte("Vous êtes connecter en tant qu'Administrateur", "success");
         UPDATE_NETWORK.ariaDisabled = "false";
@@ -63,24 +63,36 @@ function verif() {
 }
 
 function get_cpu() {
+    // ============================================================
+    // Appelle API qui récupère le CPU en temps réel du serveur
+    // ============================================================
     console.log("CPU Appelle");
     param = "CPU"
     get("https://cheveux-bleus.fr:16800/system/cpu", param);
 }
 
 function get_memory() {
+    // ============================================================
+    // Appelle API qui récupère la Mémoire en temps réel du serveur
+    // ============================================================
     console.log("MEMORY appelle");
     param = "MEMORY"
     get("https://cheveux-bleus.fr:16800/system/memory", param);
 }
 
 function get_disk() {
+    // ============================================================
+    // Appelle API qui récupère l' espace DISK en temps réel du serveur
+    // ============================================================
     console.log("DISK appelle");
     param = "DISK";
     get("https://cheveux-bleus.fr:16800/system/disk", param);
 }
 
 function get_uptime() {
+    // ============================================================
+    // Appelle API qui récupère le temps depuis le dernier reboot du serveur
+    // ============================================================
     console.log("UPTIME Appelle");
     param = "UPTIME";
     get("https://cheveux-bleus.fr:16800/system/uptime", param);
@@ -89,13 +101,21 @@ function get_uptime() {
 // Fonction admin
 
 function get_network() {
+    // ============================================================
+    //  ! PARTIE ADMIN ! Besoin d'une autehentification avec le token
+    // Appelle API qui récupère les connection tcp/udp et les port en écoute en temps réel du serveur
+    // ============================================================
     console.log("NETWORK Appelle");
     param = "NETWORK";
     token = get_cookie("token_access");
     get("https://cheveux-bleus.fr:16800/network/connections", param, token);
 }
 
-function get_log_api_today(){
+function get_log_api_today() {
+    // ============================================================
+    //  ! PARTIE ADMIN ! Besoin d'une autehentification avec le token
+    // Appelle API qui récupère les logs de l'api du jour en temps réel du serveur
+    // ============================================================
     console.log("LOG API TODAY");
     param = "API_TODAY";
     token = get_cookie("token_access");
