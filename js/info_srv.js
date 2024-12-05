@@ -293,11 +293,9 @@ function statechange(event) {
                         for (let [index, nom] of Object.entries(reponse_objet)) {
 
                             // On affiche l'index et le nom
-<<<<<<< HEAD
+
                             TO_UPDATE_LOG_API_WK.innerHTML += `<strong>Les adresses IP qui se sont connecter cette semaine: </strong> ${nom}<br>`;
-=======
-                            TO_UPDATE_LOG_API_WK.innerHTML += `<strong>Les adresses IP qui se sont connecter aujourd'hui: </strong> ${nom}<br>`;
->>>>>>> origin/master
+
                         }
                         break;
                 }
