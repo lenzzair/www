@@ -35,6 +35,10 @@ verif();// verifie si on est connecter en temp qu'admin
 /** Functions                         */
 /**************************************/
 function get_cookie(name) {
+// ============================================================
+// Fonction qui return la valeur du cookie qui correspond au token du serveur
+// en param le nom "key" du cookie
+// ============================================================
     let cookies = document.cookie.split("; ");
     for (let cookie of cookies) {
         let [key, value] = cookie.split("=");
@@ -45,6 +49,9 @@ function get_cookie(name) {
 }
 
 function verif() {
+// ============================================================
+// Fonction qui vérifie qu'il y a bien le cookie token 
+// ============================================================
     if (document.cookie) {
         afficherAlerte("Vous êtes connecter en tant qu'Administrateur", "success");
         UPDATE_NETWORK.ariaDisabled = "false";
@@ -86,6 +93,13 @@ function get_network() {
     param = "NETWORK";
     token = get_cookie("token_access");
     get("https://cheveux-bleus.fr:16800/network/connections", param, token);
+}
+
+function get_log_api_today(){
+    console.log("LOG API TODAY");
+    param = "API_TODAY";
+    token = get_cookie("token_access");
+    get("https://cheveux-bleus.fr:16800/log/api/today_ip", param, token);
 }
 
 function afficherAlerte(message, type) {

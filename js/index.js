@@ -147,7 +147,7 @@ function callback(result) {
         console.log("Message envoyer");
 
         navigator.notification.alert(
-            'Email envoyer !',  // message
+            'Email Fonctionne correctement',  // message
             'Etat mail',            // title
             'Etat mail'                  // buttonName
         );
