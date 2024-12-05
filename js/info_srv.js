@@ -23,8 +23,8 @@ const TO_UPDATE_LOG_API_TD = document.getElementById("to_update_log_api_td");
 const UPDATE_LOG_API = document.getElementById("update_log_api_td");
 
 
-
-
+const TO_UPDATE_LOG_API_WK = document.getElementById("to_update_log_api_wk");
+const UPDATE_LOG_API_WK = document.getElementById("update_log_api_wk");
 
 /**************************************/
 /** Event Listeners                   */
@@ -36,6 +36,7 @@ UPDATE_DISK.addEventListener("click", get_disk);
 UPDATE_UPTIME.addEventListener("click", get_uptime);
 UPDATE_NETWORK.addEventListener("click", get_network);
 UPDATE_LOG_API.addEventListener("click", get_log_api_today);
+UPDATE_LOG_API_WK.addEventListener("click", get_log_api_week);
 
 verif();// verifie si on est connecter en temp qu'admin
 
@@ -64,6 +65,9 @@ function verif() {
         afficherAlerte("Vous êtes connecter en tant qu'Administrateur", "success");
         UPDATE_NETWORK.ariaDisabled = "false";
         UPDATE_NETWORK.className = "btn btn-outline-success";
+
+        UPDATE_LOG_API.ariaDisabled = "false";
+        UPDATE_LOG_API.className = "btn btn-outline-success";
 
     } else {
         afficherAlerte("Vous n'êtes pas connecter ! Vous n'aurez pas acces a tous. <a href=../login.html>Login</a>", "secondary");
@@ -128,6 +132,17 @@ function get_log_api_today() {
     param = "API_TODAY";
     token = get_cookie("token_access");
     get("https://cheveux-bleus.fr:16800/log/api/today_ip", param, token);
+}
+
+function get_log_api_week() {
+    // ============================================================
+    //  ! PARTIE ADMIN ! Besoin d'une autehentification avec le token
+    // Appelle API qui récupère les logs de l'api de la semaine sauf celle du jour en temps réel du serveur
+    // ============================================================
+    console.log("LOG WEEK TODAY");
+    param = "API_WEEK";
+    token = get_cookie("token_access");
+    get("https://cheveux-bleus.fr:16800/log/api/week_ip", param, token);
 }
 
 function afficherAlerte(message, type) {
@@ -258,13 +273,29 @@ function statechange(event) {
                             li.textContent = `Item ${index + 1}: Local Address: ${item.local_address.join(", Port:")} | Status: ${item.status}`;
                             ul.appendChild(li); // Ajoute chaque élément <li> à la liste <ul>
                         });
+                        break;
 
                     case "API_TODAY":
                         console.log("Reponse Log api today" + XHR.param);
                         TO_UPDATE_LOG_API_TD.innerHTML = "";
 
-                        console.log( reponse_objet["today_ips"]);
-                        TO_UPDATE_LOG_API_TD.innerHTML = reponse_objet["today_ips"];
+                        for (let [index, nom] of Object.entries(reponse_objet)) {
+
+                            // On affiche l'index et le nom
+                            TO_UPDATE_LOG_API_TD.innerHTML += `<strong>Les adresses IP qui se sont connecter aujourd'hui: </strong> ${nom}<br>`;
+                        }
+                        break;
+
+                    case "API_WEEK":
+                        console.log("Reponse Log api week" + XHR.param);
+                        TO_UPDATE_LOG_API_WK.innerHTML = "";
+
+                        for (let [index, nom] of Object.entries(reponse_objet)) {
+
+                            // On affiche l'index et le nom
+                            TO_UPDATE_LOG_API_WK.innerHTML += `<strong>Les adresses IP qui se sont connecter cette semaine: </strong> ${nom}<br>`;
+                        }
+                        break;
                 }
             }
     }
