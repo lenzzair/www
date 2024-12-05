@@ -19,6 +19,13 @@ const UPDATE_UPTIME = document.getElementById("update_uptime");
 const TO_UPDATE_NETWORK = document.getElementById("to_update_network");
 const UPDATE_NETWORK = document.getElementById("update_network");
 
+const TO_UPDATE_LOG_API_TD = document.getElementById("to_update_log_api_td");
+const UPDATE_LOG_API = document.getElementById("update_log_api_td");
+
+
+
+
+
 /**************************************/
 /** Event Listeners                   */
 /**************************************/
@@ -28,6 +35,7 @@ UPDATE_MEMORY.addEventListener("click", get_memory);
 UPDATE_DISK.addEventListener("click", get_disk);
 UPDATE_UPTIME.addEventListener("click", get_uptime);
 UPDATE_NETWORK.addEventListener("click", get_network);
+UPDATE_LOG_API.addEventListener("click", get_log_api_today);
 
 verif();// verifie si on est connecter en temp qu'admin
 
@@ -251,7 +259,12 @@ function statechange(event) {
                             ul.appendChild(li); // Ajoute chaque élément <li> à la liste <ul>
                         });
 
+                    case "API_TODAY":
+                        console.log("Reponse Log api today" + XHR.param);
+                        TO_UPDATE_LOG_API_TD.innerHTML = "";
 
+                        console.log( reponse_objet["today_ips"]);
+                        TO_UPDATE_LOG_API_TD.innerHTML = reponse_objet["today_ips"];
                 }
             }
     }
