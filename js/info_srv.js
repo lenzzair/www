@@ -26,6 +26,12 @@ const UPDATE_LOG_API = document.getElementById("update_log_api_td");
 const TO_UPDATE_LOG_API_WK = document.getElementById("to_update_log_api_wk");
 const UPDATE_LOG_API_WK = document.getElementById("update_log_api_wk");
 
+const TO_UPDATE_LOG_APACHE_TD = document.getElementById("to_update_log_apache_td");
+const UPDATE_LOG_APACHE_TD = document.getElementById("update_log_apache_td");
+
+const TO_UPDATE_LOG_APACHE_WK = document.getElementById("to_update_log_apache_wk");
+const UPDATE_LOG_APACHE_WK = document.getElementById("update_log_apache_wk");
+
 /**************************************/
 /** Event Listeners                   */
 /**************************************/
@@ -37,6 +43,8 @@ UPDATE_UPTIME.addEventListener("click", get_uptime);
 UPDATE_NETWORK.addEventListener("click", get_network);
 UPDATE_LOG_API.addEventListener("click", get_log_api_today);
 UPDATE_LOG_API_WK.addEventListener("click", get_log_api_week);
+UPDATE_LOG_APACHE_TD.addEventListener("click", get_log_apache_today);
+UPDATE_LOG_APACHE_WK.addEventListener("click", get_log_apache_week);
 
 verif();// verifie si on est connecter en temp qu'admin
 
@@ -48,6 +56,7 @@ function get_cookie(name) {
     // Fonction qui return la valeur du cookie qui correspond au token du serveur
     // en param le nom "key" du cookie
     // ============================================================
+    verif();
     let cookies = document.cookie.split("; ");
     for (let cookie of cookies) {
         let [key, value] = cookie.split("=");
@@ -63,13 +72,21 @@ function verif() {
     // ============================================================
     if (document.cookie) {
         afficherAlerte("Vous êtes connecter en tant qu'Administrateur", "success");
-        UPDATE_NETWORK.ariaDisabled = "false";
-        UPDATE_NETWORK.className = "btn btn-outline-success";
 
-        UPDATE_LOG_API.ariaDisabled = "false";
+        UPDATE_NETWORK.className = "btn btn-outline-success";
         UPDATE_LOG_API.className = "btn btn-outline-success";
+        UPDATE_LOG_API_WK.className = "btn btn-outline-success";
+        UPDATE_LOG_APACHE_TD.className = "btn btn-outline-success";
+        UPDATE_LOG_APACHE_WK.className = "btn btn-outline-success";
+
+
 
     } else {
+        navigator.notification.alert(
+            'Attention vous devez vous identifier!',  // message
+            'ATHENTIFICATION',            // title
+            'ATHENTIFICATION'                  // buttonName
+        );
         afficherAlerte("Vous n'êtes pas connecter ! Vous n'aurez pas acces a tous. <a href=../login.html>Login</a>", "secondary");
     }
 }
@@ -117,6 +134,7 @@ function get_network() {
     //  ! PARTIE ADMIN ! Besoin d'une autehentification avec le token
     // Appelle API qui récupère les connection tcp/udp et les port en écoute en temps réel du serveur
     // ============================================================
+    verif();
     console.log("NETWORK Appelle");
     param = "NETWORK";
     token = get_cookie("token_access");
@@ -139,10 +157,32 @@ function get_log_api_week() {
     //  ! PARTIE ADMIN ! Besoin d'une autehentification avec le token
     // Appelle API qui récupère les logs de l'api de la semaine sauf celle du jour en temps réel du serveur
     // ============================================================
-    console.log("LOG WEEK TODAY");
+    console.log("LOG API WEEK");
     param = "API_WEEK";
     token = get_cookie("token_access");
     get("https://cheveux-bleus.fr:16800/log/api/week_ip", param, token);
+}
+
+function get_log_apache_today() {
+    // ============================================================
+    //  ! PARTIE ADMIN ! Besoin d'une autehentification avec le token
+    // Appelle API qui récupère les logs de l'apache du jour en temps réel du serveur
+    // ============================================================
+    console.log("LOG APACHE TODAY");
+    param = "APACHE_TODAY";
+    token = get_cookie("token_access");
+    get("https://cheveux-bleus.fr:16800/log/apache/connexion_web/today", param, token);
+}
+
+function get_log_apache_week() {
+    // ============================================================
+    //  ! PARTIE ADMIN ! Besoin d'une autehentification avec le token
+    // Appelle API qui récupère les logs de l'apache de la semaine en temps réel du serveur
+    // ============================================================
+    console.log("LOG APACHE WEEK");
+    param = "APACHE_WEEK";
+    token = get_cookie("token_access");
+    get("https://cheveux-bleus.fr:16800/log/apache/connexion_web/week", param, token);
 }
 
 function afficherAlerte(message, type) {
@@ -296,6 +336,45 @@ function statechange(event) {
 
                             TO_UPDATE_LOG_API_WK.innerHTML += `<strong>Les adresses IP qui se sont connecter cette semaine: </strong> ${nom}<br>`;
 
+                        }
+                        break;
+
+                    case "APACHE_TODAY":
+                        console.log("Reponse Log apache today" + XHR.param);
+                        TO_UPDATE_LOG_APACHE_TD.innerHTML = "";
+
+                        // Parcoure dictionnaire
+                        for (let [index, nom] of Object.entries(reponse_objet)) {
+                            if (typeof nom === "object" && !Array.isArray(nom)) {
+                                // Si la valeur est un objet, on parcourt ses propriétés
+                                TO_UPDATE_LOG_APACHE_TD.innerHTML += `<strong>${index} :</strong><br>`;
+
+                                for (let [subIndex, subNom] of Object.entries(nom)) {
+                                    TO_UPDATE_LOG_APACHE_TD.innerHTML += `&nbsp;&nbsp;- ${subIndex}: ${subNom}<br>`;
+                                }
+                            } else {
+                                // Affichage direct pour les valeurs primitives
+                                TO_UPDATE_LOG_APACHE_TD.innerHTML += `<strong>${index} :</strong> ${nom}<br>`;
+                            }
+                        }
+                        break;
+
+                    case "APACHE_WEEK":
+                        console.log("Reponse Log apache week" + XHR.param);
+                        TO_UPDATE_LOG_APACHE_WK.innerHTML = "";
+
+                        // Parcoure dictionnaire
+                        for (let [index, nom] of Object.entries(reponse_objet)) {
+                            if (typeof nom === "object" && !Array.isArray(nom)) {
+                                // Si la valeur est un objet, on parcourt ses propriétés
+                                TO_UPDATE_LOG_APACHE_WK.innerHTML += `<strong>${index} :</strong><br>`;
+                                for (let [subIndex, subNom] of Object.entries(nom)) {
+                                    TO_UPDATE_LOG_APACHE_WK.innerHTML += `&nbsp;&nbsp;- ${subIndex}: ${subNom}<br>`;
+                                }
+                            } else {
+                                // Affichage direct pour les valeurs primitives
+                                TO_UPDATE_LOG_APACHE_WK.innerHTML += `<strong>${index} :</strong> ${nom}<br>`;
+                            }
                         }
                         break;
                 }
