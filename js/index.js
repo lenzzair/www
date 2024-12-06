@@ -1,14 +1,17 @@
 /**************************************/
 /**  VARIABLES                           */
 /**************************************/
-const TO_UPDATE = document.getElementById("to_update");
-const UPDATE = document.getElementById("update");
+
 const TO_UPDATE_TB_NETWORK = document.getElementById("para_network");
 const UPDATE_TB_NETWORK = document.getElementById("Tb_network");
+
 const UPDATE_TB_SERVER = document.getElementById("Tb_server");
+
 const TO_UPDATE_TB_MAIL = document.getElementById("para_mail");
 const UPDATE_TB_MAIL = document.getElementById("Tb_mail");
 
+const TO_UPDATE_TB_ARCHIVE = document.getElementById("para_archive");
+const PDATE_TB_ARCHIVE = document.getElementById("Tb_archive");
 /**************************************/
 /** Event Listeners                   */
 /**************************************/
