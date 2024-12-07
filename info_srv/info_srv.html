@@ -85,82 +85,112 @@
 
         <div class="info_srv">
             <!-- S'affiche que si ondeviceReady == true -->
-            <div id="deviceready" class="Ready Button-envoie">
+            <div id="deviceready" class="Ready Button-envoie ">
 
                 <!-- Utilisation de bootstrap pour faire un bouton "colapse" qui affiche les données -->
+                <div class="container-fluid ">
+                    <div class="row">
+                        <div class="col">
+                            <!-- Premier button qui appelle un event listener qui va récuperer les inforamtion CPU de l'api serveur -->
+                            <button id="update_cpu" class="btn btn-primary" data-bs-toggle="collapse"
+                                data-bs-target="#collapseCPU" aria-expanded="false" aria-controls="collapseCPU"
+                                aria-disabled="true">
+                                <i class="bi bi-cpu"></i> Info
+                                CPU
 
-                <!-- Premier button qui appelle un event listener qui va récuperer les inforamtion CPU de l'api serveur -->
-                <button id="update_cpu" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#collapseCPU"
-                    aria-expanded="false" aria-controls="collapseCPU" aria-disabled="true">
-                    <i class="bi bi-cpu"></i> Info
-                    CPU
+                            </button>
 
-                </button>
+                        </div>
 
-             
+                        <div class="col">
 
-                <!-- Deuxième button qui appelle un event listener qui va récuperer les inforamtion Memory de l'api serveur -->
-                <button id="update_memory" class="btn btn-primary" data-bs-toggle="collapse"
-                    data-bs-target="#collapseMEMORY" aria-expanded="false" aria-controls="collapseMEMORY"
-                    aria-disabled="true">
-                    <i class="bi bi-memory"></i> Info MEMORY
+                            <!-- Deuxième button qui appelle un event listener qui va récuperer les inforamtion Memory de l'api serveur -->
+                            <button id="update_memory" class="btn btn-primary" data-bs-toggle="collapse"
+                                data-bs-target="#collapseMEMORY" aria-expanded="false" aria-controls="collapseMEMORY"
+                                aria-disabled="true">
+                                <i class="bi bi-memory"></i> Info MEMORY
 
-                </button>
-
-
-
-                <div class="collapse" id="collapseCPU">
-                    <button type="button" class="btn btn-outline-warning">Archiver</button>
-                    <div id="to_update_cpu" class="card card-body ">
-                        <!-- DIV qui où le contenue js va être afficher -->
-                    </div>
-
-                </div>
-
-                <div class="collapse" id="collapseMEMORY">
-                    <div id="to_update_memory" class="card card-body ">
-                        <!-- DIV qui où le contenue js va être afficher -->
+                            </button>
+                        </div>
 
                     </div>
-                </div>
+
+                    <div class="row">
+
+                        <div class="col">
+
+                            <div class="collapse" id="collapseCPU">
+                                <button id="cpu" type="button" class="btn btn-outline-warning">Archiver</button>
+                                <div id="to_update_cpu" class="card card-body ">
+                                    <!-- DIV qui où le contenue js va être afficher -->
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="collapse" id="collapseMEMORY">
+                                <div id="to_update_memory" class="card card-body ">
+                                    <!-- DIV qui où le contenue js va être afficher -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Deuxième ligne de boutton -->
+
+                        <div class="col">
+
+                            <button id="update_disk" class="btn btn-primary" data-bs-toggle="collapse"
+                                data-bs-target="#collapseDISK" aria-expanded="false" aria-controls="collapseDISK"
+                                aria-disabled="true">
+                                <i class="bi bi-hdd"></i> Info DISK
+
+                            </button>
+
+                        </div>
+
+                        <div class="col">
+
+                            <button id="update_uptime" class="btn btn-primary" data-bs-toggle="collapse"
+                                data-bs-target="#collapseUPTIME" aria-expanded="false" aria-controls="collapseUPTIME"
+                                aria-disabled="true">
+                                <i class="bi bi-clock-history"></i> Info UP TIME
+
+                            </button>
+                        </div>
+
+                    </div>
 
 
-                <!-- Deuxième ligne de boutton -->
-                <button id="update_disk" class="btn btn-primary" data-bs-toggle="collapse"
-                    data-bs-target="#collapseDISK" aria-expanded="false" aria-controls="collapseDISK"
-                    aria-disabled="true">
-                    <i class="bi bi-hdd"></i> Info DISK
+                    <div class="row">
 
-                </button>
+                        <div class="col">
 
+                            <div class="collapse" id="collapseDISK">
+                                <div id="to_update_disk" class="card card-body ">
+                                    <!-- DIV qui où le contenue js va être afficher -->
 
+                                </div>
+                            </div>
 
+                        </div>
 
-                <button id="update_uptime" class="btn btn-primary" data-bs-toggle="collapse"
-                    data-bs-target="#collapseUPTIME" aria-expanded="false" aria-controls="collapseUPTIME"
-                    aria-disabled="true">
-                    <i class="bi bi-clock-history"></i> Info UP TIME
+                        <div class="col">
 
-                </button>
+                            <div class="collapse" id="collapseUPTIME">
+                                <div id="to_update_uptime" class="card card-body ">
+                                    <!-- DIV qui où le contenue js va être afficher -->
 
+                                </div>
+                            </div>
 
-
-
-                <div class="collapse" id="collapseDISK">
-                    <div id="to_update_disk" class="card card-body ">
-                        <!-- DIV qui où le contenue js va être afficher -->
+                        </div>
 
                     </div>
                 </div>
-
-
-                <div class="collapse" id="collapseUPTIME">
-                    <div id="to_update_uptime" class="card card-body ">
-                        <!-- DIV qui où le contenue js va être afficher -->
-
-                    </div>
-                </div>
-
                 <!-- ======================================= -->
                 <!-- BOUTTON POUR RÉCUPERER LES INFO SERVEUR API  -->
                 <!-- ======================================= -->

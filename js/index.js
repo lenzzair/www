@@ -166,3 +166,19 @@ function callback(result) {
         console.error('Erreur ou état inconnu :', result);
     }
 }
+
+/**************************************/
+/** ARCHIVE                            */
+/**************************************/
+
+function get_localstorage(param){
+
+    value = localStorage.getItem(param);
+
+}
+function put_archive(){
+
+
+
+}
+

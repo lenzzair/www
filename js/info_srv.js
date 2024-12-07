@@ -32,6 +32,9 @@ const UPDATE_LOG_APACHE_TD = document.getElementById("update_log_apache_td");
 const TO_UPDATE_LOG_APACHE_WK = document.getElementById("to_update_log_apache_wk");
 const UPDATE_LOG_APACHE_WK = document.getElementById("update_log_apache_wk");
 
+const ARCHIVE_CPU = document.getElementById("cpu");
+
+
 /**************************************/
 /** Event Listeners                   */
 /**************************************/
@@ -45,6 +48,8 @@ UPDATE_LOG_API.addEventListener("click", get_log_api_today);
 UPDATE_LOG_API_WK.addEventListener("click", get_log_api_week);
 UPDATE_LOG_APACHE_TD.addEventListener("click", get_log_apache_today);
 UPDATE_LOG_APACHE_WK.addEventListener("click", get_log_apache_week);
+
+ARCHIVE_CPU.addEventListener("click", put_archive);
 
 verif();// verifie si on est connecter en temp qu'admin
 
@@ -80,7 +85,7 @@ function verif() {
         UPDATE_LOG_APACHE_WK.className = "btn btn-outline-success";
 
     } else {
-  
+
         afficherAlerte("Vous n'êtes pas connecter ! Vous n'aurez pas acces a tous. <a href=../login.html>Login</a>", "secondary");
     }
 }
@@ -194,6 +199,39 @@ function afficherAlerte(message, type) {
     alertContainer.innerHTML = alertHTML;
 
 }
+/**************************************/
+/** ARCHIVE                           */
+/**************************************/
+
+function put_archive(event) {
+    console.log("Appele d'archive de " + event.target.id);
+    let info_archive = document.getElementById("to_update_" + event.target.id);
+
+    let now = new Date();
+
+    // Récupérer les composants de la date
+    let day = String(now.getDate()).padStart(2, '0'); // Jour avec zéro initial
+    let month = String(now.getMonth() + 1).padStart(2, '0'); // Mois avec zéro initial (getMonth() commence à 0)
+    let year = now.getFullYear(); // Année complète
+
+    // Construire la date au format souhaité
+    let formattedDate = `${day}/${month}/${year}`;
+
+    console.log(formattedDate); 
+
+
+    console.log("Vous allez archiver:" + info_archive.textContent);
+
+    // ajout des données dans le localstorage
+    
+    localStorage.setItem("archive_" + event.target.id + "_" + formattedDate, info_archive.textContent);
+    
+    console.log("navigator.notification:", navigator.notification);
+
+    console.log("Donnée ajouter aux localstorage");
+
+}
+
 /**************************************/
 /** Appelle API                       */
 /**************************************/
