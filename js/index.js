@@ -1,4 +1,3 @@
-
 /**************************************/
 /**  VARIABLES                           */
 /**************************************/
@@ -12,7 +11,7 @@ const TO_UPDATE_TB_MAIL = document.getElementById("para_mail");
 const UPDATE_TB_MAIL = document.getElementById("Tb_mail");
 
 const TO_UPDATE_TB_ARCHIVE = document.getElementById("para_archive");
-const PDATE_TB_ARCHIVE = document.getElementById("Tb_archive");
+const UPDATE_TB_ARCHIVE = document.getElementById("Tb_archive");
 /**************************************/
 /** Event Listeners                   */
 /**************************************/

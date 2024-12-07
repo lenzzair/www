@@ -23,3 +23,7 @@
 .row{
     margin-bottom: 3em;
 }
+#archive_btn_archive {
+    text-decoration: none !important;
+    color: white !important;
+}

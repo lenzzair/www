@@ -79,14 +79,8 @@ function verif() {
         UPDATE_LOG_APACHE_TD.className = "btn btn-outline-success";
         UPDATE_LOG_APACHE_WK.className = "btn btn-outline-success";
 
-
-
     } else {
-        navigator.notification.alert(
-            'Attention vous devez vous identifier!',  // message
-            'ATHENTIFICATION',            // title
-            'ATHENTIFICATION'                  // buttonName
-        );
+  
         afficherAlerte("Vous n'êtes pas connecter ! Vous n'aurez pas acces a tous. <a href=../login.html>Login</a>", "secondary");
     }
 }
@@ -340,6 +334,7 @@ function statechange(event) {
                         break;
 
                     case "APACHE_TODAY":
+
                         console.log("Reponse Log apache today" + XHR.param);
                         TO_UPDATE_LOG_APACHE_TD.innerHTML = "";
 

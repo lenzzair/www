@@ -90,24 +90,27 @@
                 <!-- Utilisation de bootstrap pour faire un bouton "colapse" qui affiche les données -->
 
                 <!-- Premier button qui appelle un event listener qui va récuperer les inforamtion CPU de l'api serveur -->
-                <p class="d-inline-flex gap-1">
-                    <a id="update_cpu" class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCPU"
-                        role="button" aria-expanded="false" aria-controls="collapseCPU"><i class="bi bi-cpu"></i> Info
-                        CPU
-                    </a>
+                <button id="update_cpu" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#collapseCPU"
+                    aria-expanded="false" aria-controls="collapseCPU" aria-disabled="true">
+                    <i class="bi bi-cpu"></i> Info
+                    CPU
 
-                </p>
+                </button>
+
+             
 
                 <!-- Deuxième button qui appelle un event listener qui va récuperer les inforamtion Memory de l'api serveur -->
-                <p class="d-inline-flex gap-1">
-                    <a id="update_memory" class="btn btn-primary" data-bs-toggle="collapse" href="#collapseMEMORY"
-                        role="button" aria-expanded="false" aria-controls="collapseMEMORY"><i class="bi bi-memory"></i>
-                        Info MEMORY
-                    </a>
+                <button id="update_memory" class="btn btn-primary" data-bs-toggle="collapse"
+                    data-bs-target="#collapseMEMORY" aria-expanded="false" aria-controls="collapseMEMORY"
+                    aria-disabled="true">
+                    <i class="bi bi-memory"></i> Info MEMORY
 
-                </p>
+                </button>
+
+
 
                 <div class="collapse" id="collapseCPU">
+                    <button type="button" class="btn btn-outline-warning">Archiver</button>
                     <div id="to_update_cpu" class="card card-body ">
                         <!-- DIV qui où le contenue js va être afficher -->
                     </div>
@@ -123,16 +126,18 @@
 
 
                 <!-- Deuxième ligne de boutton -->
-                <p class="d-inline-flex gap-1">
-                    <a id="update_disk" class="btn btn-primary" data-bs-toggle="collapse" href="#collapseDISK"
-                        role="button" aria-expanded="false" aria-controls="collapseDISK"><i class="bi bi-hdd"></i> Info
-                        DISK
-                    </a>
+                <button id="update_disk" class="btn btn-primary" data-bs-toggle="collapse"
+                    data-bs-target="#collapseDISK" aria-expanded="false" aria-controls="collapseDISK"
+                    aria-disabled="true">
+                    <i class="bi bi-hdd"></i> Info DISK
 
-                </p>
+                </button>
+
+
+
 
                 <button id="update_uptime" class="btn btn-primary" data-bs-toggle="collapse"
-                    data-bs-target="#collapseUPTIME" aria-expanded="false" aria-controls="collapseExample"
+                    data-bs-target="#collapseUPTIME" aria-expanded="false" aria-controls="collapseUPTIME"
                     aria-disabled="true">
                     <i class="bi bi-clock-history"></i> Info UP TIME
 
@@ -170,6 +175,8 @@
 
 
                 <div class="collapse" id="collapseNETWORK">
+                    <button type="button" class="btn btn-outline-warning">Archiver</button>
+
                     <div id="to_update_network" class="card card-body">
 
                     </div>
