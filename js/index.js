@@ -12,6 +12,8 @@ const UPDATE_TB_MAIL = document.getElementById("Tb_mail");
 
 const TO_UPDATE_TB_ARCHIVE = document.getElementById("para_archive");
 const UPDATE_TB_ARCHIVE = document.getElementById("Tb_archive");
+
+const BTN_SUPP = document.getElementById("btn-supp");
 /**************************************/
 /** Event Listeners                   */
 /**************************************/
@@ -24,6 +26,7 @@ UPDATE_TB_SERVER.addEventListener("click", get_etat_serveur);
 UPDATE_TB_MAIL.addEventListener("click", send_mail);
 UPDATE_TB_ARCHIVE.addEventListener("click", put_archive);
 
+BTN_SUPP.addEventListener("click", del_archive);
 /**************************************/
 /** MAIN                              */
 /**************************************/
@@ -231,6 +234,9 @@ function put_archive() {
 }
 
 function del_archive(){
+    console.log("Appelle del_archive");
     archive_supp = document.getElementsByClassName("active");
     console.log(archive_supp);
+   
+    
 }

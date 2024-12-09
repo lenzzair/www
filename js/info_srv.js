@@ -42,7 +42,7 @@ const ARCHIVE_WEEK_API = document.getElementById("log_api_wk");
 const ARCHIVE_TODAY_APACHE = document.getElementById("log_apache_td");
 const ARCHIVE_WEEK_APACHE = document.getElementById("log_apache_wk");
 
-const BTN_SUPP = document.getElementById("btn-supp");
+
 
 /**************************************/
 /** Event Listeners                   */
@@ -68,7 +68,7 @@ ARCHIVE_WEEK_API.addEventListener("click", put_archive);
 ARCHIVE_TODAY_APACHE.addEventListener("click", put_archive);
 ARCHIVE_WEEK_APACHE.addEventListener("click", put_archive);
 
-BTN_SUPP.addEventListener("click", del_archive);
+
 
 verif();// verifie si on est connecter en temp qu'admin
 
