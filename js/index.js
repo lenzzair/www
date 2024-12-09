@@ -33,15 +33,15 @@ UPDATE_TB_MAIL.addEventListener("click", send_mail);
 /** Functions                         */
 /**************************************/
 function onDeviceReady() {
-	console.log("Running cordova-" + cordova.platformId + "@" + cordova.version);
-	console.log("onDeviceReady");
+    console.log("Running cordova-" + cordova.platformId + "@" + cordova.version);
+    console.log("onDeviceReady");
 
-	let tb_btn = document.getElementById("tableau_de_bord");
-	tb_btn.style.display = "block";
-	
-	document.addEventListener("online", onOnline, false);
-	document.addEventListener("offline", onOffline, false);
-	
+    let tb_btn = document.getElementById("tableau_de_bord");
+    tb_btn.style.display = "block";
+
+    document.addEventListener("online", onOnline, false);
+    document.addEventListener("offline", onOffline, false);
+
 
 }
 
@@ -95,39 +95,45 @@ function onOffline() {
 
 function get_etat_serveur() {
     console.log("Appelle etat serveur");
-
-    // URL du serveur à vérifier
-    const url = "https://cheveux-bleus.fr:16800/docs";
-
-    // Effectuer une requête pour vérifier l'état du serveur
-    fetch(url, { method: "HEAD" }) // Utilise HEAD pour vérifier si le serveur répond sans récupérer tout le contenu
-        .then((response) => {
-            if (response.ok) {
-                document.getElementById("para_serveur").innerHTML = "Le serveur est Connecté";
-                console.log("Serveur accessible");
-                navigator.notification.alert(
-                    'Le serveur est accessible !',  // message
-                    'Etat Serveur',            // title
-                    'Etat Serveur'                  // buttonName
-                );
-            } else {
-                document.getElementById("para_serveur").innerHTML = "Le serveur répond mais retourne une erreur";
-                console.log("Erreur du serveur, code:", response.status);
-            }
-        })
-        .catch((error) => {
-            document.getElementById("para_serveur").innerHTML = "Le serveur n'est pas Connecté";
-
-            navigator.notification.alert(
-                'Impossible de joindre le serveur !',  // message
-                'Etat Serveur',            // title
-                'Etat Serveur'                  // buttonName
-            );
-            console.error("Impossible de joindre le serveur:", error);
-        });
+    get("https://cheveux-bleus.fr:16800/docs");
 
 }
 
+function get(url) {
+    console.log("URL appelle");
+    const XHR = new XMLHttpRequest();
+    XHR.onreadystatechange = statechange;
+    XHR.open("HEAD", url);
+    XHR.send();
+}
+function statechange(event) {
+    const XHR = event.target;
+    switch (XHR.readyState) {
+
+        case 0: console.log("Requête non initialisée"); break;
+        case 1: console.log("Connexion établie avec le serveur"); break;
+        case 2: console.log("Requête reçue"); break;
+        case 3: console.log("Requête en cours de traitement"); break;
+        case 4:
+            console.log("Requête terminée et réponse prête");
+            if (XHR.status == 200) {
+                console.log("Traitement local de la réponse");
+                console.log("serveur accessible")
+                navigator.notification.alert(
+                    'Le serveur est accessible !',  // message
+                    'Etat serveur',            // title
+                    'Etat serveur'                  // buttonName
+                );
+            }else{
+                navigator.notification.alert(
+                    'Impossible de joindre le serveur !',  // message
+                    'Etat serveur',            // title
+                    'Etat serveur'                  // buttonName
+                );
+            }
+            break;
+    }
+}
 
 
 function send_mail() {
@@ -142,43 +148,19 @@ function send_mail() {
         subject: '! URGENCE SERVEUR !', // subject of the email
         body: 'Rapport Serveur du ' + date_ajd + ":", // email body
 
-    }, callback);
 
+    },);
+    navigator.notification.alert(
+        'Impossible de joindre le serveur !',  // message
+        'Etat mail',            // title
+        'Etat mail'                  // buttonName
+    );
 }
-function callback(result) {
-    if (result === "OK") {
-        console.log("Message envoyer");
 
-        navigator.notification.alert(
-            'Email Fonctionne correctement',  // message
-            'Etat mail',            // title
-            'Etat mail'                  // buttonName
-        );
-    } else if (result === 'cancelled') {
-        console.log('Envoi annulé par l\'utilisateur.');
-
-        navigator.notification.alert(
-            'Impossible de joindre le serveur !',  // message
-            'Etat mail',            // title
-            'Etat mail'                  // buttonName
-        );
-    } else {
-        console.error('Erreur ou état inconnu :', result);
-    }
-}
 
 /**************************************/
 /** ARCHIVE                            */
 /**************************************/
 
-function get_localstorage(param){
 
-    value = localStorage.getItem(param);
-
-}
-function put_archive(){
-
-
-
-}
 

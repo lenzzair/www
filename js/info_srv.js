@@ -243,6 +243,8 @@ function get(url, param, token)
 // Paramètres d'entrée :
 // - url (string) : L'URL de la ressource à laquelle effectuer la requête.
 // La fonction utilise un objet XMLHttpRequest pour envoyer la requête.
+// - param (object) : Paramètres supplémentaires (actuellement inutilisés ici).
+// - token (string) : Jeton d'authentification pour l'en-tête Authorization.
 // ============================================================
 {
     console.log("URL appelle");
