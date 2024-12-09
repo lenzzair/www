@@ -124,7 +124,7 @@ function statechange(event) {
                     'Etat serveur',            // title
                     'Etat serveur'                  // buttonName
                 );
-            }else{
+            } else {
                 navigator.notification.alert(
                     'Impossible de joindre le serveur !',  // message
                     'Etat serveur',            // title
@@ -134,6 +134,11 @@ function statechange(event) {
             break;
     }
 }
+
+
+
+
+// Function qui envoie un mail pour faire un rapport de l'etat du serveurœ
 
 
 function send_mail() {
@@ -148,15 +153,31 @@ function send_mail() {
         subject: '! URGENCE SERVEUR !', // subject of the email
         body: 'Rapport Serveur du ' + date_ajd + ":", // email body
 
+    }, callback);
 
-    },);
-    navigator.notification.alert(
-        'Impossible de joindre le serveur !',  // message
-        'Etat mail',            // title
-        'Etat mail'                  // buttonName
-    );
 }
 
+
+function callback(result) {
+    if (result === "OK") {
+        console.log("Message envoyer");
+        navigator.notification.alert(
+            'Email Fonctionne correctement',  // message
+            'Etat mail',            // title
+            'Etat mail'                  // buttonName
+        );
+    } else if (result === 'CANCELLED') {
+        console.log('Envoi annulé par l\'utilisateur.');
+        navigator.notification.alert(
+            'Impossible d envoyer un mail !',  // message
+            'Etat mail',            // title
+            'Etat mail'                  // buttonName
+        );
+    } else {
+        console.error('Erreur ou état inconnu :', result);
+    }
+
+}
 
 /**************************************/
 /** ARCHIVE                            */
