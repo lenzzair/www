@@ -42,7 +42,7 @@ function onDeviceReady() {
     document.addEventListener("online", onOnline, false);
     document.addEventListener("offline", onOffline, false);
 
-
+    put_archive();
 }
 
 
@@ -183,5 +183,44 @@ function callback(result) {
 /** ARCHIVE                            */
 /**************************************/
 
+function put_archive(){
+    console.log("Appelle PUT Archive");
+
+    let div_col1, div_col2, a , div;
+    let i = 1;
+
+    let dico_localStorage = localStorage;
+
+    console.log(dico_localStorage);
+    
+    for (let [key, value] of Object.entries(dico_localStorage)) {
+
+        a = document.createElement("a");
+        a.href = "#list-" + i;
+        a.innerHTML = key;
+        a.classList.add("list-group-item");
+        a.classList.add("list-group-item-action");
+        a.id = "list-" + i + "-list";
+        a.data_bs_toggle = "list";
+        a.role = "tab";
+        a.aria_controls = "list-" + i;
+        div_col1.append(a)
+
+        div = document.createElement("div");
+        div.classList.add("tab-pane");
+        div.classList.add("fade");
+        div.classList.add("show");
+        div.id = "list-" + i;
+        div.role = "tabpanel";
+        div.aria_labelledby = "list-" + i + "-list";
+        div.innerHTML = value;
+        div_col2.append(div);
+
+        document.getElementById("col1").append(div_col1);
+        document.getElementById("col2").append(div);
+
+        i++;
+    }
 
 
+}

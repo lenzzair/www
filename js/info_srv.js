@@ -33,7 +33,14 @@ const TO_UPDATE_LOG_APACHE_WK = document.getElementById("to_update_log_apache_wk
 const UPDATE_LOG_APACHE_WK = document.getElementById("update_log_apache_wk");
 
 const ARCHIVE_CPU = document.getElementById("cpu");
-
+const ARCHIVE_MEMORY = document.getElementById("memory");
+const ARCHIVE_DISK = document.getElementById("disk");
+const ARCHIVE_UPTIME = document.getElementById("uptime");
+const ARCHIVE_NETWORK = document.getElementById("network");
+const ARCHIVE_TODAY_API = document.getElementById("today_api");
+const ARCHIVE_WEEK_API = document.getElementById("week_api");
+const ARCHIVE_TODAY_APACHE = document.getElementById("today_apache");
+const ARCHIVE_WEEK_APACHE = document.getElementById("week_apache");
 
 /**************************************/
 /** Event Listeners                   */
@@ -50,6 +57,14 @@ UPDATE_LOG_APACHE_TD.addEventListener("click", get_log_apache_today);
 UPDATE_LOG_APACHE_WK.addEventListener("click", get_log_apache_week);
 
 ARCHIVE_CPU.addEventListener("click", put_archive);
+ARCHIVE_DISK.addEventListener("click", put_archive);
+ARCHIVE_MEMORY.addEventListener("click", put_archive);
+ARCHIVE_UPTIME.addEventListener("click", put_archive);
+ARCHIVE_NETWORK.addEventListener("click", put_archive);
+ARCHIVE_TODAY_API.addEventListener("click", put_archive);
+ARCHIVE_WEEK_API.addEventListener("click", put_archive);
+ARCHIVE_TODAY_APACHE.addEventListener("click", put_archive);
+ARCHIVE_WEEK_APACHE.addEventListener("click", put_archive);
 
 verif();// verifie si on est connecter en temp qu'admin
 
@@ -78,11 +93,11 @@ function verif() {
     if (document.cookie) {
         afficherAlerte("Vous êtes connecter en tant qu'Administrateur", "success");
 
-        UPDATE_NETWORK.className = "btn btn-outline-success";
-        UPDATE_LOG_API.className = "btn btn-outline-success";
-        UPDATE_LOG_API_WK.className = "btn btn-outline-success";
-        UPDATE_LOG_APACHE_TD.className = "btn btn-outline-success";
-        UPDATE_LOG_APACHE_WK.className = "btn btn-outline-success";
+        UPDATE_NETWORK.className = "btn btn-success";
+        UPDATE_LOG_API.className = "btn btn-success";
+        UPDATE_LOG_API_WK.className = "btn btn-success";
+        UPDATE_LOG_APACHE_TD.className = "btn btn-success";
+        UPDATE_LOG_APACHE_WK.className = "btn btn-success";
 
     } else {
 
@@ -205,29 +220,29 @@ function afficherAlerte(message, type) {
 
 function put_archive(event) {
     console.log("Appele d'archive de " + event.target.id);
-    let info_archive = document.getElementById("to_update_" + event.target.id);
 
     let now = new Date();
-
     // Récupérer les composants de la date
     let day = String(now.getDate()).padStart(2, '0'); // Jour avec zéro initial
     let month = String(now.getMonth() + 1).padStart(2, '0'); // Mois avec zéro initial (getMonth() commence à 0)
     let year = now.getFullYear(); // Année complète
-
     // Construire la date au format souhaité
     let formattedDate = `${day}/${month}/${year}`;
-
     console.log(formattedDate); 
+    
+    let info_archive = document.getElementById("to_update_" + event.target.id);
+
+    
+
+
 
 
     console.log("Vous allez archiver:" + info_archive.textContent);
 
     // ajout des données dans le localstorage
     
-    localStorage.setItem("archive_" + event.target.id + "_" + formattedDate, info_archive.textContent);
+    localStorage.setItem( "archive_" + event.target.id + "_" + formattedDate, info_archive.textContent);
     
-    console.log("navigator.notification:", navigator.notification);
-
     console.log("Donnée ajouter aux localstorage");
 
 }
