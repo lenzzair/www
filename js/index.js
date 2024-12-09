@@ -46,7 +46,7 @@ function onDeviceReady() {
     document.addEventListener("online", onOnline, false);
     document.addEventListener("offline", onOffline, false);
 
-    
+
 }
 
 
@@ -197,7 +197,7 @@ function put_archive() {
     let div_parent_2 = document.getElementById("col2");
     let dico_localStorage = localStorage;
 
-    while(div_parent.firstChild){
+    while (div_parent.firstChild) {
         div_parent.removeChild(div_parent.firstChild);
         div_parent_2.removeChild(div_parent_2.firstChild);
         console.log("supp");
@@ -214,7 +214,7 @@ function put_archive() {
         a.dataset.bsToggle = "list";
         a.role = "tab";
         a.setAttribute("aria-controls", "list-" + i);
-       
+
 
         div = document.createElement("div");
         div.classList.add("tab-pane");
@@ -224,7 +224,7 @@ function put_archive() {
         div.role = "tabpanel";
         div.setAttribute("aria-labelledby", "list-" + i + "-list");
         div.innerHTML = value;
-       
+
 
         document.getElementById("col1").append(a);
         document.getElementById("col2").append(div);
@@ -233,10 +233,27 @@ function put_archive() {
     }
 }
 
-function del_archive(){
+function del_archive() {
     console.log("Appelle del_archive");
-    archive_supp = document.getElementsByClassName("active");
-    console.log(archive_supp);
-   
-    
+    let archive_supp = document.querySelectorAll(".active");
+
+    let id_value = archive_supp[1].id;
+    let titre_localstorage = document.getElementById(id_value).textContent;
+    console.log(titre_localstorage);
+    // localStorage.removeItem(titre_localstorage);
+
+    if (archive_supp.length > 0) {
+        archive_supp.forEach(archive => {
+            archive.remove();
+
+        });
+    }
+
+
+
+    navigator.notification.alert(
+        "L'archive a été supprimé !",  // message
+        'Archive',            // title
+        'Archive'                  // buttonName
+    );
 }
