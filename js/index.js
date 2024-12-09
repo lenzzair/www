@@ -22,6 +22,7 @@ document.addEventListener("backbutton", onBackButton);
 UPDATE_TB_NETWORK.addEventListener("click", get_etat_network);
 UPDATE_TB_SERVER.addEventListener("click", get_etat_serveur);
 UPDATE_TB_MAIL.addEventListener("click", send_mail);
+UPDATE_TB_ARCHIVE.addEventListener("click", put_archive);
 
 /**************************************/
 /** MAIN                              */
@@ -42,7 +43,7 @@ function onDeviceReady() {
     document.addEventListener("online", onOnline, false);
     document.addEventListener("offline", onOffline, false);
 
-    put_archive();
+    
 }
 
 
@@ -183,16 +184,22 @@ function callback(result) {
 /** ARCHIVE                            */
 /**************************************/
 
-function put_archive(){
+function put_archive() {
     console.log("Appelle PUT Archive");
 
-    let div_col1, div_col2, a , div;
-    let i = 1;
 
+    let a, div;
+    let i = 1;
+    let div_parent = document.getElementById("col1");
+    let div_parent_2 = document.getElementById("col2");
     let dico_localStorage = localStorage;
 
-    console.log(dico_localStorage);
-    
+    while(div_parent.firstChild){
+        div_parent.removeChild(div_parent.firstChild);
+        div_parent_2.removeChild(div_parent_2.firstChild);
+        console.log("supp");
+    }
+
     for (let [key, value] of Object.entries(dico_localStorage)) {
 
         a = document.createElement("a");
@@ -201,10 +208,10 @@ function put_archive(){
         a.classList.add("list-group-item");
         a.classList.add("list-group-item-action");
         a.id = "list-" + i + "-list";
-        a.data_bs_toggle = "list";
+        a.dataset.bsToggle = "list";
         a.role = "tab";
-        a.aria_controls = "list-" + i;
-        div_col1.append(a)
+        a.setAttribute("aria-controls", "list-" + i);
+       
 
         div = document.createElement("div");
         div.classList.add("tab-pane");
@@ -212,11 +219,11 @@ function put_archive(){
         div.classList.add("show");
         div.id = "list-" + i;
         div.role = "tabpanel";
-        div.aria_labelledby = "list-" + i + "-list";
+        div.setAttribute("aria-labelledby", "list-" + i + "-list");
         div.innerHTML = value;
-        div_col2.append(div);
+       
 
-        document.getElementById("col1").append(div_col1);
+        document.getElementById("col1").append(a);
         document.getElementById("col2").append(div);
 
         i++;
