@@ -228,6 +228,9 @@ function put_archive() {
 
         i++;
     }
+}
 
-
+function del_archive(){
+    archive_supp = document.getElementsByClassName("active");
+    console.log(archive_supp);
 }
