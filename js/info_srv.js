@@ -37,10 +37,10 @@ const ARCHIVE_MEMORY = document.getElementById("memory");
 const ARCHIVE_DISK = document.getElementById("disk");
 const ARCHIVE_UPTIME = document.getElementById("uptime");
 const ARCHIVE_NETWORK = document.getElementById("network");
-const ARCHIVE_TODAY_API = document.getElementById("today_api");
-const ARCHIVE_WEEK_API = document.getElementById("week_api");
-const ARCHIVE_TODAY_APACHE = document.getElementById("today_apache");
-const ARCHIVE_WEEK_APACHE = document.getElementById("week_apache");
+const ARCHIVE_TODAY_API = document.getElementById("log_api_td");
+const ARCHIVE_WEEK_API = document.getElementById("log_api_wk");
+const ARCHIVE_TODAY_APACHE = document.getElementById("log_apache_td");
+const ARCHIVE_WEEK_APACHE = document.getElementById("log_apache_wk");
 
 /**************************************/
 /** Event Listeners                   */
@@ -231,17 +231,19 @@ function put_archive(event) {
     console.log(formattedDate); 
     
     let info_archive = document.getElementById("to_update_" + event.target.id);
-
-    
-
-
-
-
-    console.log("Vous allez archiver:" + info_archive.textContent);
+    console.log(info_archive.textContent);
 
     // ajout des données dans le localstorage
+    switch (event.target.id) {
+        case "today_apache":
+            
+            break;
     
-    localStorage.setItem( "archive_" + event.target.id + "_" + formattedDate, info_archive.textContent);
+        default:
+            break;
+    }
+    console.log("Vous allez archiver:" + info_archive.textContent);
+    localStorage.setItem( "archive_" + event.target.id + "_" + formattedDate, JSON.stringify(info_archive.textContent) );
     
     console.log("Donnée ajouter aux localstorage");
 
