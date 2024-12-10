@@ -43,7 +43,6 @@ const ARCHIVE_TODAY_APACHE = document.getElementById("log_apache_td");
 const ARCHIVE_WEEK_APACHE = document.getElementById("log_apache_wk");
 
 
-
 /**************************************/
 /** Event Listeners                   */
 /**************************************/
@@ -232,25 +231,22 @@ function put_archive(event) {
     let year = now.getFullYear(); // Année complète
     // Construire la date au format souhaité
     let formattedDate = `${day}/${month}/${year}`;
-    console.log(formattedDate); 
-    
+    console.log(formattedDate);
+
     let info_archive = document.getElementById("to_update_" + event.target.id);
     console.log(info_archive.textContent);
 
     // ajout des données dans le localstorage
-    switch (event.target.id) {
-        case "today_apache":
-            
-            break;
-    
-        default:
-            break;
-    }
     console.log("Vous allez archiver:" + info_archive.textContent);
-    localStorage.setItem( "archive_" + event.target.id + "_" + formattedDate, JSON.stringify(info_archive.textContent) );
-    
-    console.log("Donnée ajouter aux localstorage");
+    localStorage.setItem("archive_" + event.target.id + "_" + formattedDate, JSON.stringify(info_archive.textContent));
 
+    console.log("Donnée ajouter aux localstorage");
+    
+    navigator.notification.alert(
+        'Vous avez bien ajoutez de donnez dans les archive <a href: ../index.html>Vers les archive</a>',  // message
+        'Archive',            // title
+        'Ok'                  // buttonName
+    );
 }
 
 /**************************************/
@@ -315,6 +311,7 @@ function statechange(event) {
                                 TO_UPDATE_CPU.innerHTML += `<strong>${index} :</strong> ${nom}<br>`;
                             }
                         }
+                        ARCHIVE_CPU.style.display = "block";
                         break;
 
                     case "MEMORY":
@@ -328,6 +325,7 @@ function statechange(event) {
                             // On affiche l'index et le nom
                             TO_UPDATE_MEMORY.innerHTML += `<strong>${index} : </strong> ${nom}<br>`;
                         }
+                        ARCHIVE_MEMORY.style.display = "block";
                         break;
 
                     case "DISK":
@@ -339,6 +337,7 @@ function statechange(event) {
 
                             TO_UPDATE_DISK.innerHTML += `<strong>${index} : </strong> ${nom}<br>`;
                         }
+                        ARCHIVE_DISK.style.display = "block";
                         break;
 
                     case "UPTIME":
@@ -349,6 +348,7 @@ function statechange(event) {
 
                             TO_UPDATE_UPTIME.innerHTML += `<strong>${key} : </strong> ${valeur}<br>`;
                         }
+                        ARCHIVE_UPTIME.style.display = "block";
                         break;
 
                     case "NETWORK":
@@ -368,6 +368,7 @@ function statechange(event) {
                             li.textContent = `Item ${index + 1}: Local Address: ${item.local_address.join(", Port:")} | Status: ${item.status}`;
                             ul.appendChild(li); // Ajoute chaque élément <li> à la liste <ul>
                         });
+                        ARCHIVE_NETWORK.style.display = "block";
                         break;
 
                     case "API_TODAY":
@@ -379,6 +380,7 @@ function statechange(event) {
                             // On affiche l'index et le nom
                             TO_UPDATE_LOG_API_TD.innerHTML += `<strong>Les adresses IP qui se sont connecter aujourd'hui: </strong> ${nom}<br>`;
                         }
+                        ARCHIVE_TODAY_API.style.display = "block";
                         break;
 
                     case "API_WEEK":
@@ -392,6 +394,7 @@ function statechange(event) {
                             TO_UPDATE_LOG_API_WK.innerHTML += `<strong>Les adresses IP qui se sont connecter cette semaine: </strong> ${nom}<br>`;
 
                         }
+                        ARCHIVE_WEEK_API.style.display = "block";
                         break;
 
                     case "APACHE_TODAY":
@@ -413,6 +416,7 @@ function statechange(event) {
                                 TO_UPDATE_LOG_APACHE_TD.innerHTML += `<strong>${index} :</strong> ${nom}<br>`;
                             }
                         }
+                        ARCHIVE_TODAY_APACHE.style.display = "block";
                         break;
 
                     case "APACHE_WEEK":
@@ -432,6 +436,7 @@ function statechange(event) {
                                 TO_UPDATE_LOG_APACHE_WK.innerHTML += `<strong>${index} :</strong> ${nom}<br>`;
                             }
                         }
+                        ARCHIVE_WEEK_APACHE.style.display = "block";
                         break;
                 }
             }
