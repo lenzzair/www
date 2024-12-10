@@ -14,6 +14,7 @@ const TO_UPDATE_TB_ARCHIVE = document.getElementById("para_archive");
 const UPDATE_TB_ARCHIVE = document.getElementById("Tb_archive");
 
 const BTN_SUPP = document.getElementById("btn-supp");
+const BTN_MAIL = document.getElementById("btn-mail");
 /**************************************/
 /** Event Listeners                   */
 /**************************************/
@@ -27,6 +28,7 @@ UPDATE_TB_MAIL.addEventListener("click", send_mail);
 UPDATE_TB_ARCHIVE.addEventListener("click", put_archive);
 
 BTN_SUPP.addEventListener("click", del_archive);
+BTN_MAIL.addEventListener("click", send_mail_archive);
 /**************************************/
 /** MAIN                              */
 /**************************************/
@@ -232,34 +234,79 @@ function put_archive() {
         i++;
     }
 }
+function get_archive_active() {
+    console.log("Appel de get archive active");
 
-function del_archive() {
-    console.log("Appel de supprimer_archive");
-    let archives_a_supprimer = document.querySelectorAll(".active");
-    console.log(archives_a_supprimer);
-    if (archives_a_supprimer.length > 0) {
+    let archives_active = document.querySelectorAll(".active");
+    console.log(archives_active);
 
-        let id_valeur = archives_a_supprimer[0].id;
+    if (archives_active.length > 0) {
+        let id_valeur = archives_active[0].id;
         console.log(id_valeur);
         let titre_localstorage = document.getElementById(id_valeur).innerHTML;
         console.log(titre_localstorage);
+        return [titre_localstorage, archives_active];
+    } 
+}
+
+function del_archive() {
+    console.log("Appel de supprimer_archive");
+
+    let [titre_localstorage, archives_a_supprimer] = get_archive_active();
+    if (titre_localstorage && archives_a_supprimer.length > 0) {
         localStorage.removeItem(titre_localstorage);
 
         archives_a_supprimer.forEach(archive => {
+            archive.classList.remove("active");
             archive.remove();
         });
 
         navigator.notification.alert(
-            "L'archive a été supprimée !",// message
-            callback_archive,  
+            "L'archive a été supprimée !",  // message
+            callback_archive,  // callback
             'Archive',                      // titre
             'OK'                            // nom du bouton
         );
-
     } else {
-        console.error("Pas assez d'éléments actifs à supprimer.");
+        console.error("Pas d'éléments actifs à supprimer.");
     }
 }
-function callback_archive(){
+
+function callback_archive() {
     console.log("Alerte fermée");
-} 
+}
+
+function send_mail_archive() {
+
+    console.log("Appelle SendMail Archive");
+    date_ajd = new Date().toISOString().split('T')[0];
+    console.log(date_ajd);
+    [titre_localstorage, archives_a_envoyer] = get_archive_active();
+
+    id_valeur = archives_a_envoyer[1].id;
+    let archive_content ;
+
+    if (titre_localstorage && archives_a_envoyer.length > 0) {
+        
+        archive_content = document.getElementById(id_valeur).innerHTML;
+
+    }
+    cordova.plugins.email.open({
+        to: 'sonikpi.log@gmail.com', // email addresses for TO field
+        cc: '', // email addresses for CC field
+        subject: '! ARCHIVE SERVEUR ->' + titre_localstorage, // subject of the email
+        body: 'Archive Serveur du ' + date_ajd + ":\n\n" + archive_content, // email body
+
+    }, callback_archive_mail);
+}
+
+
+function callback_archive_mail(result) {
+    console.log("Mail envoyer");
+
+    navigator.notification.alert(
+        'Email Fonctionne correctement',  // message
+        'Etat mail',            // title
+        'Etat mail'                  // buttonName
+    );
+}

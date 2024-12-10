@@ -243,9 +243,10 @@ function put_archive(event) {
     console.log("Donnée ajouter aux localstorage");
     
     navigator.notification.alert(
-        'Vous avez bien ajoutez de donnez dans les archive <a href: ../index.html>Vers les archive</a>',  // message
-        'Archive',            // title
-        'Ok'                  // buttonName
+        'Vous avez bien ajouté des données dans les archives <a href="../index.html">Vers les archives</a>',  // message
+        function() { console.log("Alerte fermée"); },  // callback
+        'Archive',  // title
+        'Ok'  // buttonName
     );
 }
 
