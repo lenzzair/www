@@ -234,26 +234,27 @@ function put_archive() {
 }
 
 function del_archive() {
-    console.log("Appelle del_archive");
-    let archive_supp = document.querySelectorAll(".active");
+    console.log("Appel de supprimer_archive");
+    let archives_a_supprimer = document.querySelectorAll(".active");
+    console.log(archives_a_supprimer);
+    if (archives_a_supprimer.length > 0) {
 
-    let id_value = archive_supp[1].id;
-    let titre_localstorage = document.getElementById(id_value).textContent;
-    console.log(titre_localstorage);
-    // localStorage.removeItem(titre_localstorage);
+        let id_valeur = archives_a_supprimer[2].id;
+        let titre_localstorage = document.getElementById(id_valeur).innerHTML;
+        console.log(titre_localstorage);
+        // localStorage.removeItem(titre_localstorage);
 
-    if (archive_supp.length > 0) {
-        archive_supp.forEach(archive => {
+        archives_a_supprimer.forEach(archive => {
             archive.remove();
-
         });
+
+        navigator.notification.alert(
+            "L'archive a été supprimée !",  // message
+            'Archive',                      // titre
+            'OK'                            // nom du bouton
+        );
+
+    } else {
+        console.error("Pas assez d'éléments actifs à supprimer.");
     }
-
-
-
-    navigator.notification.alert(
-        "L'archive a été supprimé !",  // message
-        'Archive',            // title
-        'Archive'                  // buttonName
-    );
 }
