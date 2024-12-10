@@ -15,6 +15,8 @@ const UPDATE_TB_ARCHIVE = document.getElementById("Tb_archive");
 
 const BTN_SUPP = document.getElementById("btn-supp");
 const BTN_MAIL = document.getElementById("btn-mail");
+const BTN_CONTACT = document.getElementById("btn-contact");
+const TO_UPDATE_CONTACT = document.getElementById("para_contact");
 /**************************************/
 /** Event Listeners                   */
 /**************************************/
@@ -29,6 +31,7 @@ UPDATE_TB_ARCHIVE.addEventListener("click", put_archive);
 
 BTN_SUPP.addEventListener("click", del_archive);
 BTN_MAIL.addEventListener("click", send_mail_archive);
+BTN_CONTACT.addEventListener("click", search_contact);
 /**************************************/
 /** MAIN                              */
 /**************************************/
@@ -309,4 +312,44 @@ function callback_archive_mail(result) {
         'Etat mail',            // title
         'Etat mail'                  // buttonName
     );
+}
+
+function search_contact(){
+    console.log("Appelle search contact");
+    let prenom_nom =  document.getElementById("floatingInput").value ;
+    let options = new ContactFindOptions();
+    
+    // filtrer les contacts par nom
+    options.filter = prenom_nom;
+    options.multiple = true;
+    let fields = ["displayName", "name", "phoneNumbers", "emails"];
+    navigator.contacts.find(fields, onSuccess, onError, options);
+}
+
+function onSuccess(contacts) {
+    console.log("Appelle onSuccess");
+    console.log(contacts.length + 'contacts trouvés');
+
+    for (let i = 0; i < contacts.length; i++) {
+        console.log("Nom = " + contacts[i].displayName);
+       
+        if (contacts[i].phoneNumbers) {
+            console.log("Numéro de téléphone = " + contacts[i].phoneNumbers[0].value);
+            TO_UPDATE_CONTACT.innerHTML += "Numéro de téléphone = " + contacts[i].phoneNumbers[0].value + "\n\n";
+
+        }
+        if (contacts[i].emails) {
+            console.log("Email = " + contacts[i].emails[0].value);
+            TO_UPDATE_CONTACT.innerHTML += contacts[i].displayName + "\n" + "Email = " + contacts[i].emails[0].value;
+        }
+        navigator.notification.alert(
+            'Numéro de téléphone = ' + contacts[i].phoneNumbers[0].value + "\n" + contacts[i].emails[0].value,  // message
+            'Contact',            // title
+            'Contact'                  // buttonName
+        );
+    }
+}
+
+function onError(contactError) {
+    console.error("Erreur lors de la recherche de contacts : " + contactError);
 }
