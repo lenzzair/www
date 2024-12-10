@@ -249,7 +249,8 @@ function del_archive() {
         });
 
         navigator.notification.alert(
-            "L'archive a été supprimée !",  // message
+            "L'archive a été supprimée !",// message
+            callback_archive,  
             'Archive',                      // titre
             'OK'                            // nom du bouton
         );
@@ -258,3 +259,6 @@ function del_archive() {
         console.error("Pas assez d'éléments actifs à supprimer.");
     }
 }
+function callback_archive(){
+    console.log("Alerte fermée");
+} 
