@@ -239,10 +239,10 @@ function del_archive() {
     console.log(archives_a_supprimer);
     if (archives_a_supprimer.length > 0) {
 
-        let id_valeur = archives_a_supprimer[2].id;
+        let id_valeur = archives_a_supprimer[1].id;
         let titre_localstorage = document.getElementById(id_valeur).innerHTML;
         console.log(titre_localstorage);
-        // localStorage.removeItem(titre_localstorage);
+        localStorage.removeItem(titre_localstorage);
 
         archives_a_supprimer.forEach(archive => {
             archive.remove();
