@@ -1,4 +1,4 @@
-# README : Application de Supervision de Serveurs
+# README : Application mobile de Supervision de Serveurs ( Saé Développer des applications communicantes )
 
 ## Auteur
 
