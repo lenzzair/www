@@ -137,7 +137,7 @@ L'API personnelle structure et renvoie les informations des serveurs Apache, int
 
 ### Liens Utiles
 
-- Bootstrap:  [https://getbootstrap.com/\*\*](https://getbootstrap.com/**)
+- Bootstrap:  [https://getbootstrap.com/\*\*](https://getbootstrap.com/)
 -  Leaflet: [https://leafletjs.com/](https://leafletjs.com/)
 - Chart.js : [https://www.chartjs.org/](https://www.chartjs.org/)
 - \*\*cordova-plugin-email-composer : \*\***[https://www.npmjs.com/package/cordova-plugin-email-composer?activeTab=readme](https://www.npmjs.com/package/cordova-plugin-email-composer?activeTab=readme)**
