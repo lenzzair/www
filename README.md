@@ -141,10 +141,10 @@ L'API personnelle structure et renvoie les informations des serveurs Apache, int
 -  Leaflet: [https://leafletjs.com/](https://leafletjs.com/)
 - Chart.js : [https://www.chartjs.org/](https://www.chartjs.org/)
 - \*\*cordova-plugin-email-composer : \*\***[https://www.npmjs.com/package/cordova-plugin-email-composer?activeTab=readme](https://www.npmjs.com/package/cordova-plugin-email-composer?activeTab=readme)**
-- \*\*cordova-plugin-contacts-x : [https://www.npmjs.com/package/cordova-plugin-contacts-x](https://www.npmjs.com/package/cordova-plugin-contacts-x)
+- \*\*cordova-plugin-contacts-x : \*\***[https://www.npmjs.com/package/cordova-plugin-contacts-x](https://www.npmjs.com/package/cordova-plugin-contacts-x)**
 - IP-API :  https\://ip-api.com/
 
 ---
 
-Merci d'avoir consulté cette documentation. N'hésitez pas à contribuer ou poser des qu[estions ](https://github.com/)[via ](https://github.com/)[mon GitHub](https://github.com/).
+Merci d'avoir consulté cette documentation. N'hésitez pas à contribuer ou poser des [questions ](https://github.com/)[via ](https://github.com/)[mon GitHub]([https://github.com/](https://github.com/lenzzair)).
 
