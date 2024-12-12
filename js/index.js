@@ -85,19 +85,22 @@ function get_etat_network() {
     states[Connection.NONE] = 'No network connection';
 
     navigator.notification.alert(
-        'Vous êtes connecter avec : ' + states[networkState],  // message
+        'Vous êtes connecter avec : ' + states[networkState],// message
+        callback_network,  
         'Etat Connexion',            // title
-        'Etat Connexion'                  // buttonName
+        'Ok'                  // buttonName
     );
 }
-
-
+function callback_network() {
+    console.log("Alerte fermée");
+}
 function onOnline() {
     console.log("Online");
 
     TO_UPDATE_TB_NETWORK.innerHTML = "Vous êtes Online";
     UPDATE_TB_NETWORK.style.color = "green";
     UPDATE_TB_NETWORK.style.border = "1px solid green";
+
 }
 
 function onOffline() {
@@ -106,6 +109,7 @@ function onOffline() {
     UPDATE_TB_NETWORK.style.color = "red";
     UPDATE_TB_NETWORK.style.border = "1px solid red";
 }
+
 
 function get_etat_serveur() {
     console.log("Appelle etat serveur");
@@ -135,6 +139,7 @@ function statechange(event) {
                 console.log("serveur accessible")
                 navigator.notification.alert(
                     'Le serveur est accessible !',  // message
+                    callback_server,            // callback
                     'Etat serveur',            // title
                     'Etat serveur'                  // buttonName
                 );
@@ -145,6 +150,7 @@ function statechange(event) {
             } else {
                 navigator.notification.alert(
                     'Impossible de joindre le serveur !',  // message
+                    callback_server,            // callback
                     'Etat serveur',            // title
                     'Etat serveur'                  // buttonName
                 );
@@ -154,6 +160,9 @@ function statechange(event) {
             }
             break;
     }
+}
+function callback_server() {
+    console.log("Alerte fermée");
 }
 
 
@@ -184,20 +193,25 @@ function callback(result) {
         console.log("Message envoyer");
         navigator.notification.alert(
             'Email Fonctionne correctement',  // message
+            callback_mail,            // callback
             'Etat mail',            // title
-            'Etat mail'                  // buttonName
+            'Ok'                  // buttonName
         );
     } else if (result === 'CANCELLED') {
         console.log('Envoi annulé par l\'utilisateur.');
         navigator.notification.alert(
             'Impossible d envoyer un mail !',  // message
+            callback_mail,            // callback
             'Etat mail',            // title
-            'Etat mail'                  // buttonName
+            'Ok'                  // buttonName
         );
     } else {
         console.error('Erreur ou état inconnu :', result);
     }
 
+}
+function callback_mail() {
+    console.log("Alerte fermée");
 }
 
 /**************************************/
@@ -321,9 +335,13 @@ function callback_archive_mail(result) {
 
     navigator.notification.alert(
         'Email Fonctionne correctement',  // message
+        callback_alert_archive_mail,            // callback
         'Etat mail',            // title
         'Etat mail'                  // buttonName
     );
+}
+function callback_alert_archive_mail() {
+    console.log("Alerte fermée");
 }
 
 function search_contact(){
@@ -356,6 +374,7 @@ function onSuccess(contacts) {
         }
         navigator.notification.alert(
             'Numéro de téléphone = ' + contacts[i].phoneNumbers[0].value + "\n" + contacts[i].emails[0].value,  // message
+            callback_contact,            // callback
             'Contact',            // title
             'Contact'                  // buttonName
         );
@@ -364,4 +383,8 @@ function onSuccess(contacts) {
 
 function onError(contactError) {
     console.error("Erreur lors de la recherche de contacts : " + contactError);
+}
+
+function callback_contact() {
+    console.log("Alerte fermée");
 }
