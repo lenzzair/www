@@ -1,8 +1,23 @@
+// LEGENDE DES COMMENTAIRES
+
+// ============================================================   FONCTION PRINCIPALE
+
+// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::   FONCTION SECONDAIRE / REPONSE PLUGIN ASHYNCHRONE
+
+// ------------------------------------------------------------   FONCTION CALLBACK
+
+// ************************************************************   COMPARTIMENTAGE DU CODE
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   FONCTION LIER A CORDOVA
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   FONCTION APPELLE D'API
+
+
+
 /**************************************/
 /**  VARIABLES                        */
 /**************************************/
-// const UL = document.createElement("ul");
-// const LI = document.createElement("li");
+
 
 const TO_UPDATE_CPU = document.getElementById("to_update_cpu");
 const UPDATE_CPU = document.getElementById("update_cpu");
@@ -71,9 +86,10 @@ ARCHIVE_WEEK_APACHE.addEventListener("click", put_archive);
 
 verif();// verifie si on est connecter en temp qu'admin
 
-/**************************************/
-/** Functions                         */
-/**************************************/
+/*****************************************************/
+/** Functions TOKEN                                  */
+/*****************************************************/
+
 function get_cookie(name) {
     // ============================================================
     // Fonction qui return la valeur du cookie qui correspond au token du serveur
@@ -108,101 +124,14 @@ function verif() {
     }
 }
 
-function get_cpu() {
-    // ============================================================
-    // Appelle API qui récupère le CPU en temps réel du serveur
-    // ============================================================
-    console.log("CPU Appelle");
-    param = "CPU"
-    get("https://cheveux-bleus.fr:16800/system/cpu", param);
-}
-
-function get_memory() {
-    // ============================================================
-    // Appelle API qui récupère la Mémoire en temps réel du serveur
-    // ============================================================
-    console.log("MEMORY appelle");
-    param = "MEMORY"
-    get("https://cheveux-bleus.fr:16800/system/memory", param);
-}
-
-function get_disk() {
-    // ============================================================
-    // Appelle API qui récupère l' espace DISK en temps réel du serveur
-    // ============================================================
-    console.log("DISK appelle");
-    param = "DISK";
-    get("https://cheveux-bleus.fr:16800/system/disk", param);
-}
-
-function get_uptime() {
-    // ============================================================
-    // Appelle API qui récupère le temps depuis le dernier reboot du serveur
-    // ============================================================
-    console.log("UPTIME Appelle");
-    param = "UPTIME";
-    get("https://cheveux-bleus.fr:16800/system/uptime", param);
-}
-
-// Fonction admin
-
-function get_network() {
-    // ============================================================
-    //  ! PARTIE ADMIN ! Besoin d'une autehentification avec le token
-    // Appelle API qui récupère les connection tcp/udp et les port en écoute en temps réel du serveur
-    // ============================================================
-    verif();
-    console.log("NETWORK Appelle");
-    param = "NETWORK";
-    token = get_cookie("token_access");
-    get("https://cheveux-bleus.fr:16800/network/connections", param, token);
-}
-
-function get_log_api_today() {
-    // ============================================================
-    //  ! PARTIE ADMIN ! Besoin d'une autehentification avec le token
-    // Appelle API qui récupère les logs de l'api du jour en temps réel du serveur
-    // ============================================================
-    console.log("LOG API TODAY");
-    param = "API_TODAY";
-    token = get_cookie("token_access");
-    get("https://cheveux-bleus.fr:16800/log/api/today_ip", param, token);
-}
-
-function get_log_api_week() {
-    // ============================================================
-    //  ! PARTIE ADMIN ! Besoin d'une autehentification avec le token
-    // Appelle API qui récupère les logs de l'api de la semaine sauf celle du jour en temps réel du serveur
-    // ============================================================
-    console.log("LOG API WEEK");
-    param = "API_WEEK";
-    token = get_cookie("token_access");
-    get("https://cheveux-bleus.fr:16800/log/api/week_ip", param, token);
-}
-
-function get_log_apache_today() {
-    // ============================================================
-    //  ! PARTIE ADMIN ! Besoin d'une autehentification avec le token
-    // Appelle API qui récupère les logs de l'apache du jour en temps réel du serveur
-    // ============================================================
-    console.log("LOG APACHE TODAY");
-    param = "APACHE_TODAY";
-    token = get_cookie("token_access");
-    get("https://cheveux-bleus.fr:16800/log/apache/connexion_web/today", param, token);
-}
-
-function get_log_apache_week() {
-    // ============================================================
-    //  ! PARTIE ADMIN ! Besoin d'une autehentification avec le token
-    // Appelle API qui récupère les logs de l'apache de la semaine en temps réel du serveur
-    // ============================================================
-    console.log("LOG APACHE WEEK");
-    param = "APACHE_WEEK";
-    token = get_cookie("token_access");
-    get("https://cheveux-bleus.fr:16800/log/apache/connexion_web/week", param, token);
-}
-
 function afficherAlerte(message, type) {
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // Fonction pour afficher une alerte Bootstrap.
+    // Paramètres d'entrée :
+    // - message (string) : Le message à afficher dans l'alerte.
+    // - type (string) : Le type de l'alerte (danger, warning, info, success).
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
     let alertContainer = document.getElementById("alert-container");
 
     // Crée une alerte Bootstrap
@@ -217,41 +146,119 @@ function afficherAlerte(message, type) {
     alertContainer.innerHTML = alertHTML;
 
 }
-/**************************************/
-/** ARCHIVE                           */
-/**************************************/
 
-function put_archive(event) {
-    console.log("Appele d'archive de " + event.target.id);
+// ************************************************************
+// Fonction Appelle API
+// ************************************************************
 
-    let now = new Date();
-    // Récupérer les composants de la date
-    let day = String(now.getDate()).padStart(2, '0'); // Jour avec zéro initial
-    let month = String(now.getMonth() + 1).padStart(2, '0'); // Mois avec zéro initial (getMonth() commence à 0)
-    let year = now.getFullYear(); // Année complète
-    // Construire la date au format souhaité
-    let formattedDate = `${day}/${month}/${year}`;
-    console.log(formattedDate);
+function get_cpu() {
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Appelle API qui récupère le CPU en temps réel du serveur
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    let info_archive = document.getElementById("to_update_" + event.target.id);
-    console.log(info_archive.textContent);
-
-    // ajout des données dans le localstorage
-    console.log("Vous allez archiver:" + info_archive.textContent);
-    localStorage.setItem("archive_" + event.target.id + "_" + formattedDate, JSON.stringify(info_archive.textContent));
-
-    console.log("Donnée ajouter aux localstorage");
-    
-    navigator.notification.alert(
-        'Vous avez bien ajouté des données dans les archives <a href="../index.html">Vers les archives</a>',  // message
-        function() { console.log("Alerte fermée"); },  // callback
-        'Archive',  // title
-        'Ok'  // buttonName
-    );
+    console.log("CPU Appelle");
+    param = "CPU"
+    get("https://cheveux-bleus.fr:16800/system/cpu", param);
 }
 
+function get_memory() {
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Appelle API qui récupère la Mémoire en temps réel du serveur
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    console.log("MEMORY appelle");
+    param = "MEMORY"
+    get("https://cheveux-bleus.fr:16800/system/memory", param);
+}
+
+function get_disk() {
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Appelle API qui récupère l' espace DISK en temps réel du serveur
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    console.log("DISK appelle");
+    param = "DISK";
+    get("https://cheveux-bleus.fr:16800/system/disk", param);
+}
+
+function get_uptime() {
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Appelle API qui récupère le temps depuis le dernier reboot du serveur
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    console.log("UPTIME Appelle");
+    param = "UPTIME";
+    get("https://cheveux-bleus.fr:16800/system/uptime", param);
+}
+
+// Fonction admin
+
+function get_network() {
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //  ! PARTIE ADMIN ! Besoin d'une autehentification avec le token
+    // Appelle API qui récupère les connection tcp/udp et les port en écoute en temps réel du serveur
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    verif();
+    console.log("NETWORK Appelle");
+    param = "NETWORK";
+    token = get_cookie("token_access");
+    get("https://cheveux-bleus.fr:16800/network/connections", param, token);
+}
+
+function get_log_api_today() {
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //  ! PARTIE ADMIN ! Besoin d'une autehentification avec le token
+    // Appelle API qui récupère les logs de l'api du jour en temps réel du serveur
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    console.log("LOG API TODAY");
+    param = "API_TODAY";
+    token = get_cookie("token_access");
+    get("https://cheveux-bleus.fr:16800/log/api/today_ip", param, token);
+}
+
+function get_log_api_week() {
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //  ! PARTIE ADMIN ! Besoin d'une autehentification avec le token
+    // Appelle API qui récupère les logs de l'api de la semaine sauf celle du jour en temps réel du serveur
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    console.log("LOG API WEEK");
+    param = "API_WEEK";
+    token = get_cookie("token_access");
+    get("https://cheveux-bleus.fr:16800/log/api/week_ip", param, token);
+}
+
+function get_log_apache_today() {
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //  ! PARTIE ADMIN ! Besoin d'une autehentification avec le token
+    // Appelle API qui récupère les logs de l'apache du jour en temps réel du serveur
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    console.log("LOG APACHE TODAY");
+    param = "APACHE_TODAY";
+    token = get_cookie("token_access");
+    get("https://cheveux-bleus.fr:16800/log/apache/connexion_web/today", param, token);
+}
+
+function get_log_apache_week() {
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //  ! PARTIE ADMIN ! Besoin d'une autehentification avec le token
+    // Appelle API qui récupère les logs de l'apache de la semaine en temps réel du serveur
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    console.log("LOG APACHE WEEK");
+    param = "APACHE_WEEK";
+    token = get_cookie("token_access");
+    get("https://cheveux-bleus.fr:16800/log/apache/connexion_web/week", param, token);
+}
+
+
+
+
 /**************************************/
-/** Appelle API                       */
+/** FONTION XML HTTPREQUEST           */
 /**************************************/
 
 
@@ -442,4 +449,52 @@ function statechange(event) {
                 }
             }
     }
+}
+
+/**************************************************************************/
+/** ARCHIVE                                                               */
+/**************************************************************************/
+
+function put_archive(event) {
+    // ============================================================
+    // Fonction qui permet d'archiver les données dans le localstorage
+    // ============================================================
+
+    console.log("Appele d'archive de " + event.target.id);
+
+    let now = new Date();
+    // Récupérer les composants de la date
+    let day = String(now.getDate()).padStart(2, '0'); // Jour avec zéro initial
+    let month = String(now.getMonth() + 1).padStart(2, '0'); // Mois avec zéro initial (getMonth() commence à 0)
+    let year = now.getFullYear(); // Année complète
+    // Construire la date au format souhaité
+    let formattedDate = `${day}/${month}/${year}`;
+    console.log(formattedDate);
+
+    let info_archive = document.getElementById("to_update_" + event.target.id);
+    console.log(info_archive.textContent);
+
+    // ajout des données dans le localstorage
+    console.log("Vous allez archiver:" + info_archive.textContent);
+    localStorage.setItem("archive_" + event.target.id + "_" + formattedDate, JSON.stringify(info_archive.textContent));
+
+    console.log("Donnée ajouter aux localstorage");
+    
+}
+document.addEventListener('deviceready', plugin_alerte);
+function plugin_alerte() {
+    console.log("Plugin alerte");
+    navigator.notification.alert(
+        'Vous avez bien ajouté des données dans les archives <a href="../index.html">Vers les archives</a>',  // message
+        callback_archive,  // callback
+        'Archive',  // title
+        'Ok'  // buttonName
+    );
+}
+function callback_archive(){
+    // ------------------------------------------------------------
+    // Fonction qui permet de fermer l'alerte
+    // ------------------------------------------------------------
+
+    console.log("Alerte fermée");
 }

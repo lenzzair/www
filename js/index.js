@@ -32,8 +32,10 @@ const UPDATE_TB_ARCHIVE = document.getElementById("Tb_archive");
 
 const BTN_SUPP = document.getElementById("btn-supp");
 const BTN_MAIL = document.getElementById("btn-mail");
+
 const BTN_CONTACT = document.getElementById("btn-contact");
-const TO_UPDATE_CONTACT = document.getElementById("para_contact");
+const TO_UPDATE_CONTACT_NUM = document.getElementById("para_contact_num");
+const TO_UPDATE_CONTACT_MAIL = document.getElementById("para_contact_mail");
 
 /**************************************/
 /** Event Listeners                   */
@@ -50,11 +52,6 @@ UPDATE_TB_ARCHIVE.addEventListener("click", put_archive);
 BTN_SUPP.addEventListener("click", del_archive);
 BTN_MAIL.addEventListener("click", send_mail_archive);
 BTN_CONTACT.addEventListener("click", search_contact);
-/**************************************/
-/** MAIN                              */
-/**************************************/
-
-
 
 /**************************************/
 /** Functions                         */
@@ -448,7 +445,7 @@ function send_mail_archive() {
 }
 
 // ****************************************************************************************
-// FONCTION CONTACT  AVEC DES APPELLE MAIL
+// FONCTION CONTACT    --AVEC DES APPELLE MAIL--
 // ****************************************************************************************
 
 
@@ -487,14 +484,14 @@ function onSuccess(contacts) {
 
             console.log("Numéro de téléphone = " + contacts[i].phoneNumbers[0].value);
 
-            TO_UPDATE_CONTACT.innerHTML += "Numéro de téléphone = " + contacts[i].phoneNumbers[0].value + "\n\n";
+            TO_UPDATE_CONTACT_NUM.innerHTML = "Numéro de téléphone = " + contacts[i].phoneNumbers[0].value + "\n\n";
 
         }
 
         if (contacts[i].emails) {
 
             console.log("Email = " + contacts[i].emails[0].value);
-            TO_UPDATE_CONTACT.innerHTML += contacts[i].displayName + "\n" + "Email = " + contacts[i].emails[0].value + "\n\n";
+            TO_UPDATE_CONTACT_MAIL.innerHTML = "Email = " + contacts[i].emails[0].value + "\n\n";
 
             email_contact = contacts[i].emails[0].value;
         }
