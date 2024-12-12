@@ -84,63 +84,93 @@
   <main id="tableau_de_bord" class="tableau_bord">
 
     <h2>Tableau de Bord</h2>
-    <section class="connexion">
 
-      <input class="Tb_Button btn btn-info" id="Tb_network" type="button" value="Etat de vôtre connexion" />
-      <p id="para_network">
-    </section>
+    <div class="row">
 
-    <section>
-      <input class="Tb_Button btn btn-info" id="Tb_server" type="button" value="Etat de vôtre Serveur" />
-      <p id="para_serveur">
-    </section>
+      <div class="col">
 
-    <section>
-      <input class="Tb_Button btn btn-info" id="Tb_mail" type="button" value="Mail" />
-      <p id="para_mail">
-    </section>
+        <section class="connexion">
 
-    <section>
-      <button id="Tb_contact" type="button" class="btn btn-primary" data-bs-toggle="modal"
-        data-bs-target="#contactModal">Chercher un contact</button>
-      <!-- Modal contact -->
-      <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" style="display: none;"
-        aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="contactModalLabel">Chercher un contact</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
 
-              <form>
-                <div class="form-floating mb-3">
-                  <input type="name" class="form-control" id="floatingInput" placeholder="Prénom Nom">
-                  <label for="floatingInput">Prénom Nom</label>
+          <button class="Tb_Button label_td" id="Tb_network" type="button">
+            <i class="bi bi-wifi"></i>
+          </button>
+          <p id="para_network">Vôtre connexion</p>
+        </section>
+
+      </div>
+
+      <div class="col">
+
+        <section>
+          <button class="Tb_Button label_td" id="Tb_server" type="button" value="Etat de vôtre Serveur">
+            <i class="bi bi-database-gear"></i>
+          </button>
+          <p id="para_serveur">
+            Etat Serveur
+          </p>
+        </section>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="col">
+        <section>
+          <button class="Tb_Button label_td" id="Tb_mail" type="button" value="Mail">
+            <i class="bi bi-envelope"></i>
+          </button>
+          <p id="para_mail">Mail
+          </p>
+        </section>
+      </div>
+
+      <div class="col">
+        <section>
+          <button id="Tb_contact" type="button" class="Tb_Button label_td" data-bs-toggle="modal"
+            data-bs-target="#contactModal"><i class="bi bi-person-lines-fill"></i></button>
+          <p id="para_contact">Contact</p>
+          <!-- Modal contact -->
+          <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel"
+            style="display: none;" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="contactModalLabel">Chercher un contact</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                
-              </form>
-              <div id="para_contact">
+                <div class="modal-body">
 
+                  <form>
+                    <div class="form-floating mb-3">
+                      <input type="name" class="form-control" id="floatingInput" placeholder="Prénom Nom">
+                      <label for="floatingInput">Prénom Nom</label>
+                    </div>
+
+                  </form>
+                  <div id="para_contact">
+
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button id="btn-contact-mail" type="button" class="btn btn-success">Envoie un mail</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button id="btn-contact" type="button" class="btn btn-primary">Chercher</button>
+
+                </div>
               </div>
             </div>
-            <div class="modal-footer">
-              <button id="btn-contact-mail" type="button" class="btn btn-success">Envoie un mail</button>
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button id="btn-contact" type="button" class="btn btn-primary">Chercher</button>
-
-            </div>
           </div>
-        </div>
+          <!-- Modal contact -->
+        </section>
       </div>
-      <!-- Modal contact -->
-    </section>
+    </div>
 
     <section>
 
-      <button id="Tb_archive" class="Tb_Button btn btn-info" data-bs-toggle="modal" data-bs-target="#archiveModal"
-        type="button">Archive</button>
+      <button id="Tb_archive" class="Tb_Button label_td" data-bs-toggle="modal" data-bs-target="#archiveModal"
+        type="button"><i class="bi bi-file-zip"></i></button>
+      <p id="para_archive">Archive</p>
 
       <!--Création du modale  -->
       <div class="modal fade" id="archiveModal" tabindex="-1" aria-labelledby="archiveModal" aria-hidden="true">
@@ -168,7 +198,7 @@
 
 
 
-              <!-- BOUTON pour les archives -->
+              <!-- BOUTON pour les archihves -->
               <div class="row">
 
                 <div class="col">
