@@ -1,3 +1,19 @@
+// LEGENDE DES COMMENTAIRES
+
+// ============================================================   FONCTION PRINCIPALE
+
+// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::   FONCTION SECONDAIRE / REPONSE PLUGIN ASHYNCHRONE
+
+// ------------------------------------------------------------   FONCTION CALLBACK
+
+// ************************************************************   COMPARTIMENTAGE DU CODE
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   FONCTION LIER A CORDOVA
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   FONCTION APPELLE D'API
+
+
+
 /**************************************/
 /**  VARIABLES                           */
 /**************************************/
@@ -70,7 +86,18 @@ function onResume() {
 function onBackButton() {
     console.log("onBackButton");
 }
+
+/**************************************/
+/** Fonction du Tableau de Bord       */
+/**************************************/
+
+
 function get_etat_network() {
+    // ============================================================
+    //Fonction qui permet de connaitre l'etat du réseau de l'utilisateur
+    // Utilise le plugin cordova-plugin-network-information
+    // Et utilise le plugin cordova-plugin-dialogs -> qui va crée une alerte
+    // ============================================================
     console.log("Appell etat _network");
 
     let networkState = navigator.connection.type;
@@ -85,6 +112,7 @@ function get_etat_network() {
     states[Connection.CELL] = 'Cell generic connection';
     states[Connection.NONE] = 'No network connection';
 
+    // ALERTE
     navigator.notification.alert(
         'Vous êtes connecter avec : ' + states[networkState],// message
         callback_network,
@@ -94,6 +122,10 @@ function get_etat_network() {
 }
 
 function onOnline() {
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // Réponse si du plugin si l'utilisateur est connecté
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
     console.log("Online");
 
     TO_UPDATE_TB_NETWORK.innerHTML = "Vous êtes Online";
@@ -103,22 +135,41 @@ function onOnline() {
 }
 
 function onOffline() {
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // Réponse si du plugin si l'utilisateur est déconnecté
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
     console.log("Offline");
     TO_UPDATE_TB_NETWORK.innerHTML = "Vous êtes offline";
     UPDATE_TB_NETWORK.style.color = "red";
     UPDATE_TB_NETWORK.style.border = "1px solid red";
 }
 function callback_network() {
+    // ------------------------------------------------------------
+    // CALLBACK de l'alerte NETWORK
+    // ------------------------------------------------------------
     console.log("Alerte fermée");
 }
 
 function get_etat_serveur() {
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Fonction qui permet de connaitre l'etat du serveur en faisant un appel a l'API et vérifie si il y a une réponse
+    // Utilise le plugin cordova-plugin-dialogs -> qui va crée une alerte
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
     console.log("Appelle etat serveur");
     get("https://cheveux-bleus.fr:16800/docs");
 
 }
 
 function get(url) {
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Fonction pour effectuer une requête HTTP GET vers une URL donnée.
+    // Paramètres d'entrée :
+    // - url (string) : L'URL de la ressource à laquelle effectuer la requête.
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     console.log("URL appelle");
     const XHR = new XMLHttpRequest();
     XHR.onreadystatechange = statechange;
@@ -126,6 +177,12 @@ function get(url) {
     XHR.send();
 }
 function statechange(event) {
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Fonction qui vérifie l'état de la requête HTTP.
+    // Paramètres d'entrée :
+    // - event (Event) : L'événement déclencheur de la fonction.
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     const XHR = event.target;
     switch (XHR.readyState) {
 
@@ -138,6 +195,7 @@ function statechange(event) {
             if (XHR.status == 200) {
                 console.log("Traitement local de la réponse");
                 console.log("serveur accessible")
+
                 navigator.notification.alert(
                     'Le serveur est accessible !',  // message
                     callback_server,            // callback
@@ -163,14 +221,12 @@ function statechange(event) {
     }
 }
 function callback_server() {
+    // ------------------------------------------------------------
+    // CALLBACK de l'alerte SERVER
+    // ------------------------------------------------------------
+
     console.log("Alerte fermée");
 }
-
-
-
-
-// Function qui envoie un mail pour faire un rapport de l'etat du serveurœ
-
 
 
 
@@ -179,6 +235,10 @@ function callback_server() {
 /**************************************/
 
 function put_archive() {
+    // ============================================================
+    // Fonction qui permet d'archiver les informations de l'utilisateur grâce a la gestion du localstorage
+    // ============================================================
+
     console.log("Appelle PUT Archive");
 
 
@@ -186,16 +246,20 @@ function put_archive() {
     let i = 1;
     let div_parent = document.getElementById("col1");
     let div_parent_2 = document.getElementById("col2");
+
+    // Récupère le localstorage
     let dico_localStorage = localStorage;
 
+    // Supprime les éléments enfants des divs pour réinitialiser les archives a chaque appel
     while (div_parent.firstChild) {
         div_parent.removeChild(div_parent.firstChild);
         div_parent_2.removeChild(div_parent_2.firstChild);
         console.log("supp");
     }
 
+    // Parcours le localstorage pour afficher les archives
     for (let [key, value] of Object.entries(dico_localStorage)) {
-
+        // Création des éléments HTML pour chaque archive; PARTIE BUTTON
         a = document.createElement("a");
         a.href = "#list-" + i;
         a.innerHTML = key;
@@ -206,7 +270,7 @@ function put_archive() {
         a.role = "tab";
         a.setAttribute("aria-controls", "list-" + i);
 
-
+        // Création des éléments HTML pour chaque archive; PATIE TEXTE
         div = document.createElement("div");
         div.classList.add("tab-pane");
         div.classList.add("fade");
@@ -223,28 +287,44 @@ function put_archive() {
         i++;
     }
 }
+
 function get_archive_active() {
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // Fonction qui permet de récupérer l'archive active
+    // returne: le titre de l'archive et l'élément HTML de l'archive
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
     console.log("Appel de get archive active");
 
     let archives_active = document.querySelectorAll(".active");
-    console.log(archives_active);
+    // On récupère tous les éléments actifs donc le titre de l'archive et la div qui est liée au titre
 
     if (archives_active.length > 0) {
+        // On récupère l'id du titre actif qui est la clé du localstorage
         let id_valeur = archives_active[0].id;
-        console.log(id_valeur);
         let titre_localstorage = document.getElementById(id_valeur).innerHTML;
-        console.log(titre_localstorage);
+        
         return [titre_localstorage, archives_active];
     }
 }
 
 function del_archive() {
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // Fonction qui permet de supprimer l'archive active
+    // fait appel a la fonction get_archive_active pour récupérer l'archive active
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
     console.log("Appel de supprimer_archive");
 
+    // recupère le titre de l'archive et l'élément HTML de l'archive avec get_archive_active()
     let [titre_localstorage, archives_a_supprimer] = get_archive_active();
+
     if (titre_localstorage && archives_a_supprimer.length > 0) {
+
+        // suppression de l'archive dans le localstorage
         localStorage.removeItem(titre_localstorage);
 
+        // suppression de l'archive dans le DOM
         archives_a_supprimer.forEach(archive => {
             archive.classList.remove("active");
             archive.remove();
@@ -252,7 +332,7 @@ function del_archive() {
 
         navigator.notification.alert(
             "L'archive a été supprimée !",  // message
-            callback_archive,  // callback
+            callback_del_archive,  // callback
             'Archive',                      // titre
             'OK'                            // nom du bouton
         );
@@ -261,113 +341,32 @@ function del_archive() {
     }
 }
 
-function callback_archive() {
+function callback_del_archive() {
+    // ------------------------------------------------------------
+    // CALLBACK de l'alerte delete ARCHIVE
+    // ------------------------------------------------------------
+
     console.log("Alerte fermée");
 }
 
-function send_mail_archive() {
-
-    console.log("Appelle SendMail Archive");
-    date_ajd = new Date().toISOString().split('T')[0];
-    console.log(date_ajd);
-    [titre_localstorage, archives_a_envoyer] = get_archive_active();
-
-    id_valeur = archives_a_envoyer[1].id;
-    let archive_content;
-
-    if (titre_localstorage && archives_a_envoyer.length > 0) {
-
-        archive_content = document.getElementById(id_valeur).innerHTML;
-
-    }
-    cordova.plugins.email.open({
-        to: 'sonikpi.log@gmail.com', // email addresses for TO field
-        cc: '', // email addresses for CC field
-        subject: '! ARCHIVE SERVEUR ->' + titre_localstorage, // subject of the email
-        body: 'Archive Serveur du ' + date_ajd + ":\n\n" + archive_content, // email body
-
-    }, callback_archive_mail);
-}
 
 
-function callback_archive_mail(result) {
-    console.log("Mail envoyer");
-
-    navigator.notification.alert(
-        'Email Fonctionne correctement',  // message
-        callback_alert_archive_mail,            // callback
-        'Etat mail',            // title
-        'Etat mail'                  // buttonName
-    );
-}
-function callback_alert_archive_mail() {
-    console.log("Alerte fermée");
-}
-
-function search_contact() {
-    console.log("Appelle search contact");
-    let prenom_nom = document.getElementById("floatingInput").value;
-    let options = new ContactFindOptions();
-
-    // filtrer les contacts par nom
-    options.filter = prenom_nom;
-    options.multiple = true;
-    let fields = ["displayName", "name", "phoneNumbers", "emails"];
-    navigator.contacts.find(fields, onSuccess, onError, options);
-}
+// ***********************************************************************************************************************
+// FONCTION MAIL
+// ***********************************************************************************************************************
 
 let email_contact;
 
-function onSuccess(contacts) {
-    console.log("Appelle onSuccess");
-    console.log(contacts.length + 'contacts trouvés');
+function send_mail(contact, archive_title , archive_content) {
+    // ============================================================
+    // Fonction qui envoie un mail
+    // Utilise le plugin cordova-plugin-email
+    // Paramètres d'entrée :
+    // - contact (string) : L'adresse mail du destinataire.
+    // - archive_title (string) : Le titre de l'archive à envoyer.
+    // - archive_content (string) : Le contenu de l'archive à envoyer.
+    // ============================================================
 
-
-
-    for (let i = 0; i < contacts.length; i++) {
-        console.log("Nom = " + contacts[i].displayName);
-
-        if (contacts[i].phoneNumbers) {
-            console.log("Numéro de téléphone = " + contacts[i].phoneNumbers[0].value);
-            TO_UPDATE_CONTACT.innerHTML += "Numéro de téléphone = " + contacts[i].phoneNumbers[0].value + "\n\n";
-
-        }
-
-        if (contacts[i].emails) {
-            console.log("Email = " + contacts[i].emails[0].value);
-            TO_UPDATE_CONTACT.innerHTML += contacts[i].displayName + "\n" + "Email = " + contacts[i].emails[0].value + "\n\n";
-            email_contact = contacts[i].emails[0].value;
-            console.log(email_contact);
-        }
-
-        navigator.notification.confirm(
-            'Numéro de téléphone = ' + contacts[i].phoneNumbers[0].value + "\n" + contacts[i].emails[0].value + "\n\nEnvoyer un mail ?\n",  // message
-            callback_confirm,            // callback
-            'Contact',            // title
-            ['Envoyer Mail', 'Annulé']                  // buttonName
-        );
-    }
-
-}
-
-function onError(contactError) {
-    console.error("Erreur lors de la recherche de contacts : " + contactError);
-}
-
-function callback_confirm(buttonIndex) {
-    console.log("Callback confirm");
-    console.log(buttonIndex);
-    console.log(email_contact);
-
-    if (buttonIndex === 1) {
-        send_mail(email_contact);
-    } else {
-        console.log("Annulé");
-    }
-
-}
-
-function send_mail(contact) {
     console.log(contact)
 
     let contact_to_send = contact;
@@ -383,15 +382,18 @@ function send_mail(contact) {
     cordova.plugins.email.open({
         to: contact_to_send, // email addresses for TO field
         cc: '', // email addresses for CC field
-        subject: '! URGENCE SERVEUR !', // subject of the email
-        body: 'Rapport Serveur du ' + date_ajd + ":", // email body
+        subject: '! URGENCE SERVEUR !  ' + archive_title, // subject of the email
+        body: 'Rapport Serveur du ' + date_ajd + ":\n\n\n" + archive_content , // email body
 
     }, callback);
 
 }
 
-
 function callback(result) {
+    // ------------------------------------------------------------
+    // CALLBACK de l'envoi de mail
+    // ------------------------------------------------------------
+
     if (result === "OK") {
         console.log("Message envoyer");
         navigator.notification.alert(
@@ -414,5 +416,124 @@ function callback(result) {
 
 }
 function callback_mail() {
+    // ------------------------------------------------------------
+    // CALLBACK de l'alerte MAIL
+    // ------------------------------------------------------------
+
     console.log("Alerte fermée");
 }
+
+function send_mail_archive() {
+    // ============================================================
+    // Fonction qui envoie un mail et envoie en pièce jointe l'archive active
+    // Utilise le plugin cordova-plugin-email
+    // Appelle la fonction get_archive_active
+    // ============================================================
+
+    console.log("Appelle SendMail Archive");
+    date_ajd = new Date().toISOString().split('T')[0];
+    console.log(date_ajd);
+    [titre_localstorage, archives_a_envoyer] = get_archive_active();
+
+    id_valeur = archives_a_envoyer[1].id;
+    let archive_content;
+
+    if (titre_localstorage && archives_a_envoyer.length > 0) {
+
+        archive_content = document.getElementById(id_valeur).innerHTML;
+
+    }
+    let contact = 'sonikpi.log@gmail.com'
+    send_mail( contact , titre_localstorage, archive_content);
+}
+
+// ****************************************************************************************
+// FONCTION CONTACT  AVEC DES APPELLE MAIL
+// ****************************************************************************************
+
+
+function search_contact() {
+    // ============================================================
+    // Fonction qui permet de rechercher un contact dans les contact de l'utilisateur
+    // Utilise le plugin cordova-plugin-contacts
+    // Récupère le numéro de téléphone et l'adresse mail du contact a partie de son nom
+    // ============================================================
+
+    console.log("Appelle search contact");
+    let prenom_nom = document.getElementById("floatingInput").value;
+    let options = new ContactFindOptions();
+
+    // filtrer les contacts par nom
+    options.filter = prenom_nom;
+    options.multiple = true;
+    let fields = ["displayName", "name", "phoneNumbers", "emails"];
+    navigator.contacts.find(fields, onSuccess, onError, options);
+}
+
+function onSuccess(contacts) {
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // Réponse du plugin si il trouve des contacts
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    console.log("Appelle onSuccess");
+    console.log(contacts.length + 'contacts trouvés');
+
+
+
+    for (let i = 0; i < contacts.length; i++) {
+        console.log("Nom = " + contacts[i].displayName);
+
+        if (contacts[i].phoneNumbers) {
+
+            console.log("Numéro de téléphone = " + contacts[i].phoneNumbers[0].value);
+
+            TO_UPDATE_CONTACT.innerHTML += "Numéro de téléphone = " + contacts[i].phoneNumbers[0].value + "\n\n";
+
+        }
+
+        if (contacts[i].emails) {
+
+            console.log("Email = " + contacts[i].emails[0].value);
+            TO_UPDATE_CONTACT.innerHTML += contacts[i].displayName + "\n" + "Email = " + contacts[i].emails[0].value + "\n\n";
+
+            email_contact = contacts[i].emails[0].value;
+        }
+
+        navigator.notification.confirm(
+            'Numéro de téléphone = ' + contacts[i].phoneNumbers[0].value + "\n" + contacts[i].emails[0].value + "\n\nEnvoyer un mail ?\n",  // message
+            callback_confirm,            // callback
+            'Contact',            // title
+            ['Envoyer Mail', 'Annulé']                  // buttonName
+        );
+    }
+
+}
+
+function onError(contactError) {
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // Réponse du plugin si il ne trouve pas de contact
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    console.error("Erreur lors de la recherche de contacts : " + contactError);
+}
+
+function callback_confirm(buttonIndex) {
+    // ------------------------------------------------------------
+    // CALLBACK de l'alerte.CONFIRM CONTACT
+    // Si l'utilisateur appuie sur le bouton "Envoyer Mail" alors on appelle la fonction send_mail
+    // paramètre d'entrée : buttonIndex (int) : l'index du bouton sur lequel l'utilisateur a appuyé
+    // Envoie a send_mail() l'adresse mail du contact trouver
+    // ------------------------------------------------------------
+
+    console.log("Callback confirm");
+    console.log(buttonIndex);
+    console.log(email_contact);
+
+    if (buttonIndex === 1) {
+        send_mail(email_contact);
+    } else {
+        console.log("Annulé");
+    }
+
+}
+
