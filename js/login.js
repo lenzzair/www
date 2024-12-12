@@ -1,3 +1,19 @@
+// LEGENDE DES COMMENTAIRES
+
+// ============================================================   FONCTION PRINCIPALE
+
+// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::   FONCTION SECONDAIRE / REPONSE PLUGIN ASHYNCHRONE
+
+// ------------------------------------------------------------   FONCTION CALLBACK
+
+// ************************************************************   COMPARTIMENTAGE DU CODE
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   FONCTION LIER A CORDOVA
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   FONCTION APPELLE D'API
+
+
+
 const BTN_ENVOIE = document.getElementById("btn-envoie");
 const EXPIRATION = 30 * 60;
 
@@ -10,6 +26,10 @@ const EXPIRATION = 30 * 60;
 BTN_ENVOIE.addEventListener("click", post_token);
 
 function post_token() {
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   
+    // Fonction pour envoyer une requête POST pour obtenir un token
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    
     console.log("POST token Appelle");
     post("https://cheveux-bleus.fr:16800/token");
 }
