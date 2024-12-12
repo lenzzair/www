@@ -142,6 +142,7 @@ L'API personnelle structure et renvoie les informations des serveurs Apache, int
 - Chart.js : [https://www.chartjs.org/](https://www.chartjs.org/)
 - \*\*cordova-plugin-email-composer : \*\***[https://www.npmjs.com/package/cordova-plugin-email-composer?activeTab=readme](https://www.npmjs.com/package/cordova-plugin-email-composer?activeTab=readme)**
 - \*\*cordova-plugin-contacts-x : \*\***[https://www.npmjs.com/package/cordova-plugin-contacts-x](https://www.npmjs.com/package/cordova-plugin-contacts-x)**
+- \*\*cordova-plugin-dialogs : \*\* **[https://www.npmjs.com/package/cordova-plugin-dialogs](https://www.npmjs.com/package/cordova-plugin-dialogs)**
 - IP-API :  https\://ip-api.com/
 
 ---
