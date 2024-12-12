@@ -18,6 +18,7 @@ const BTN_SUPP = document.getElementById("btn-supp");
 const BTN_MAIL = document.getElementById("btn-mail");
 const BTN_CONTACT = document.getElementById("btn-contact");
 const TO_UPDATE_CONTACT = document.getElementById("para_contact");
+
 /**************************************/
 /** Event Listeners                   */
 /**************************************/
@@ -86,14 +87,12 @@ function get_etat_network() {
 
     navigator.notification.alert(
         'Vous êtes connecter avec : ' + states[networkState],// message
-        callback_network,  
+        callback_network,
         'Etat Connexion',            // title
         'Ok'                  // buttonName
     );
 }
-function callback_network() {
-    console.log("Alerte fermée");
-}
+
 function onOnline() {
     console.log("Online");
 
@@ -109,7 +108,9 @@ function onOffline() {
     UPDATE_TB_NETWORK.style.color = "red";
     UPDATE_TB_NETWORK.style.border = "1px solid red";
 }
-
+function callback_network() {
+    console.log("Alerte fermée");
+}
 
 function get_etat_serveur() {
     console.log("Appelle etat serveur");
@@ -146,7 +147,7 @@ function statechange(event) {
                 TO_UPDATE_TB_SERVER.innerHTML = "Serveur accessible";
                 UPDATE_TB_SERVER.style.color = "green";
                 UPDATE_TB_SERVER.style.border = "1px solid green";
-                
+
             } else {
                 navigator.notification.alert(
                     'Impossible de joindre le serveur !',  // message
@@ -171,48 +172,7 @@ function callback_server() {
 // Function qui envoie un mail pour faire un rapport de l'etat du serveurœ
 
 
-function send_mail() {
 
-    // Function qui envoie un mail pour faire un rapport de l'etat du serveurœ
-    console.log("appelle SendMail");
-    date_ajd = new Date().toISOString().split('T')[0];
-
-    cordova.plugins.email.open({
-        to: 'sonikpi.log@gmail.com', // email addresses for TO field
-        cc: '', // email addresses for CC field
-        subject: '! URGENCE SERVEUR !', // subject of the email
-        body: 'Rapport Serveur du ' + date_ajd + ":", // email body
-
-    }, callback);
-
-}
-
-
-function callback(result) {
-    if (result === "OK") {
-        console.log("Message envoyer");
-        navigator.notification.alert(
-            'Email Fonctionne correctement',  // message
-            callback_mail,            // callback
-            'Etat mail',            // title
-            'Ok'                  // buttonName
-        );
-    } else if (result === 'CANCELLED') {
-        console.log('Envoi annulé par l\'utilisateur.');
-        navigator.notification.alert(
-            'Impossible d envoyer un mail !',  // message
-            callback_mail,            // callback
-            'Etat mail',            // title
-            'Ok'                  // buttonName
-        );
-    } else {
-        console.error('Erreur ou état inconnu :', result);
-    }
-
-}
-function callback_mail() {
-    console.log("Alerte fermée");
-}
 
 /**************************************/
 /** ARCHIVE                            */
@@ -275,7 +235,7 @@ function get_archive_active() {
         let titre_localstorage = document.getElementById(id_valeur).innerHTML;
         console.log(titre_localstorage);
         return [titre_localstorage, archives_active];
-    } 
+    }
 }
 
 function del_archive() {
@@ -313,10 +273,10 @@ function send_mail_archive() {
     [titre_localstorage, archives_a_envoyer] = get_archive_active();
 
     id_valeur = archives_a_envoyer[1].id;
-    let archive_content ;
+    let archive_content;
 
     if (titre_localstorage && archives_a_envoyer.length > 0) {
-        
+
         archive_content = document.getElementById(id_valeur).innerHTML;
 
     }
@@ -344,11 +304,11 @@ function callback_alert_archive_mail() {
     console.log("Alerte fermée");
 }
 
-function search_contact(){
+function search_contact() {
     console.log("Appelle search contact");
-    let prenom_nom =  document.getElementById("floatingInput").value ;
+    let prenom_nom = document.getElementById("floatingInput").value;
     let options = new ContactFindOptions();
-    
+
     // filtrer les contacts par nom
     options.filter = prenom_nom;
     options.multiple = true;
@@ -356,35 +316,103 @@ function search_contact(){
     navigator.contacts.find(fields, onSuccess, onError, options);
 }
 
+let email_contact;
+
 function onSuccess(contacts) {
     console.log("Appelle onSuccess");
     console.log(contacts.length + 'contacts trouvés');
 
+
+
     for (let i = 0; i < contacts.length; i++) {
         console.log("Nom = " + contacts[i].displayName);
-       
+
         if (contacts[i].phoneNumbers) {
             console.log("Numéro de téléphone = " + contacts[i].phoneNumbers[0].value);
             TO_UPDATE_CONTACT.innerHTML += "Numéro de téléphone = " + contacts[i].phoneNumbers[0].value + "\n\n";
 
         }
+
         if (contacts[i].emails) {
             console.log("Email = " + contacts[i].emails[0].value);
-            TO_UPDATE_CONTACT.innerHTML += contacts[i].displayName + "\n" + "Email = " + contacts[i].emails[0].value;
+            TO_UPDATE_CONTACT.innerHTML += contacts[i].displayName + "\n" + "Email = " + contacts[i].emails[0].value + "\n\n";
+            email_contact = contacts[i].emails[0].value;
+            console.log(email_contact);
         }
-        navigator.notification.alert(
-            'Numéro de téléphone = ' + contacts[i].phoneNumbers[0].value + "\n" + contacts[i].emails[0].value,  // message
-            callback_contact,            // callback
+
+        navigator.notification.confirm(
+            'Numéro de téléphone = ' + contacts[i].phoneNumbers[0].value + "\n" + contacts[i].emails[0].value + "\n\nEnvoyer un mail ?\n",  // message
+            callback_confirm,            // callback
             'Contact',            // title
-            'Contact'                  // buttonName
+            ['Envoyer Mail', 'Annulé']                  // buttonName
         );
     }
+
 }
 
 function onError(contactError) {
     console.error("Erreur lors de la recherche de contacts : " + contactError);
 }
 
-function callback_contact() {
+function callback_confirm(buttonIndex) {
+    console.log("Callback confirm");
+    console.log(buttonIndex);
+    console.log(email_contact);
+
+    if (buttonIndex === 1) {
+        send_mail(email_contact);
+    } else {
+        console.log("Annulé");
+    }
+
+}
+
+function send_mail(contact) {
+    console.log(contact)
+
+    let contact_to_send = contact;
+    //Verifie si contact_to_send est une chaine de caractère et si elle est vide
+    if (typeof contact_to_send !== 'string' || contact_to_send.trim() === '') {
+        contact_to_send = 'sonikpi.log@gmail.com';
+        console.log("Contact par défaut");
+    }
+    // Function qui envoie un mail pour faire un rapport de l'etat du serveurœ
+    console.log("appelle SendMail");
+    date_ajd = new Date().toISOString().split('T')[0];
+
+    cordova.plugins.email.open({
+        to: contact_to_send, // email addresses for TO field
+        cc: '', // email addresses for CC field
+        subject: '! URGENCE SERVEUR !', // subject of the email
+        body: 'Rapport Serveur du ' + date_ajd + ":", // email body
+
+    }, callback);
+
+}
+
+
+function callback(result) {
+    if (result === "OK") {
+        console.log("Message envoyer");
+        navigator.notification.alert(
+            'Email Fonctionne correctement',  // message
+            callback_mail,            // callback
+            'Etat mail',            // title
+            'Ok'                  // buttonName
+        );
+    } else if (result === 'CANCELLED') {
+        console.log('Envoi annulé par l\'utilisateur.');
+        navigator.notification.alert(
+            'Impossible d envoyer un mail !',  // message
+            callback_mail,            // callback
+            'Etat mail',            // title
+            'Ok'                  // buttonName
+        );
+    } else {
+        console.error('Erreur ou état inconnu :', result);
+    }
+
+}
+function callback_mail() {
     console.log("Alerte fermée");
 }
