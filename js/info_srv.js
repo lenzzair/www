@@ -57,7 +57,9 @@ const ARCHIVE_WEEK_API = document.getElementById("log_api_wk");
 const ARCHIVE_TODAY_APACHE = document.getElementById("log_apache_td");
 const ARCHIVE_WEEK_APACHE = document.getElementById("log_apache_wk");
 
+// Variables globales (temporaires) pour les archives
 
+let temp_cpu, temp_memory, temp_disk, temp_uptime, temp_network, temp_log_api_td, temp_log_api_wk, temp_log_apache_td, temp_log_apache_wk;
 /**************************************/
 /** Event Listeners                   */
 /**************************************/
@@ -298,7 +300,7 @@ function statechange(event) {
 
                 let reponse_brut = XHR.responseText;
                 let reponse_objet = JSON.parse(reponse_brut);
-                console.log(reponse_objet);
+                
 
                 switch (XHR.param) {
 
@@ -320,6 +322,8 @@ function statechange(event) {
                             }
                         }
                         ARCHIVE_CPU.style.display = "block";
+                        temp_cpu = reponse_brut;
+                        
                         break;
 
                     case "MEMORY":
@@ -334,6 +338,8 @@ function statechange(event) {
                             TO_UPDATE_MEMORY.innerHTML += `<strong>${index} : </strong> ${nom}<br>`;
                         }
                         ARCHIVE_MEMORY.style.display = "block";
+                        temp_memory = reponse_brut;
+                       
                         break;
 
                     case "DISK":
@@ -346,10 +352,11 @@ function statechange(event) {
                             TO_UPDATE_DISK.innerHTML += `<strong>${index} : </strong> ${nom}<br>`;
                         }
                         ARCHIVE_DISK.style.display = "block";
+                        temp_disk = reponse_brut;
                         break;
 
                     case "UPTIME":
-                        console.log("Reponse UPTIME" + XHR.param);
+                        console.log("Reponse UPTIME :" + XHR.param);
                         TO_UPDATE_UPTIME.innerHTML = "";
 
                         for (let [key, valeur] of Object.entries(reponse_objet)) {
@@ -357,6 +364,7 @@ function statechange(event) {
                             TO_UPDATE_UPTIME.innerHTML += `<strong>${key} : </strong> ${valeur}<br>`;
                         }
                         ARCHIVE_UPTIME.style.display = "block";
+                        temp_uptime = reponse_brut;
                         break;
 
                     case "NETWORK":
@@ -377,6 +385,7 @@ function statechange(event) {
                             ul.appendChild(li); // Ajoute chaque élément <li> à la liste <ul>
                         });
                         ARCHIVE_NETWORK.style.display = "block";
+                        temp_network = reponse_brut;
                         break;
 
                     case "API_TODAY":
@@ -389,6 +398,7 @@ function statechange(event) {
                             TO_UPDATE_LOG_API_TD.innerHTML += `<strong>Les adresses IP qui se sont connecter aujourd'hui: </strong> ${nom}<br>`;
                         }
                         ARCHIVE_TODAY_API.style.display = "block";
+                        temp_log_api_td = reponse_brut;
                         break;
 
                     case "API_WEEK":
@@ -403,6 +413,7 @@ function statechange(event) {
 
                         }
                         ARCHIVE_WEEK_API.style.display = "block";
+                        temp_log_api_wk = reponse_brut;
                         break;
 
                     case "APACHE_TODAY":
@@ -425,6 +436,7 @@ function statechange(event) {
                             }
                         }
                         ARCHIVE_TODAY_APACHE.style.display = "block";
+                        temp_log_apache_td = reponse_brut;
                         break;
 
                     case "APACHE_WEEK":
@@ -445,6 +457,7 @@ function statechange(event) {
                             }
                         }
                         ARCHIVE_WEEK_APACHE.style.display = "block";
+                        temp_log_apache_wk = reponse_brut;
                         break;
                 }
             }
@@ -457,12 +470,12 @@ function statechange(event) {
 let event_archive;
 
 
-function put_archive(event) {
+function put_archive(id_archivage) {
     // ============================================================
     // Fonction qui permet d'archiver les données dans le localstorage
     // ============================================================
-
-    console.log("Appele d'archive de " + event.target.id);
+    console.log("=======put_archive=======");
+    console.log(id_archivage);
 
     let now = new Date();
     // Récupérer les composants de la date
@@ -471,26 +484,58 @@ function put_archive(event) {
     let year = now.getFullYear(); // Année complète
     // Construire la date au format souhaité
     let formattedDate = `${day}/${month}/${year}`;
-    console.log(formattedDate);
+   
 
-    let info_archive = document.getElementById("to_update_" + event.target.id);
-    console.log(info_archive.textContent);
+    let info_archive;
+    
+    switch (id_archivage) {
+        case "cpu":
+            info_archive = temp_cpu;
+            break;
+    
+        case "memory":
+            info_archive = temp_memory;
+            break;
+        case "disk":
+            info_archive = temp_disk;
+            break;
+        case "uptime":
+            info_archive = temp_uptime;
+            break;
+        case "network":
+            info_archive = temp_network;
+            break;
+        case "log_api_td":
+            info_archive = temp_log_api_td;
+            break;
+        case "log_api_wk":
+            info_archive = temp_log_api_wk;
+            break;
+        case "log_apache_td":
+            info_archive = temp_log_apache_td;
+            break;
+        case "log_apache_wk":
+            info_archive = temp_log_apache_wk;
+            break;
 
-    // ajout des données dans le localstorage
-    console.log("Vous allez archiver:" + info_archive.textContent);
-    localStorage.setItem("archive_" + event.target.id + "_" + formattedDate, JSON.stringify(info_archive.textContent));
+    }
+    console.log(info_archive);
+    console.log(temp_cpu);
+    
+    localStorage.setItem("archive_" + id_archivage + "_" + formattedDate, info_archive);
 
     console.log("Donnée ajouter aux localstorage");
-    
+
 }
 
 function put_archive_alert(event) {
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     // Fonction qui demande une confirmation avant d'archiver les données
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    console.log("=======put_archive_alert=======");
+    console.log("Event : " + event.target.id);
 
-    console.log("Plugin alerte");
-    event_archive = event;
+    event_archive = event.target.id;
 
     navigator.notification.confirm(
         "Confirmez l'archivage de ces donnée?",  // message
@@ -500,13 +545,14 @@ function put_archive_alert(event) {
     );
 }
 
-function callback_archive(buttonIndex , event){
+function callback_archive(buttonIndex) {
     // ------------------------------------------------------------
     // Fonction callback pour l'alerte d'archivage
     // ------------------------------------------------------------
+    console.log("=======callback_archive=======");
+    console.log("Choix fait =  " + buttonIndex + " " + event_archive);
 
-    console.log("Alerte fermée + " + buttonIndex + " " + event_archive);
-    if (buttonIndex === 1){
+    if (buttonIndex === 1) {
         put_archive(event_archive);
 
         navigator.notification.alert(
@@ -516,9 +562,8 @@ function callback_archive(buttonIndex , event){
             'Ok' // buttonName
         );
     }
-    if (buttonIndex === 2){
-        console.log("Archive annuler");
-
+    if (buttonIndex === 2) {
+       
         navigator.notification.alert(
             "Données non pas été archivé",  // message
             callback_reponse,  // callback
@@ -528,7 +573,7 @@ function callback_archive(buttonIndex , event){
     }
 }
 
-function callback_reponse(){
+function callback_reponse() {
     // ------------------------------------------------------------
     // callback pour fermer l'alerte
     // ------------------------------------------------------------

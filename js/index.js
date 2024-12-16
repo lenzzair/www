@@ -274,7 +274,16 @@ function put_archive() {
         div.id = "list-" + i;
         div.role = "tabpanel";
         div.setAttribute("aria-labelledby", "list-" + i + "-list");
-        div.innerHTML = value;
+
+
+        let value_obj = JSON.parse(value);
+        
+
+        for (let [index, val] of Object.entries(value_obj)) {
+            console.log("index : " + index + " valeur : " + val);
+        }
+
+        div.innerHTML = value_obj;
 
 
         document.getElementById("col1").append(a);
