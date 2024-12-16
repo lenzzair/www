@@ -44,6 +44,10 @@ document.addEventListener("deviceready", onDeviceReady);
 document.addEventListener("pause", onPause);
 document.addEventListener("resume", onResume);
 document.addEventListener("backbutton", onBackButton);
+
+document.addEventListener("online", onOnline, false);
+document.addEventListener("offline", onOffline, false);
+
 UPDATE_TB_NETWORK.addEventListener("click", get_etat_network);
 UPDATE_TB_SERVER.addEventListener("click", get_etat_serveur);
 UPDATE_TB_MAIL.addEventListener("click", send_mail);
@@ -62,11 +66,6 @@ function onDeviceReady() {
 
     let tb_btn = document.getElementById("tableau_de_bord");
     tb_btn.style.display = "block";
-
-    document.addEventListener("online", onOnline, false);
-    document.addEventListener("offline", onOffline, false);
-
-
 }
 
 
@@ -117,6 +116,12 @@ function get_etat_network() {
         'Ok'                  // buttonName
     );
 }
+function callback_network() {
+    // ------------------------------------------------------------
+    // CALLBACK de l'alerte NETWORK
+    // ------------------------------------------------------------
+    console.log("Alerte fermée");
+}
 
 function onOnline() {
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -140,12 +145,6 @@ function onOffline() {
     TO_UPDATE_TB_NETWORK.innerHTML = "Vous êtes offline";
     UPDATE_TB_NETWORK.style.color = "red";
     UPDATE_TB_NETWORK.style.border = "1px solid red";
-}
-function callback_network() {
-    // ------------------------------------------------------------
-    // CALLBACK de l'alerte NETWORK
-    // ------------------------------------------------------------
-    console.log("Alerte fermée");
 }
 
 function get_etat_serveur() {
