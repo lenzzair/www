@@ -72,15 +72,15 @@ UPDATE_LOG_API_WK.addEventListener("click", get_log_api_week);
 UPDATE_LOG_APACHE_TD.addEventListener("click", get_log_apache_today);
 UPDATE_LOG_APACHE_WK.addEventListener("click", get_log_apache_week);
 
-ARCHIVE_CPU.addEventListener("click", put_archive);
-ARCHIVE_DISK.addEventListener("click", put_archive);
-ARCHIVE_MEMORY.addEventListener("click", put_archive);
-ARCHIVE_UPTIME.addEventListener("click", put_archive);
-ARCHIVE_NETWORK.addEventListener("click", put_archive);
-ARCHIVE_TODAY_API.addEventListener("click", put_archive);
-ARCHIVE_WEEK_API.addEventListener("click", put_archive);
-ARCHIVE_TODAY_APACHE.addEventListener("click", put_archive);
-ARCHIVE_WEEK_APACHE.addEventListener("click", put_archive);
+ARCHIVE_CPU.addEventListener("click", put_archive_alert);
+ARCHIVE_DISK.addEventListener("click", put_archive_alert);
+ARCHIVE_MEMORY.addEventListener("click", put_archive_alert);
+ARCHIVE_UPTIME.addEventListener("click", put_archive_alert);
+ARCHIVE_NETWORK.addEventListener("click", put_archive_alert);
+ARCHIVE_TODAY_API.addEventListener("click", put_archive_alert);
+ARCHIVE_WEEK_API.addEventListener("click", put_archive_alert);
+ARCHIVE_TODAY_APACHE.addEventListener("click", put_archive_alert);
+ARCHIVE_WEEK_APACHE.addEventListener("click", put_archive_alert);
 
 
 
@@ -454,6 +454,8 @@ function statechange(event) {
 /**************************************************************************/
 /** ARCHIVE                                                               */
 /**************************************************************************/
+let event_archive;
+
 
 function put_archive(event) {
     // ============================================================
@@ -481,19 +483,54 @@ function put_archive(event) {
     console.log("Donnée ajouter aux localstorage");
     
 }
-document.addEventListener('deviceready', plugin_alerte);
-function plugin_alerte() {
+
+function put_archive_alert(event) {
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // Fonction qui demande une confirmation avant d'archiver les données
+    // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
     console.log("Plugin alerte");
-    navigator.notification.alert(
-        'Vous avez bien ajouté des données dans les archives <a href="../index.html">Vers les archives</a>',  // message
+    event_archive = event;
+
+    navigator.notification.confirm(
+        "Confirmez l'archivage de ces donnée?",  // message
         callback_archive,  // callback
         'Archive',  // title
-        'Ok'  // buttonName
+        ['Oui', 'Non']  // buttonName
     );
 }
-function callback_archive(){
+
+function callback_archive(buttonIndex , event){
     // ------------------------------------------------------------
-    // Fonction qui permet de fermer l'alerte
+    // Fonction callback pour l'alerte d'archivage
+    // ------------------------------------------------------------
+
+    console.log("Alerte fermée + " + buttonIndex + " " + event_archive);
+    if (buttonIndex === 1){
+        put_archive(event_archive);
+
+        navigator.notification.alert(
+            "Données bien archivé",  // message
+            callback_reponse,  // callback
+            'Archive',  // title
+            'Ok' // buttonName
+        );
+    }
+    if (buttonIndex === 2){
+        console.log("Archive annuler");
+
+        navigator.notification.alert(
+            "Données non pas été archivé",  // message
+            callback_reponse,  // callback
+            'Archive',  // title
+            'Ok' // buttonName
+        );
+    }
+}
+
+function callback_reponse(){
+    // ------------------------------------------------------------
+    // callback pour fermer l'alerte
     // ------------------------------------------------------------
 
     console.log("Alerte fermée");
