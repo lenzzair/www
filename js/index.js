@@ -453,7 +453,7 @@ function send_mail_archive() {
 
     if (titre_localstorage && archives_a_envoyer.length > 0) {
 
-        archive_content = document.getElementById(id_valeur).innerHTML;
+        archive_content = document.getElementById(id_valeur).textContent;
 
     }
     let contact = 'sonikpi.log@gmail.com'
