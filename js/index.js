@@ -277,13 +277,21 @@ function put_archive() {
 
 
         let value_obj = JSON.parse(value);
-        
+
 
         for (let [index, val] of Object.entries(value_obj)) {
-            console.log("index : " + index + " valeur : " + val);
+          
+            
+            if (typeof val === 'object') {
+                div.innerHTML += `<strong>${index}</strong> : <br>`;
+                for (let [subDicoIndex, subDicoVal] of Object.entries(val)) {
+                    div.innerHTML += `<strong> - ${subDicoIndex}</strong> :  ${subDicoVal} <br>`;
+                }
+            }else{
+                div.innerHTML += `<strong>${index}</strong> :  ${val} <br>`;
+            }
         }
 
-        div.innerHTML = value_obj;
 
 
         document.getElementById("col1").append(a);
@@ -308,7 +316,7 @@ function get_archive_active() {
         // On récupère l'id du titre actif qui est la clé du localstorage
         let id_valeur = archives_active[0].id;
         let titre_localstorage = document.getElementById(id_valeur).innerHTML;
-        
+
         return [titre_localstorage, archives_active];
     }
 }
@@ -362,7 +370,7 @@ function callback_del_archive() {
 
 let email_contact;
 
-function send_mail(contact, archive_title , archive_content) {
+function send_mail(contact, archive_title, archive_content) {
     // ============================================================
     // Fonction qui envoie un mail
     // Utilise le plugin cordova-plugin-email
@@ -388,7 +396,7 @@ function send_mail(contact, archive_title , archive_content) {
         to: contact_to_send, // email addresses for TO field
         cc: '', // email addresses for CC field
         subject: '! URGENCE SERVEUR !  ' + archive_title, // subject of the email
-        body: 'Rapport Serveur du ' + date_ajd + ":\n\n\n" + archive_content , // email body
+        body: 'Rapport Serveur du ' + date_ajd + ":\n\n\n" + archive_content, // email body
 
     }, callback);
 
@@ -449,7 +457,7 @@ function send_mail_archive() {
 
     }
     let contact = 'sonikpi.log@gmail.com'
-    send_mail( contact , titre_localstorage, archive_content);
+    send_mail(contact, titre_localstorage, archive_content);
 }
 
 // ****************************************************************************************
