@@ -33,6 +33,8 @@ const UPDATE_TB_ARCHIVE = document.getElementById("Tb_archive");
 const BTN_SUPP = document.getElementById("btn-supp");
 const BTN_MAIL = document.getElementById("btn-mail");
 
+const UPDATE_TB_NFC = document.getElementById("btn-nfc");
+
 const BTN_CONTACT = document.getElementById("btn-contact");
 const TO_UPDATE_CONTACT_NUM = document.getElementById("para_contact_num");
 const TO_UPDATE_CONTACT_MAIL = document.getElementById("para_contact_mail");
@@ -57,6 +59,8 @@ BTN_SUPP.addEventListener("click", del_archive);
 BTN_MAIL.addEventListener("click", send_mail_archive);
 BTN_CONTACT.addEventListener("click", search_contact);
 
+UPDATE_TB_NFC.addEventListener("click", get_nfc);
+
 /**************************************/
 /** Functions                         */
 /**************************************/
@@ -66,6 +70,7 @@ function onDeviceReady() {
 
     let tb_btn = document.getElementById("tableau_de_bord");
     tb_btn.style.display = "block";
+    get_nfc();
 }
 
 
@@ -280,14 +285,14 @@ function put_archive() {
 
 
         for (let [index, val] of Object.entries(value_obj)) {
-          
-            
+
+
             if (typeof val === 'object') {
                 div.innerHTML += `<strong>${index}</strong> : <br>`;
                 for (let [subDicoIndex, subDicoVal] of Object.entries(val)) {
                     div.innerHTML += `<strong> - ${subDicoIndex}</strong> :  ${subDicoVal} <br>`;
                 }
-            }else{
+            } else {
                 div.innerHTML += `<strong>${index}</strong> :  ${val} <br>`;
             }
         }
@@ -550,3 +555,53 @@ function callback_confirm(buttonIndex) {
 
 }
 
+
+// ****************************************************************************************************************************************************************
+// FONCTION NFC
+// ****************************************************************************************************************************************************************
+
+function get_nfc() {
+    // ============================================================
+    // Fonction qui permet de lire une puce NFC
+    // Utilise le plugin cordova-plugin-nfc
+    // ============================================================
+
+    console.log("=========get_nfc=========");
+
+    nfc.addTagDiscoveredListener(callback_nfc, onSuccess_nfc, onFailure_nfc);
+}
+
+function onSuccess_nfc() {
+    console.log("NFC listener ajouté avec succès");
+}
+
+function onFailure_nfc(error) {
+    console.error("Erreur lors de l'ajout du listener NFC : " + JSON.stringify(error));
+}
+
+function callback_nfc(nfcEvent) {
+    // ------------------------------------------------------------
+    // CALLBACK de l'alerte NFC
+    // ------------------------------------------------------------
+
+    console.log("NFC trouvé");
+
+    let tag_nfc = nfcEvent.tag;
+    let ndefId= nfc.bytesToHexString(tag_nfc.id);
+
+    navigator.notification.alert(
+        'NFC trouvé : ' + ndefId,  // message
+        callback_nfc_alert,            // callback
+        'NFC',            // title
+        'Ok'                  // buttonName
+    );
+
+    
+}
+function callback_nfc_alert() {
+    // ------------------------------------------------------------
+    // CALLBACK de l'alerte NFC
+    // ------------------------------------------------------------
+
+    console.log("Alerte fermée");
+}
