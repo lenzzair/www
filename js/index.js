@@ -34,6 +34,7 @@ const BTN_SUPP = document.getElementById("btn-supp");
 const BTN_MAIL = document.getElementById("btn-mail");
 
 const UPDATE_TB_NFC = document.getElementById("Tb_nfc");
+const UPDATE_TB_QRCODE = document.getElementById("Tb_qrcode");
 
 const BTN_CONTACT = document.getElementById("btn-contact");
 const TO_UPDATE_CONTACT_NUM = document.getElementById("para_contact_num");
@@ -61,6 +62,7 @@ BTN_MAIL.addEventListener("click", send_mail_archive);
 BTN_CONTACT.addEventListener("click", search_contact);
 
 UPDATE_TB_NFC.addEventListener("click", get_nfc);
+UPDATE_TB_QRCODE.addEventListener("click", get_qrcode);
 
 /**************************************/
 /** Functions                         */
@@ -72,6 +74,8 @@ function onDeviceReady() {
     let tb_btn = document.getElementById("tableau_de_bord");
     tb_btn.style.display = "block";
     get_nfc();
+
+
 }
 
 
@@ -588,7 +592,7 @@ function callback_nfc(nfcEvent) {
     console.log("NFC trouvé");
 
     let tag_nfc = nfcEvent.tag;
-    let ndefId= nfc.bytesToHexString(tag_nfc.id);
+    let ndefId = nfc.bytesToHexString(tag_nfc.id);
 
     navigator.notification.alert(
         'NFC trouvé : ' + ndefId,  // message
@@ -597,7 +601,7 @@ function callback_nfc(nfcEvent) {
         'Ok'                  // buttonName
     );
 
-    
+
 }
 function callback_nfc_alert() {
     // ------------------------------------------------------------
@@ -606,3 +610,28 @@ function callback_nfc_alert() {
 
     console.log("Alerte fermée");
 }
+
+// ****************************************************************************************************************************************************************
+// FONCTION QRCODE
+// ****************************************************************************************************************************************************************
+
+// function get_qrcode() {
+//     // ============================================================
+//     // Fonction qui permet de lire un QRCode
+//     // Utilise le plugin cordova-plugin-qrscanner
+//     // ============================================================
+
+//     console.log("========= get_qrcode =========");
+
+//     cordova.plugins.barcodeScanner.scan(
+//         function (result) {
+//             alert("We got a barcode\n" +
+//                   "Result: " + result.text + "\n" +
+//                   "Format: " + result.format + "\n" +
+//                   "Cancelled: " + result.cancelled);
+//         },
+//         function (error) {
+//             alert("Scanning failed: " + error);
+//         }
+//      );
+// }
