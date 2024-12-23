@@ -37,6 +37,7 @@ const BTN_CONTACT = document.getElementById("btn-contact");
 const TO_UPDATE_CONTACT_NUM = document.getElementById("para_contact_num");
 const TO_UPDATE_CONTACT_MAIL = document.getElementById("para_contact_mail");
 
+
 /**************************************/
 /** Event Listeners                   */
 /**************************************/
@@ -280,14 +281,14 @@ function put_archive() {
 
 
         for (let [index, val] of Object.entries(value_obj)) {
-          
-            
+
+
             if (typeof val === 'object') {
                 div.innerHTML += `<strong>${index}</strong> : <br>`;
                 for (let [subDicoIndex, subDicoVal] of Object.entries(val)) {
                     div.innerHTML += `<strong> - ${subDicoIndex}</strong> :  ${subDicoVal} <br>`;
                 }
-            }else{
+            } else {
                 div.innerHTML += `<strong>${index}</strong> :  ${val} <br>`;
             }
         }
@@ -364,9 +365,9 @@ function callback_del_archive() {
 
 
 
-// ***********************************************************************************************************************
+// ****************************************************************************************************************************************************************
 // FONCTION MAIL
-// ***********************************************************************************************************************
+// ****************************************************************************************************************************************************************
 
 let email_contact;
 
@@ -549,4 +550,6 @@ function callback_confirm(buttonIndex) {
     }
 
 }
+
+
 
