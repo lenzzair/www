@@ -33,7 +33,7 @@ const UPDATE_TB_ARCHIVE = document.getElementById("Tb_archive");
 const BTN_SUPP = document.getElementById("btn-supp");
 const BTN_MAIL = document.getElementById("btn-mail");
 
-const UPDATE_TB_NFC = document.getElementById("btn-nfc");
+const UPDATE_TB_NFC = document.getElementById("Tb_nfc");
 
 const BTN_CONTACT = document.getElementById("btn-contact");
 const TO_UPDATE_CONTACT_NUM = document.getElementById("para_contact_num");
