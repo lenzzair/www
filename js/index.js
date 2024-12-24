@@ -62,7 +62,7 @@ BTN_MAIL.addEventListener("click", send_mail_archive);
 BTN_CONTACT.addEventListener("click", search_contact);
 
 UPDATE_TB_NFC.addEventListener("click", get_nfc);
-UPDATE_TB_QRCODE.addEventListener("click", get_qrcode);
+// UPDATE_TB_QRCODE.addEventListener("click", get_qrcode);
 
 /**************************************/
 /** Functions                         */
@@ -73,7 +73,8 @@ function onDeviceReady() {
 
     let tb_btn = document.getElementById("tableau_de_bord");
     tb_btn.style.display = "block";
-    get_nfc();
+
+    document.getElementById("utilisateur").style.display = "block";
 
 
 }
@@ -91,6 +92,7 @@ function onResume() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function onBackButton() {
     console.log("onBackButton");
+   
 }
 
 /**************************************/
@@ -565,6 +567,7 @@ function callback_confirm(buttonIndex) {
 // FONCTION NFC
 // ****************************************************************************************************************************************************************
 
+
 function get_nfc() {
     // ============================================================
     // Fonction qui permet de lire une puce NFC
@@ -578,6 +581,7 @@ function get_nfc() {
 
 function onSuccess_nfc() {
     console.log("NFC listener ajouté avec succès");
+    document.getElementById('nfcDialog').style.display = 'flex';
 }
 
 function onFailure_nfc(error) {
@@ -594,32 +598,99 @@ function callback_nfc(nfcEvent) {
     let tag_nfc = nfcEvent.tag;
     let ndefId = nfc.bytesToHexString(tag_nfc.id);
 
-    navigator.notification.alert(
-        'NFC trouvé : ' + ndefId,  // message
-        callback_nfc_alert,            // callback
-        'NFC',            // title
-        'Ok'                  // buttonName
-    );
+    tag_nfc_scanner = ndefId;
 
+    post_nfc(tag_nfc_scanner);
+    
+    close_nfc();
 
 }
-function callback_nfc_alert() {
-    // ------------------------------------------------------------
-    // CALLBACK de l'alerte NFC
-    // ------------------------------------------------------------
 
-    console.log("Alerte fermée");
+function close_nfc() {
+    // ------------------------------------------------------------
+    // Fonction qui permet de fermer le listener NFC
+    // ------------------------------------------------------------
+    console.log("Fermeture NFC");
+    nfc.removeTagDiscoveredListener(callback_close_nfc);
+    document.getElementById('nfcDialog').style.display = 'none';
 }
+
+function callback_close_nfc() {
+    // ------------------------------------------------------------
+    // CALLBACK de la fermeture du listener NFC
+    // ------------------------------------------------------------
+    console.log("Listener NFC fermé");
+}
+
+function post_nfc(tag) {
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Fonction qui permet de récupérer les information de la puce NFC
+    // Appelle API /nfc/verify
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    console.log("POST NFC: URL Appelle");
+    post("https://cheveux-bleus.fr:16800/nfc/verify", tag);
+}
+
+function post(url, tag) {
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Fonction pour effectuer une requête HTTP POST vers une URL donnée.
+    // Paramètres d'entrée :
+    // - url (string) : L'URL de la ressource à laquelle effectuer la requête.
+    // La fonction utilise un objet XMLHttpRequest pour envoyer la requête.
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    console.log("URL appelle");
+
+    let payload = JSON.stringify({ "id_nfc": tag });
+
+    const XHR = new XMLHttpRequest();
+    XHR.onreadystatechange = statechange;
+    XHR.open("POST", url, true);
+    XHR.setRequestHeader("Content-Type", "application/json");  // Envoi en JSON
+    XHR.setRequestHeader("Accept", "application/json");
+
+    XHR.send(payload);
+}
+
+function statechange(event) {
+
+    const XHR = event.target;
+    switch (XHR.readyState) {
+        case 0: console.log("Requête non initialisée"); break;
+        case 1: console.log("Connexion établie avec le serveur"); break;
+        case 2: console.log("Requête reçue"); break;
+        case 3: console.log("Requête en cours de traitement"); break;
+        case 4:
+            console.log("Requête terminée et réponse prête");
+            if (XHR.status == 200) {
+                console.log("Traitement local de la réponse");
+
+                let response = JSON.parse(XHR.responseText);
+                console.log(response);
+
+                document.getElementById("para_nfc_title").innerHTML = tag_nfc_scanner;
+
+                document.getElementById("para_nfc_name").innerHTML = response.name;
+                document.getElementById("para_nfc_status").innerHTML = response.status;
+                document.getElementById("para_nfc_date").innerHTML = response.date;
+            } else {
+                console.error("Erreur lors de la requête : " + XHR.status);
+            }
+            break;
+    }
+}
+
 
 // ****************************************************************************************************************************************************************
 // FONCTION QRCODE
 // ****************************************************************************************************************************************************************
 
 // function get_qrcode() {
-//     // ============================================================
-//     // Fonction qui permet de lire un QRCode
-//     // Utilise le plugin cordova-plugin-qrscanner
-//     // ============================================================
+//     ============================================================
+//      Fonction qui permet de lire un QRCode
+//      Utilise le plugin cordova-plugin-qrscanner
+//      ============================================================
 
 //     console.log("========= get_qrcode =========");
 

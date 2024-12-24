@@ -53,7 +53,7 @@ function post(url) {
 
     // Envoie de donnée en x-www-form-urlencoded
     // prépare la requete pour récuperer un token JWT sur le serveur 
-    const params =
+    let params =
         "grant_type=password" +
         "&username=" + encodeURIComponent(login) +
         "&password=" + encodeURIComponent(mdp) +

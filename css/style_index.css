@@ -46,3 +46,45 @@
     border-radius: 50%;
     color: blue;
 }
+#utilisateur{
+    display: none;
+    margin-top: 4em;
+}
+.user_col{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2em;
+}
+
+#nfcDialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#nfcDialogContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#nfcDialogContent img {
+    max-width: 100%;
+    height: auto;
+}
+
+#nfcDialogCloseButton {
+    margin-top: 20px;
+    display: none;
+}
