@@ -144,7 +144,7 @@ function onOnline() {
 
     TO_UPDATE_TB_NETWORK.innerHTML = "Vous êtes Online";
     UPDATE_TB_NETWORK.style.color = "green";
-    UPDATE_TB_NETWORK.style.border = "1px solid green";
+    UPDATE_TB_NETWORK.style.border = "2px solid green";
 
 }
 
@@ -179,20 +179,20 @@ function get(url) {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     console.log("URL appelle");
-    const XHR = new XMLHttpRequest();
-    XHR.onreadystatechange = statechange;
-    XHR.open("HEAD", url);
-    XHR.send();
+    const XHR_srv = new XMLHttpRequest();
+    XHR_srv.onreadystatechange = statechange_server;
+    XHR_srv.open("HEAD", url);
+    XHR_srv.send();
 }
-function statechange(event) {
+function statechange_server(event) {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Fonction qui vérifie l'état de la requête HTTP.
     // Paramètres d'entrée :
     // - event (Event) : L'événement déclencheur de la fonction.
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    const XHR = event.target;
-    switch (XHR.readyState) {
+    const XHR_srv = event.target;
+    switch (XHR_srv.readyState) {
 
         case 0: console.log("Requête non initialisée"); break;
         case 1: console.log("Connexion établie avec le serveur"); break;
@@ -200,7 +200,7 @@ function statechange(event) {
         case 3: console.log("Requête en cours de traitement"); break;
         case 4:
             console.log("Requête terminée et réponse prête");
-            if (XHR.status == 200) {
+            if (XHR_srv.status == 200) {
                 console.log("Traitement local de la réponse");
                 console.log("serveur accessible")
 
@@ -212,7 +212,7 @@ function statechange(event) {
                 );
                 TO_UPDATE_TB_SERVER.innerHTML = "Serveur accessible";
                 UPDATE_TB_SERVER.style.color = "green";
-                UPDATE_TB_SERVER.style.border = "1px solid green";
+                UPDATE_TB_SERVER.style.border = "2px solid green";
 
             } else {
                 navigator.notification.alert(
@@ -601,9 +601,9 @@ function callback_nfc(nfcEvent) {
     tag_nfc_scanner = ndefId;
 
     post_nfc(tag_nfc_scanner);
-    
     close_nfc();
-
+    UPDATE_TB_NFC.style.color = "green";
+    UPDATE_TB_NFC.style.border = "2px solid green";
 }
 
 function close_nfc() {

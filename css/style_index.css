@@ -1,40 +1,64 @@
-
-
-
-.Ready{
+.Ready {
     display: none;
 }
 
-.titre{
-
-    margin-top: 6em;
+/* Titre */
+.titre {
+    margin-top: 3.5em 1em;
+    text-align: center;
+   
+    padding: 20px;
+  
+    border-radius: 10px;
+   
 }
+
+.titre h1 {
+    font-size: 2.5em;
+    
+    margin-bottom: 10px;
+    font-family: 'Arial', sans-serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .titre p {
+    font-size: 1.2em;
+    color: #666;
+    font-family: 'Arial', sans-serif;
     text-indent: 1.5em;
+    margin-top: 10px;
 }
-.tableau_bord{
+
+.tableau_bord,
+.utilisateur {
     border: 2px solid black;
-    border-radius: 2px;
-    padding: 1.5em;
+    background-color: rgba(108, 117, 125, 0.404);
+    border-radius: 8px;
+    padding: 2em;
     display: none;
+    margin: 2em;
+
 }
-.tableau_bord section{
-    margin-top: 1em;
+
+.tableau_bord section {
+    margin-top: 2em !important;
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    
+
 }
-.row{
+
+.row {
     margin-bottom: 3em;
 }
+
 #archive_btn_archive {
     text-decoration: none !important;
     color: white !important;
 }
 
-.Tb_Button{
+.Tb_Button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -45,16 +69,24 @@
     font-size: 2.5rem;
     border-radius: 50%;
     color: blue;
+
+    transition: background-color 0.3s;
 }
-#utilisateur{
-    display: none;
-    margin-top: 4em;
+
+#utilisateur {
+
+    
+    
+    max-width: 100%;
+    overflow-x: hidden;
+
 }
-.user_col{
+
+.user_col {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 2em;
+    margin-top: 2em !important;
 }
 
 #nfcDialog {
@@ -70,13 +102,18 @@
 }
 
 #nfcDialogContent {
+    position: fixed;
+    top: 50%;
+    left: 50%;
     background-color: white;
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 8px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transform: translate(-50%, -50%);
 }
 
 #nfcDialogContent img {
