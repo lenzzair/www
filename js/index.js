@@ -40,7 +40,6 @@ const BTN_CONTACT = document.getElementById("btn-contact");
 const TO_UPDATE_CONTACT_NUM = document.getElementById("para_contact_num");
 const TO_UPDATE_CONTACT_MAIL = document.getElementById("para_contact_mail");
 
-
 /**************************************/
 /** Event Listeners                   */
 /**************************************/
@@ -92,7 +91,7 @@ function onResume() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function onBackButton() {
     console.log("onBackButton");
-   
+
 }
 
 /**************************************/
@@ -238,9 +237,9 @@ function callback_server() {
 
 
 
-/**************************************/
-/** ARCHIVE                            */
-/**************************************/
+/************************************************************************************************************************************/
+/** ARCHIVE                                                                                                                         */
+/************************************************************************************************************************************/
 
 function put_archive() {
     // ============================================================
@@ -655,6 +654,8 @@ function post(url, tag) {
 
 function statechange(event) {
 
+
+
     const XHR = event.target;
     switch (XHR.readyState) {
         case 0: console.log("Requête non initialisée"); break;
@@ -669,17 +670,58 @@ function statechange(event) {
                 let response = JSON.parse(XHR.responseText);
                 console.log(response);
 
+                sessionStorage.setItem(tag_nfc_scanner, JSON.stringify(response));
+
                 document.getElementById("para_nfc_title").innerHTML = tag_nfc_scanner;
 
                 document.getElementById("para_nfc_name").innerHTML = response.name;
                 document.getElementById("para_nfc_status").innerHTML = response.status;
                 document.getElementById("para_nfc_date").innerHTML = response.date;
+
+                change_account();
+
             } else {
                 console.error("Erreur lors de la requête : " + XHR.status);
             }
             break;
     }
 }
+
+function change_account() {
+    //     ============================================================
+    //      Fonction qui permet de changer de compte sur les carte scanner pendant la session
+    //      ============================================================
+
+    console.log("=======Change account=======");
+
+    const LISTE_CARDS_ENRGISTRE = document.getElementById("liste_card");
+    let button;
+    
+    while (LISTE_CARDS_ENRGISTRE.firstChild) {
+        LISTE_CARDS_ENRGISTRE.removeChild(LISTE_CARDS_ENRGISTRE.firstChild);
+    }
+    let contenue_session_storage = sessionStorage;
+
+    for (let [key, value] of Object.entries(contenue_session_storage)) {
+
+
+        name_card = JSON.parse(value);
+        
+        
+        button = document.createElement("button");
+        button.classList.add("list-group-item");
+        button.classList.add("list-group-item-action");
+        if (tag_nfc_scanner == key) {
+            button.classList.add("active");
+        }
+        button.innerHTML = key + " (" + name_card["name"] + ")";
+
+        LISTE_CARDS_ENRGISTRE.append(button);
+    }
+
+    
+}
+
 
 
 // ****************************************************************************************************************************************************************
