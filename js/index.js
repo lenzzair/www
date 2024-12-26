@@ -63,6 +63,8 @@ BTN_CONTACT.addEventListener("click", search_contact);
 UPDATE_TB_NFC.addEventListener("click", get_nfc);
 // UPDATE_TB_QRCODE.addEventListener("click", get_qrcode);
 
+document.getElementById("nfcDialogCloseButton").addEventListener("click", close_nfc);
+
 /**************************************/
 /** Functions                         */
 /**************************************/
@@ -155,7 +157,7 @@ function onOffline() {
     console.log("Offline");
     TO_UPDATE_TB_NETWORK.innerHTML = "Vous êtes offline";
     UPDATE_TB_NETWORK.style.color = "red";
-    UPDATE_TB_NETWORK.style.border = "1px solid red";
+    UPDATE_TB_NETWORK.style.border = "2px solid red";
 }
 
 function get_etat_serveur() {
@@ -221,7 +223,7 @@ function statechange_server(event) {
                     'Etat serveur'                  // buttonName
                 );
                 UPDATE_TB_SERVER.style.color = "red";
-                UPDATE_TB_SERVER.style.border = "1px solid red";
+                UPDATE_TB_SERVER.style.border = "2px solid red";
                 TO_UPDATE_TB_SERVER.innerHTML = "Serveur inaccessible";
             }
             break;
@@ -567,6 +569,8 @@ function callback_confirm(buttonIndex) {
 // ****************************************************************************************************************************************************************
 
 
+
+
 function get_nfc() {
     // ============================================================
     // Fonction qui permet de lire une puce NFC
@@ -574,6 +578,10 @@ function get_nfc() {
     // ============================================================
 
     console.log("=========get_nfc=========");
+
+    document.getElementById("para_nfc_dialog").innerHTML = 'Approchez votre carte';
+    document.getElementById("gif_dialog").src = './img/nfc_anime2.gif';
+    document.getElementById("nfcDialogCloseButton").style.display = "none";
 
     nfc.addTagDiscoveredListener(callback_nfc, onSuccess_nfc, onFailure_nfc);
 }
@@ -599,8 +607,8 @@ function callback_nfc(nfcEvent) {
 
     tag_nfc_scanner = ndefId;
 
-    post_nfc(tag_nfc_scanner);
-    close_nfc();
+    verif_sessionStorage(tag_nfc_scanner);
+    
     UPDATE_TB_NFC.style.color = "green";
     UPDATE_TB_NFC.style.border = "2px solid green";
 }
@@ -621,6 +629,23 @@ function callback_close_nfc() {
     console.log("Listener NFC fermé");
 }
 
+function verif_sessionStorage(tag) {
+    let valeur_key = [];
+
+    for (let i = 0; i < sessionStorage.length; i++) {
+        valeur_key.push(sessionStorage.key(i));
+    }
+
+    if (valeur_key.includes(tag)) {
+        document.getElementById("para_nfc_dialog").innerHTML = "Vôtre carte est déjà enregistrée";
+        document.getElementById("gif_dialog").src = './img/nfc_error.gif';
+        document.getElementById("nfcDialogCloseButton").style.display = 'block';
+    } else {
+        document.getElementById("para_nfc_dialog").innerHTML = "Vôtre carte n'est pas enregistrée; appelle du serveur !";
+        document.getElementById("gif_dialog").src = './img/nfc_loading.gif';
+        post_nfc(tag);
+    }
+}
 function post_nfc(tag) {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Fonction qui permet de récupérer les information de la puce NFC
@@ -667,6 +692,11 @@ function statechange(event) {
             if (XHR.status == 200) {
                 console.log("Traitement local de la réponse");
 
+                document.getElementById("para_nfc_dialog").innerHTML = "Carte Trouvé !";
+                document.getElementById("gif_dialog").src = './img/nfc_success.gif';
+                document.getElementById("nfcDialogCloseButton").style.display = 'block';
+
+
                 let response = JSON.parse(XHR.responseText);
                 console.log(response);
 
@@ -680,7 +710,12 @@ function statechange(event) {
 
                 change_account();
 
-            } else {
+            }else if (XHR.status == 404) {
+                console.log("Erreur 404");
+                document.getElementById("para_nfc_dialog").innerHTML = "Carte non enregistrée";
+                document.getElementById("gif_dialog").src = './img/nfc_error.gif';
+                document.getElementById("nfcDialogCloseButton").style.display = 'block';
+            }else {
                 console.error("Erreur lors de la requête : " + XHR.status);
             }
             break;
@@ -695,28 +730,42 @@ function change_account() {
     console.log("=======Change account=======");
 
     const LISTE_CARDS_ENRGISTRE = document.getElementById("liste_card");
-    let button;
+    let input, label;
     
     while (LISTE_CARDS_ENRGISTRE.firstChild) {
         LISTE_CARDS_ENRGISTRE.removeChild(LISTE_CARDS_ENRGISTRE.firstChild);
     }
     let contenue_session_storage = sessionStorage;
-
+    let i = 0;
     for (let [key, value] of Object.entries(contenue_session_storage)) {
 
 
         name_card = JSON.parse(value);
         
         
-        button = document.createElement("button");
-        button.classList.add("list-group-item");
-        button.classList.add("list-group-item-action");
-        if (tag_nfc_scanner == key) {
-            button.classList.add("active");
-        }
-        button.innerHTML = key + " (" + name_card["name"] + ")";
+        input = document.createElement("input");
+        input.type = "radio";
+        input.id = "card_nfc" + i;
+        input.name = "vbtn-radio";
+        input.classList.add("btn-check");
+        input.autocomplete = "off";
 
-        LISTE_CARDS_ENRGISTRE.append(button);
+        if (tag_nfc_scanner == key) {
+            input.checked = true;
+        }
+
+        label = document.createElement("label");
+        label.htmlFor = "card_nfc" + i;
+        label.classList.add("btn");
+        label.classList.add("btn-outline-primary");
+        label.classList.add("btn-lg");
+        label.classList.add("me-2");
+        label.innerHTML = key + "<br> (" + name_card["name"] + ")";
+        
+
+        LISTE_CARDS_ENRGISTRE.append(input);
+        LISTE_CARDS_ENRGISTRE.append(label);
+        i++;
     }
 
     
