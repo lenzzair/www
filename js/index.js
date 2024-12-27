@@ -95,6 +95,9 @@ function onBackButton() {
     console.log("onBackButton");
 
 }
+function callback_alert() {
+    console.log("Alerte fermée");
+}
 
 /**************************************/
 /** Fonction du Tableau de Bord       */
@@ -124,24 +127,19 @@ function get_etat_network() {
     // ALERTE
     navigator.notification.alert(
         'Vous êtes connecter avec : ' + states[networkState],// message
-        callback_network,
+        callback_alert,            // callback
         'Etat Connexion',            // title
         'Ok'                  // buttonName
     );
 }
-function callback_network() {
-    // ------------------------------------------------------------
-    // CALLBACK de l'alerte NETWORK
-    // ------------------------------------------------------------
-    console.log("Alerte fermée");
-}
+
 
 function onOnline() {
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     // Réponse si du plugin si l'utilisateur est connecté
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    console.log("Online");
+    console.log("=======Appelle Online========");
 
     TO_UPDATE_TB_NETWORK.innerHTML = "Vous êtes Online";
     UPDATE_TB_NETWORK.style.color = "green";
@@ -154,7 +152,7 @@ function onOffline() {
     // Réponse si du plugin si l'utilisateur est déconnecté
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    console.log("Offline");
+    console.log("=======Appelle Offline=======");
     TO_UPDATE_TB_NETWORK.innerHTML = "Vous êtes offline";
     UPDATE_TB_NETWORK.style.color = "red";
     UPDATE_TB_NETWORK.style.border = "2px solid red";
@@ -167,7 +165,7 @@ function get_etat_serveur() {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-    console.log("Appelle etat serveur");
+    console.log("=========Appelle Serveur========");
     get("https://cheveux-bleus.fr:16800/docs");
 
 }
@@ -179,12 +177,13 @@ function get(url) {
     // - url (string) : L'URL de la ressource à laquelle effectuer la requête.
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    console.log("URL appelle");
+    console.log("=========Appelle GET========");
     const XHR_srv = new XMLHttpRequest();
     XHR_srv.onreadystatechange = statechange_server;
     XHR_srv.open("HEAD", url);
     XHR_srv.send();
 }
+
 function statechange_server(event) {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Fonction qui vérifie l'état de la requête HTTP.
@@ -203,11 +202,10 @@ function statechange_server(event) {
             console.log("Requête terminée et réponse prête");
             if (XHR_srv.status == 200) {
                 console.log("Traitement local de la réponse");
-                console.log("serveur accessible")
 
                 navigator.notification.alert(
                     'Le serveur est accessible !',  // message
-                    callback_server,            // callback
+                    callback_alert,            // callback
                     'Etat serveur',            // title
                     'Etat serveur'                  // buttonName
                 );
@@ -218,7 +216,7 @@ function statechange_server(event) {
             } else {
                 navigator.notification.alert(
                     'Impossible de joindre le serveur !',  // message
-                    callback_server,            // callback
+                    callback_alert,            // callback
                     'Etat serveur',            // title
                     'Etat serveur'                  // buttonName
                 );
@@ -229,15 +227,6 @@ function statechange_server(event) {
             break;
     }
 }
-function callback_server() {
-    // ------------------------------------------------------------
-    // CALLBACK de l'alerte SERVER
-    // ------------------------------------------------------------
-
-    console.log("Alerte fermée");
-}
-
-
 
 /************************************************************************************************************************************/
 /** ARCHIVE                                                                                                                         */
@@ -246,9 +235,10 @@ function callback_server() {
 function put_archive() {
     // ============================================================
     // Fonction qui permet d'archiver les informations de l'utilisateur grâce a la gestion du localstorage
+    // Parse les information du localstorage pour crée un button et un div pour chaque archive
     // ============================================================
 
-    console.log("Appelle PUT Archive");
+    console.log("========Appelle put_archive========");
 
 
     let a, div;
@@ -256,19 +246,17 @@ function put_archive() {
     let div_parent = document.getElementById("col1");
     let div_parent_2 = document.getElementById("col2");
 
-    // Récupère le localstorage
     let dico_localStorage = localStorage;
 
-    // Supprime les éléments enfants des divs pour réinitialiser les archives a chaque appel
+
     while (div_parent.firstChild) {
         div_parent.removeChild(div_parent.firstChild);
         div_parent_2.removeChild(div_parent_2.firstChild);
-        console.log("supp");
+
     }
 
-    // Parcours le localstorage pour afficher les archives
     for (let [key, value] of Object.entries(dico_localStorage)) {
-        // Création des éléments HTML pour chaque archive; PARTIE BUTTON
+
         a = document.createElement("a");
         a.href = "#list-" + i;
         a.innerHTML = key;
@@ -279,7 +267,6 @@ function put_archive() {
         a.role = "tab";
         a.setAttribute("aria-controls", "list-" + i);
 
-        // Création des éléments HTML pour chaque archive; PATIE TEXTE
         div = document.createElement("div");
         div.classList.add("tab-pane");
         div.classList.add("fade");
@@ -317,13 +304,14 @@ function put_archive() {
 function get_archive_active() {
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     // Fonction qui permet de récupérer l'archive active
+    // Verifie les boutun et text qui on la class .actif et recupère le titre de l'archive qui est un id
+
     // returne: le titre de l'archive et l'élément HTML de l'archive
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    console.log("Appel de get archive active");
+    console.log("========Appelle get_archive_active========");
 
     let archives_active = document.querySelectorAll(".active");
-    // On récupère tous les éléments actifs donc le titre de l'archive et la div qui est liée au titre
 
     if (archives_active.length > 0) {
         // On récupère l'id du titre actif qui est la clé du localstorage
@@ -342,15 +330,13 @@ function del_archive() {
 
     console.log("Appel de supprimer_archive");
 
-    // recupère le titre de l'archive et l'élément HTML de l'archive avec get_archive_active()
+   
     let [titre_localstorage, archives_a_supprimer] = get_archive_active();
 
     if (titre_localstorage && archives_a_supprimer.length > 0) {
 
-        // suppression de l'archive dans le localstorage
         localStorage.removeItem(titre_localstorage);
 
-        // suppression de l'archive dans le DOM
         archives_a_supprimer.forEach(archive => {
             archive.classList.remove("active");
             archive.remove();
@@ -358,7 +344,7 @@ function del_archive() {
 
         navigator.notification.alert(
             "L'archive a été supprimée !",  // message
-            callback_del_archive,  // callback
+            callback_alert,  // callback
             'Archive',                      // titre
             'OK'                            // nom du bouton
         );
@@ -366,15 +352,6 @@ function del_archive() {
         console.error("Pas d'éléments actifs à supprimer.");
     }
 }
-
-function callback_del_archive() {
-    // ------------------------------------------------------------
-    // CALLBACK de l'alerte delete ARCHIVE
-    // ------------------------------------------------------------
-
-    console.log("Alerte fermée");
-}
-
 
 
 // ****************************************************************************************************************************************************************
@@ -393,16 +370,16 @@ function send_mail(contact, archive_title, archive_content) {
     // - archive_content (string) : Le contenu de l'archive à envoyer.
     // ============================================================
 
-    console.log(contact)
+    console.log("========Appelle SendMail========");
 
     let contact_to_send = contact;
     //Verifie si contact_to_send est une chaine de caractère et si elle est vide
     if (typeof contact_to_send !== 'string' || contact_to_send.trim() === '') {
+
         contact_to_send = 'sonikpi.log@gmail.com';
         console.log("Contact par défaut");
     }
-    // Function qui envoie un mail pour faire un rapport de l'etat du serveurœ
-    console.log("appelle SendMail");
+    
     date_ajd = new Date().toISOString().split('T')[0];
 
     cordova.plugins.email.open({
@@ -411,20 +388,19 @@ function send_mail(contact, archive_title, archive_content) {
         subject: '! URGENCE SERVEUR !  ' + archive_title, // subject of the email
         body: 'Rapport Serveur du ' + date_ajd + ":\n\n\n" + archive_content, // email body
 
-    }, callback);
+    }, callback_mail);
 
 }
 
-function callback(result) {
+function callback_mail(result) {
     // ------------------------------------------------------------
     // CALLBACK de l'envoi de mail
     // ------------------------------------------------------------
 
     if (result === "OK") {
-        console.log("Message envoyer");
         navigator.notification.alert(
             'Email Fonctionne correctement',  // message
-            callback_mail,            // callback
+            callback_alert,            // callback
             'Etat mail',            // title
             'Ok'                  // buttonName
         );
@@ -432,7 +408,7 @@ function callback(result) {
         console.log('Envoi annulé par l\'utilisateur.');
         navigator.notification.alert(
             'Impossible d envoyer un mail !',  // message
-            callback_mail,            // callback
+            callback_alert,            // callback
             'Etat mail',            // title
             'Ok'                  // buttonName
         );
@@ -441,13 +417,7 @@ function callback(result) {
     }
 
 }
-function callback_mail() {
-    // ------------------------------------------------------------
-    // CALLBACK de l'alerte MAIL
-    // ------------------------------------------------------------
 
-    console.log("Alerte fermée");
-}
 
 function send_mail_archive() {
     // ============================================================
@@ -456,9 +426,10 @@ function send_mail_archive() {
     // Appelle la fonction get_archive_active
     // ============================================================
 
-    console.log("Appelle SendMail Archive");
+    console.log("========Appelle send_mail_archive========");
+
     date_ajd = new Date().toISOString().split('T')[0];
-    console.log(date_ajd);
+    
     [titre_localstorage, archives_a_envoyer] = get_archive_active();
 
     id_valeur = archives_a_envoyer[1].id;
@@ -485,11 +456,11 @@ function search_contact() {
     // Récupère le numéro de téléphone et l'adresse mail du contact a partie de son nom
     // ============================================================
 
-    console.log("Appelle search contact");
+    console.log("========Appelle search_contact========");
     let prenom_nom = document.getElementById("floatingInput").value;
     let options = new ContactFindOptions();
 
-    // filtrer les contacts par nom
+   
     options.filter = prenom_nom;
     options.multiple = true;
     let fields = ["displayName", "name", "phoneNumbers", "emails"];
@@ -501,20 +472,13 @@ function onSuccess(contacts) {
     // Réponse du plugin si il trouve des contacts
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    console.log("Appelle onSuccess");
-    console.log(contacts.length + 'contacts trouvés');
-
-
-
+    console.log("========Appelle onSuccess========");
+    
     for (let i = 0; i < contacts.length; i++) {
-        console.log("Nom = " + contacts[i].displayName);
-
+        
         if (contacts[i].phoneNumbers) {
 
-            console.log("Numéro de téléphone = " + contacts[i].phoneNumbers[0].value);
-
             TO_UPDATE_CONTACT_NUM.innerHTML = "Numéro de téléphone = " + contacts[i].phoneNumbers[0].value + "\n\n";
-
         }
 
         if (contacts[i].emails) {
@@ -551,10 +515,8 @@ function callback_confirm(buttonIndex) {
     // Envoie a send_mail() l'adresse mail du contact trouver
     // ------------------------------------------------------------
 
-    console.log("Callback confirm");
-    console.log(buttonIndex);
-    console.log(email_contact);
-
+    console.log("========Appelle callback_confirm========");
+   
     if (buttonIndex === 1) {
         send_mail(email_contact);
     } else {
@@ -583,7 +545,7 @@ function get_nfc() {
     document.getElementById("gif_dialog").src = './img/nfc_anime2.gif';
     document.getElementById("nfcDialogCloseButton").style.display = "none";
 
-    
+
     nfc.addTagDiscoveredListener(callback_nfc, onSuccess_nfc, onFailure_nfc);
 }
 
@@ -593,7 +555,7 @@ function onSuccess_nfc() {
 }
 
 function onFailure_nfc(error) {
-    console.error("Erreur lors de l'ajout du listener NFC : " + JSON.stringify(error));
+    console.log("Erreur lors de l'ajout du listener NFC : " + JSON.stringify(error));
 }
 
 function callback_nfc(nfcEvent) {
@@ -601,7 +563,7 @@ function callback_nfc(nfcEvent) {
     // CALLBACK de l'alerte NFC
     // ------------------------------------------------------------
 
-    console.log("NFC trouvé");
+    console.log("=======callback_nfc=======");
 
     let tag_nfc = nfcEvent.tag;
     let ndefId = nfc.bytesToHexString(tag_nfc.id);
@@ -609,7 +571,7 @@ function callback_nfc(nfcEvent) {
     tag_nfc_scanner = ndefId;
     build_account();
     verif_sessionStorage(tag_nfc_scanner);
-    
+
     UPDATE_TB_NFC.style.color = "green";
     UPDATE_TB_NFC.style.border = "2px solid green";
 }
@@ -618,7 +580,7 @@ function close_nfc() {
     // ------------------------------------------------------------
     // Fonction qui permet de fermer le listener NFC
     // ------------------------------------------------------------
-    console.log("Fermeture NFC");
+    console.log("=======close_nfc=======");
     nfc.removeTagDiscoveredListener(callback_close_nfc);
     document.getElementById('nfcDialog').style.display = 'none';
 }
@@ -651,9 +613,11 @@ function post_nfc(tag) {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Fonction qui permet de récupérer les information de la puce NFC
     // Appelle API /nfc/verify
+    // Paramètres d'entrée :
+    // - tag (string) : L'identifiant de la puce NFC.
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    console.log("POST NFC: URL Appelle");
+    console.log("=======post_nfc=======");
     post("https://cheveux-bleus.fr:16800/nfc/verify", tag);
 }
 
@@ -665,8 +629,8 @@ function post(url, tag) {
     // La fonction utilise un objet XMLHttpRequest pour envoyer la requête.
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    console.log("URL appelle");
-    
+    console.log("=======post=======");
+
     let payload = JSON.stringify({ "id_nfc": tag });
 
     const XHR = new XMLHttpRequest();
@@ -699,7 +663,6 @@ function statechange(event) {
 
 
                 let response = JSON.parse(XHR.responseText);
-                console.log(response);
 
                 sessionStorage.setItem(tag_nfc_scanner, JSON.stringify(response));
 
@@ -710,12 +673,12 @@ function statechange(event) {
                 document.getElementById("para_nfc_date").innerHTML = response.date;
 
                 build_account();
-            }else if (XHR.status == 404) {
+            } else if (XHR.status == 404) {
                 console.log("Erreur 404");
                 document.getElementById("para_nfc_dialog").innerHTML = "Carte non enregistrée";
                 document.getElementById("gif_dialog").src = './img/nfc_error.gif';
                 document.getElementById("nfcDialogCloseButton").style.display = 'block';
-            }else {
+            } else {
                 console.error("Erreur lors de la requête : " + XHR.status);
             }
             break;
@@ -729,11 +692,11 @@ function build_account() {
     //      Fonction qui permet de changer de compte sur les carte scanner pendant la session
     //      ============================================================
 
-    console.log("=======Change account=======");
+    console.log("=======Build account=======");
 
     const LISTE_CARDS_ENRGISTRE = document.getElementById("liste_card");
     let input, label;
-    
+
     while (LISTE_CARDS_ENRGISTRE.firstChild) {
         LISTE_CARDS_ENRGISTRE.removeChild(LISTE_CARDS_ENRGISTRE.firstChild);
     }
@@ -743,8 +706,8 @@ function build_account() {
 
 
         name_card = JSON.parse(value);
-        
-        
+
+
         input = document.createElement("input");
         input.type = "radio";
         input.id = "card_nfc" + i;
@@ -763,7 +726,7 @@ function build_account() {
         label.classList.add("btn-lg");
         label.classList.add("me-2");
         label.innerHTML = key + "<br> (" + name_card["name"] + ")";
-        
+
 
         LISTE_CARDS_ENRGISTRE.append(input);
         LISTE_CARDS_ENRGISTRE.append(label);
@@ -773,15 +736,15 @@ function build_account() {
         i++;
     }
 
- 
-    
+
+
 }
 
 function change_account(event) {
     //     ============================================================
     //      Fonction qui permet de changer de compte sur les carte scanner pendant la session
     //      ============================================================
-    
+
     console.log("=======Change account=======");
 
     let card_nfc = event.target.id;
@@ -794,7 +757,7 @@ function change_account(event) {
     document.getElementById("para_nfc_name").innerHTML = response.name;
     document.getElementById("para_nfc_status").innerHTML = response.status;
     document.getElementById("para_nfc_date").innerHTML = response.date;
-    
+
 }
 
 
