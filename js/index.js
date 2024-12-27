@@ -583,6 +583,7 @@ function get_nfc() {
     document.getElementById("gif_dialog").src = './img/nfc_anime2.gif';
     document.getElementById("nfcDialogCloseButton").style.display = "none";
 
+    
     nfc.addTagDiscoveredListener(callback_nfc, onSuccess_nfc, onFailure_nfc);
 }
 
@@ -606,7 +607,7 @@ function callback_nfc(nfcEvent) {
     let ndefId = nfc.bytesToHexString(tag_nfc.id);
 
     tag_nfc_scanner = ndefId;
-
+    build_account();
     verif_sessionStorage(tag_nfc_scanner);
     
     UPDATE_TB_NFC.style.color = "green";
@@ -665,7 +666,7 @@ function post(url, tag) {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     console.log("URL appelle");
-
+    
     let payload = JSON.stringify({ "id_nfc": tag });
 
     const XHR = new XMLHttpRequest();
@@ -708,8 +709,7 @@ function statechange(event) {
                 document.getElementById("para_nfc_status").innerHTML = response.status;
                 document.getElementById("para_nfc_date").innerHTML = response.date;
 
-                change_account();
-
+                build_account();
             }else if (XHR.status == 404) {
                 console.log("Erreur 404");
                 document.getElementById("para_nfc_dialog").innerHTML = "Carte non enregistrée";
@@ -722,7 +722,9 @@ function statechange(event) {
     }
 }
 
-function change_account() {
+
+
+function build_account() {
     //     ============================================================
     //      Fonction qui permet de changer de compte sur les carte scanner pendant la session
     //      ============================================================
@@ -765,12 +767,35 @@ function change_account() {
 
         LISTE_CARDS_ENRGISTRE.append(input);
         LISTE_CARDS_ENRGISTRE.append(label);
+
+        document.getElementById("card_nfc" + i).addEventListener("change", change_account);
+
         i++;
     }
 
+ 
     
 }
 
+function change_account(event) {
+    //     ============================================================
+    //      Fonction qui permet de changer de compte sur les carte scanner pendant la session
+    //      ============================================================
+    
+    console.log("=======Change account=======");
+
+    let card_nfc = event.target.id;
+    let card_nfc_value = document.getElementById(card_nfc).nextElementSibling.innerHTML.split("<br>")[0];
+    console.log(card_nfc_value);
+    let response = JSON.parse(sessionStorage.getItem(card_nfc_value));
+
+    document.getElementById("para_nfc_title").innerHTML = card_nfc_value;
+
+    document.getElementById("para_nfc_name").innerHTML = response.name;
+    document.getElementById("para_nfc_status").innerHTML = response.status;
+    document.getElementById("para_nfc_date").innerHTML = response.date;
+    
+}
 
 
 // ****************************************************************************************************************************************************************
