@@ -250,54 +250,88 @@
             </div>
 
 
-              </div>
-
-              <button class="Tb_Button label_td" id="Tb_nfc" type="button">
-                <i class="bi bi-wallet2"></i>
-              </button>
-              <p id="para_nfc">NFC</p>
-
-            </div>
-
-            <div class="col user_col">
-
-              <button class="Tb_Button label_td" id="Tb_qrcode" type="button">
-                <i class="bi bi-qr-code-scan"></i>
-              </button>
-              <p id="para_qrcode">QR Code</p>
-
-            </div>
-
           </div>
-          <div class="row">
 
-            <div id="nfc_contenue" class="contenue">
-              <h3 id="nfc_title">ID de carte : <p id="para_nfc_title"></p>
-              </h3>
-              <ul>
-                <li id="nfc_name">Nom : <p id="para_nfc_name"></p>
-                </li>
-                <li id="nfc_status">Status : <p id="para_nfc_status"></p>
-                </li>
-                <li id="nfc_date">Date : <p id="para_nfc_date"></p>
-                </li>
-              </ul>
-              <button id="nfc_droit_btn" type="button" class="btn btn-info">Voir mes droits <i class="bi bi-question-circle"></i></button>
-            </div>
+          <button class="Tb_Button label_td" id="Tb_nfc" type="button">
+            <i class="bi bi-wallet2"></i>
+          </button>
+          <p id="para_nfc">NFC</p>
 
-
-          </div>
-          <div class="row">
-            <h3>Changer de compte:</h3>
-
-            <div id="liste_card" class="btn-group-vertical" role="group" aria-label="Basic radio toggle button group">
-
-      
-
-            </div>
-          </div>
         </div>
+
+        <div class="col user_col">
+
+          <button class="Tb_Button label_td" id="Tb_qrcode" type="button">
+            <i class="bi bi-qr-code-scan"></i>
+          </button>
+          <p id="para_qrcode">QR Code</p>
+
+        </div>
+
       </div>
+      <div class="row">
+
+        <div id="nfc_contenue" class="contenue">
+          <h3 id="nfc_title">ID de carte : <p id="para_nfc_title"></p>
+          </h3>
+          <ul>
+            <li id="nfc_name">Nom : <p id="para_nfc_name"></p>
+            </li>
+            <li id="nfc_status">Status : <p id="para_nfc_status"></p>
+            </li>
+            <li id="nfc_date">Date : <p id="para_nfc_date"></p>
+            </li>
+          </ul>
+          <button id="nfc_droit_btn" type="button" class="btn btn-info">Voir mes droits <i
+              class="bi bi-question-circle"></i></button>
+        </div>
+
+
+      </div>
+
+      <div id="create_account" class="row" style="display:none;">
+        <h3>Crée un compte ascossier a une carte</h3>
+
+        <form>
+          <div class="mb-3">
+            <label for="InputName" class="form-label">Prenom Nom</label>
+            <input type="text" class="form-control" id="InputName" aria-describedby="nameHelp" required>
+            <div id="nameHelp" class="form-text">Entrez votre prénom et nom</div>
+          </div>
+          <div class="mb-3">
+            <label for="SelectStatus" class="form-label">Status</label>
+            <select class="form-select form-select-lg" name="Status" id="SelectStatus" required>
+              <option selected>Technicien</option>
+              <option value="">Administrateur</option>
+              <option value="">R&D</option>
+              <option value="">Secraitaire</option>
+              <option value="">Altérnants</option>
+              <option value="">Stagiaire</option>
+              <option value="">Autre</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="InputDate" class="form-label">Date</label>
+            <input type="date" class="form-control" id="InputDate" required>
+            <div id="dateHelp" class="form-text">Entrez votre date de naissance</div>
+      </div>
+
+      <button id="btn_create_account" type="submit" class="btn btn-primary">Crée</button>
+      </form>
+    </div>
+
+    <div class="row">
+      <h3>Changer de compte:</h3>
+
+      <div id="liste_card" class="btn-group-vertical" role="group" aria-label="Basic radio toggle button group">
+
+
+
+      </div>
+    </div>
+  </div>
+  </div>
 
 </body>
 

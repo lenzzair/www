@@ -1,5 +1,6 @@
 // LEGENDE DES COMMENTAIRES
 
+
 // ============================================================   FONCTION PRINCIPALE
 
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::   FONCTION SECONDAIRE / REPONSE PLUGIN ASHYNCHRONE
@@ -673,6 +674,7 @@ function statechange(event) {
                 document.getElementById("para_nfc_date").innerHTML = response.date;
 
                 build_account();
+                
             } else if (XHR.status == 404) {
                 console.log("Erreur 404");
                 document.getElementById("para_nfc_dialog").innerHTML = "Carte non enregistrée";
@@ -707,6 +709,10 @@ function build_account() {
 
         name_card = JSON.parse(value);
 
+        if (name_card["status"] == "Administrateur") {
+            
+            create_account();
+        }
 
         input = document.createElement("input");
         input.type = "radio";
@@ -733,6 +739,12 @@ function build_account() {
 
         document.getElementById("card_nfc" + i).addEventListener("change", change_account);
 
+        if (name_card["status"] == "Administrateur" && i == 0) {
+            document.getElementById("create_account").style.display = "block";
+        }else{
+            document.getElementById("create_account").style.display = "none";
+        }
+        
         i++;
     }
 
@@ -758,9 +770,25 @@ function change_account(event) {
     document.getElementById("para_nfc_status").innerHTML = response.status;
     document.getElementById("para_nfc_date").innerHTML = response.date;
 
+    if (response.status == "Administrateur") {
+        document.getElementById("create_account").style.display = "block";
+        create_account();
+    }else{
+        document.getElementById("create_account").style.display = "none";
+    }
+
 }
 
+function create_account() {
+    //     ============================================================
+    //      Fonction qui permet de crée un compte sur les carte scanner pendant la session
+    //      ============================================================
 
+    console.log("=======Create account=======");
+
+
+
+}
 // ****************************************************************************************************************************************************************
 // FONCTION QRCODE
 // ****************************************************************************************************************************************************************
