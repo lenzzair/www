@@ -125,6 +125,10 @@
     margin-top: 20px;
     display: none;
 }
+#nfcCreateAccountButton {
+    margin-top: 20px;
+    display: none;
+}
 #liste_card{
 
     margin-top: 3em;

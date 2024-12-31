@@ -43,6 +43,11 @@ const TO_UPDATE_CONTACT_MAIL = document.getElementById("para_contact_mail");
 
 const UPDATE_NFC_DROIT = document.getElementById("nfc_droit_btn");
 
+const NFC_TILTE = document.getElementById("para_nfc_title");
+const NFC_NAME = document.getElementById("para_nfc_name");
+const NFC_STATUS = document.getElementById("para_nfc_status");
+const NFC_DATE = document.getElementById("para_nfc_date");
+
 /**************************************/
 /** Event Listeners                   */
 /**************************************/
@@ -228,7 +233,7 @@ function statechange_server(event) {
 
             } else {
                 notification_alert('Etat serveur', 'Impossible de joindre le serveur !', 'Etat serveur');
-    
+
                 UPDATE_TB_SERVER.style.color = "red";
                 UPDATE_TB_SERVER.style.border = "2px solid red";
                 TO_UPDATE_TB_SERVER.innerHTML = "Serveur inaccessible";
@@ -439,9 +444,9 @@ function send_mail_archive() {
     send_mail(contact, titre_localstorage, archive_content);
 }
 
-// ****************************************************************************************
+// **************************************************************************************************************************************
 // FONCTION CONTACT    --AVEC DES APPELLE MAIL--
-// ****************************************************************************************
+// **************************************************************************************************************************************
 
 
 function search_contact() {
@@ -536,13 +541,13 @@ function start_account_nfc() {
 
         for (let i = 0; i < sessionStorage.length; i++) {
             valeur_key.push(sessionStorage.key(i));
-            document.getElementById("para_nfc_title").innerHTML = valeur_key[0];
+            NFC_TILTE.innerHTML = valeur_key[0];
 
             let response = JSON.parse(sessionStorage.getItem(valeur_key[0]));
-    
-            document.getElementById("para_nfc_name").innerHTML = response.name;
-            document.getElementById("para_nfc_status").innerHTML = response.status;
-            document.getElementById("para_nfc_date").innerHTML = response.date;
+
+            NFC_NAME.innerHTML = response.name;
+            NFC_STATUS.innerHTML = response.status;
+            NFC_DATE.innerHTML = response.date;
         }
 
         tag_nfc_scanner = valeur_key[0];
@@ -561,6 +566,7 @@ function get_nfc() {
     document.getElementById("para_nfc_dialog").innerHTML = 'Approchez votre carte';
     document.getElementById("gif_dialog").src = './img/nfc_anime2.gif';
     document.getElementById("nfcDialogCloseButton").style.display = "none";
+    document.getElementById("nfcCreateAccountButton").style.display = "none";
 
 
     nfc.addTagDiscoveredListener(callback_nfc, onSuccess_nfc, onFailure_nfc);
@@ -622,12 +628,12 @@ function verif_sessionStorage(tag) {
         document.getElementById("gif_dialog").src = './img/nfc_error.gif';
         document.getElementById("nfcDialogCloseButton").style.display = 'block';
 
-        document.getElementById("para_nfc_title").innerHTML = tag;
+        NFC_TILTE.innerHTML = tag;
         let response = JSON.parse(sessionStorage.getItem(tag));
 
-        document.getElementById("para_nfc_name").innerHTML = response.name;
-        document.getElementById("para_nfc_status").innerHTML = response.status;
-        document.getElementById("para_nfc_date").innerHTML = response.date;
+        NFC_NAME.innerHTML = response.name;
+        NFC_STATUS.innerHTML = response.status;
+        NFC_DATE.innerHTML = response.date;
         build_account();
     } else {
         document.getElementById("para_nfc_dialog").innerHTML = "Vôtre carte n'est pas enregistrée; appelle du serveur !";
@@ -686,25 +692,34 @@ function statechange(event) {
                 document.getElementById("para_nfc_dialog").innerHTML = "Carte Trouvé !";
                 document.getElementById("gif_dialog").src = './img/nfc_success.gif';
                 document.getElementById("nfcDialogCloseButton").style.display = 'block';
+                document.getElementById("nfcCreateAccountButton").style.display = 'none';
 
 
                 let response = JSON.parse(XHR.responseText);
 
                 sessionStorage.setItem(tag_nfc_scanner, JSON.stringify(response));
 
-                document.getElementById("para_nfc_title").innerHTML = tag_nfc_scanner;
+                NFC_TILTE.innerHTML = tag_nfc_scanner;
 
-                document.getElementById("para_nfc_name").innerHTML = response.name;
-                document.getElementById("para_nfc_status").innerHTML = response.status;
-                document.getElementById("para_nfc_date").innerHTML = response.date;
+                NFC_NAME.innerHTML = response.name;
+                NFC_STATUS.innerHTML = response.status;
+                NFC_DATE.innerHTML = response.date;
 
                 build_account();
 
             } else if (XHR.status == 404) {
                 console.log("Erreur 404");
-                document.getElementById("para_nfc_dialog").innerHTML = "Carte non enregistrée";
+                if (NFC_STATUS.innerHTML == "Administrateur") {
+                    document.getElementById("para_nfc_dialog").innerHTML = "Carte non enregistrée, Voulez vous l'enregistrer ?";
+                    document.getElementById("nfcCreateAccountButton").style.display = 'block';
+                    document.getElementById("nfcCreateAccountButton").addEventListener("click", create_account);
+
+                } else {
+                    document.getElementById("para_nfc_dialog").innerHTML = "Carte non enregistrée !";
+                }
                 document.getElementById("gif_dialog").src = './img/nfc_error.gif';
                 document.getElementById("nfcDialogCloseButton").style.display = 'block';
+
             } else {
                 console.error("Erreur lors de la requête : " + XHR.status);
             }
@@ -785,11 +800,11 @@ function change_account(event) {
     console.log(card_nfc_value);
     let response = JSON.parse(sessionStorage.getItem(card_nfc_value));
 
-    document.getElementById("para_nfc_title").innerHTML = card_nfc_value;
+    NFC_TILTE.innerHTML = card_nfc_value;
 
-    document.getElementById("para_nfc_name").innerHTML = response.name;
-    document.getElementById("para_nfc_status").innerHTML = response.status;
-    document.getElementById("para_nfc_date").innerHTML = response.date;
+    NFC_NAME.innerHTML = response.name;
+    NFC_STATUS.innerHTML = response.status;
+    NFC_DATE.innerHTML = response.date;
 
     if (response.status == "Administrateur") {
         document.getElementById("create_account").style.display = "block";
@@ -817,7 +832,7 @@ function droit_nfc() {
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     console.log("=======Droit NFC=======");
-    let status_card = document.getElementById("para_nfc_status").innerHTML;
+    let status_card = NFC_STATUS.innerHTML;
     liste_droit = {
         "Administrateur": "Tous les droits",
         "Technicien": "Droit de création de compte",
@@ -826,7 +841,7 @@ function droit_nfc() {
         "Alternant": "Droit de lecture",
         "Stagiaire": "Droit de lecture"
     }
-    
+
     switch (status_card) {
         case "Administrateur":
             notification_alert("Droit NFC", liste_droit["Administrateur"], "OK");
