@@ -81,7 +81,7 @@ function onDeviceReady() {
     tb_btn.style.display = "block";
 
     document.getElementById("utilisateur").style.display = "block";
-
+    start_account_nfc();
 
 }
 
@@ -525,8 +525,30 @@ function callback_confirm(buttonIndex) {
 // FONCTION NFC
 // ****************************************************************************************************************************************************************
 
+function start_account_nfc() {
+    // ============================================================
+    // Fonction qui permet de récupérer les informations des cartes NFC enregistrées
+    // Utilise le sessionStorage récupérer les informations des cartes NFC
+    // Les envoie a la fonction build_account pour crée les boutons
+    // ============================================================
+    if (sessionStorage.length > 0) {
+        let valeur_key = [];
 
+        for (let i = 0; i < sessionStorage.length; i++) {
+            valeur_key.push(sessionStorage.key(i));
+            document.getElementById("para_nfc_title").innerHTML = valeur_key[0];
 
+            let response = JSON.parse(sessionStorage.getItem(valeur_key[0]));
+    
+            document.getElementById("para_nfc_name").innerHTML = response.name;
+            document.getElementById("para_nfc_status").innerHTML = response.status;
+            document.getElementById("para_nfc_date").innerHTML = response.date;
+        }
+
+        tag_nfc_scanner = valeur_key[0];
+        build_account();
+    }
+}
 
 function get_nfc() {
     // ============================================================
@@ -555,7 +577,8 @@ function onFailure_nfc(error) {
 
 function callback_nfc(nfcEvent) {
     // ------------------------------------------------------------
-    // CALLBACK de l'alerte NFC
+    // Fonction qui permet de lire une puce NFC
+    // Se déclenche lorsqu'une puce NFC est détectée
     // ------------------------------------------------------------
 
     console.log("=======callback_nfc=======");
@@ -598,6 +621,14 @@ function verif_sessionStorage(tag) {
         document.getElementById("para_nfc_dialog").innerHTML = "Vôtre carte est déjà enregistrée";
         document.getElementById("gif_dialog").src = './img/nfc_error.gif';
         document.getElementById("nfcDialogCloseButton").style.display = 'block';
+
+        document.getElementById("para_nfc_title").innerHTML = tag;
+        let response = JSON.parse(sessionStorage.getItem(tag));
+
+        document.getElementById("para_nfc_name").innerHTML = response.name;
+        document.getElementById("para_nfc_status").innerHTML = response.status;
+        document.getElementById("para_nfc_date").innerHTML = response.date;
+        build_account();
     } else {
         document.getElementById("para_nfc_dialog").innerHTML = "Vôtre carte n'est pas enregistrée; appelle du serveur !";
         document.getElementById("gif_dialog").src = './img/nfc_loading.gif';
