@@ -41,6 +41,8 @@ const BTN_CONTACT = document.getElementById("btn-contact");
 const TO_UPDATE_CONTACT_NUM = document.getElementById("para_contact_num");
 const TO_UPDATE_CONTACT_MAIL = document.getElementById("para_contact_mail");
 
+const UPDATE_NFC_DROIT = document.getElementById("nfc_droit_btn");
+
 /**************************************/
 /** Event Listeners                   */
 /**************************************/
@@ -66,6 +68,8 @@ UPDATE_TB_NFC.addEventListener("click", get_nfc);
 
 document.getElementById("nfcDialogCloseButton").addEventListener("click", close_nfc);
 
+UPDATE_NFC_DROIT.addEventListener("click", droit_nfc);
+
 /**************************************/
 /** Functions                         */
 /**************************************/
@@ -81,6 +85,23 @@ function onDeviceReady() {
 
 }
 
+function notification_alert(titre, message, buttonName) {
+    // ============================================================
+    // Fonction qui permet de crée une alerte
+    // Utilise le plugin cordova-plugin-dialogs
+    // Paramètres d'entrée :
+    // - titre (string) : Le titre de l'alerte.
+    // - message (string) : Le message de l'alerte.
+    // - buttonName (string) : Le nom du bouton de l'alerte.
+    // ============================================================
+    console.log("==========Appelle notification_alert==========");
+    navigator.notification.alert(
+        message,  // message
+        callback_alert,            // callback
+        titre,            // title
+        buttonName                  // buttonName
+    );
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function onPause() {
@@ -126,12 +147,7 @@ function get_etat_network() {
     states[Connection.NONE] = 'No network connection';
 
     // ALERTE
-    navigator.notification.alert(
-        'Vous êtes connecter avec : ' + states[networkState],// message
-        callback_alert,            // callback
-        'Etat Connexion',            // title
-        'Ok'                  // buttonName
-    );
+    notification_alert('Etat Connexion', 'Vous êtes connecter avec : ' + states[networkState], 'Ok');
 }
 
 
@@ -204,23 +220,15 @@ function statechange_server(event) {
             if (XHR_srv.status == 200) {
                 console.log("Traitement local de la réponse");
 
-                navigator.notification.alert(
-                    'Le serveur est accessible !',  // message
-                    callback_alert,            // callback
-                    'Etat serveur',            // title
-                    'Etat serveur'                  // buttonName
-                );
+                notification_alert('Etat serveur', 'Le serveur est accessible !', 'Etat serveur');
+
                 TO_UPDATE_TB_SERVER.innerHTML = "Serveur accessible";
                 UPDATE_TB_SERVER.style.color = "green";
                 UPDATE_TB_SERVER.style.border = "2px solid green";
 
             } else {
-                navigator.notification.alert(
-                    'Impossible de joindre le serveur !',  // message
-                    callback_alert,            // callback
-                    'Etat serveur',            // title
-                    'Etat serveur'                  // buttonName
-                );
+                notification_alert('Etat serveur', 'Impossible de joindre le serveur !', 'Etat serveur');
+    
                 UPDATE_TB_SERVER.style.color = "red";
                 UPDATE_TB_SERVER.style.border = "2px solid red";
                 TO_UPDATE_TB_SERVER.innerHTML = "Serveur inaccessible";
@@ -331,7 +339,7 @@ function del_archive() {
 
     console.log("Appel de supprimer_archive");
 
-   
+
     let [titre_localstorage, archives_a_supprimer] = get_archive_active();
 
     if (titre_localstorage && archives_a_supprimer.length > 0) {
@@ -342,13 +350,8 @@ function del_archive() {
             archive.classList.remove("active");
             archive.remove();
         });
+        notification_alert('Archive', 'L\'archive a été supprimée !', 'OK');
 
-        navigator.notification.alert(
-            "L'archive a été supprimée !",  // message
-            callback_alert,  // callback
-            'Archive',                      // titre
-            'OK'                            // nom du bouton
-        );
     } else {
         console.error("Pas d'éléments actifs à supprimer.");
     }
@@ -380,7 +383,7 @@ function send_mail(contact, archive_title, archive_content) {
         contact_to_send = 'sonikpi.log@gmail.com';
         console.log("Contact par défaut");
     }
-    
+
     date_ajd = new Date().toISOString().split('T')[0];
 
     cordova.plugins.email.open({
@@ -399,20 +402,11 @@ function callback_mail(result) {
     // ------------------------------------------------------------
 
     if (result === "OK") {
-        navigator.notification.alert(
-            'Email Fonctionne correctement',  // message
-            callback_alert,            // callback
-            'Etat mail',            // title
-            'Ok'                  // buttonName
-        );
+        notification_alert('Etat mail', 'Email envoyé avec succès', 'OK');
+
     } else if (result === 'CANCELLED') {
-        console.log('Envoi annulé par l\'utilisateur.');
-        navigator.notification.alert(
-            'Impossible d envoyer un mail !',  // message
-            callback_alert,            // callback
-            'Etat mail',            // title
-            'Ok'                  // buttonName
-        );
+        notification_alert('Etat mail', 'Envoi de mail annulé', 'OK');
+
     } else {
         console.error('Erreur ou état inconnu :', result);
     }
@@ -430,7 +424,7 @@ function send_mail_archive() {
     console.log("========Appelle send_mail_archive========");
 
     date_ajd = new Date().toISOString().split('T')[0];
-    
+
     [titre_localstorage, archives_a_envoyer] = get_archive_active();
 
     id_valeur = archives_a_envoyer[1].id;
@@ -461,7 +455,7 @@ function search_contact() {
     let prenom_nom = document.getElementById("floatingInput").value;
     let options = new ContactFindOptions();
 
-   
+
     options.filter = prenom_nom;
     options.multiple = true;
     let fields = ["displayName", "name", "phoneNumbers", "emails"];
@@ -474,9 +468,9 @@ function onSuccess(contacts) {
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     console.log("========Appelle onSuccess========");
-    
+
     for (let i = 0; i < contacts.length; i++) {
-        
+
         if (contacts[i].phoneNumbers) {
 
             TO_UPDATE_CONTACT_NUM.innerHTML = "Numéro de téléphone = " + contacts[i].phoneNumbers[0].value + "\n\n";
@@ -517,7 +511,7 @@ function callback_confirm(buttonIndex) {
     // ------------------------------------------------------------
 
     console.log("========Appelle callback_confirm========");
-   
+
     if (buttonIndex === 1) {
         send_mail(email_contact);
     } else {
@@ -674,7 +668,7 @@ function statechange(event) {
                 document.getElementById("para_nfc_date").innerHTML = response.date;
 
                 build_account();
-                
+
             } else if (XHR.status == 404) {
                 console.log("Erreur 404");
                 document.getElementById("para_nfc_dialog").innerHTML = "Carte non enregistrée";
@@ -709,10 +703,6 @@ function build_account() {
 
         name_card = JSON.parse(value);
 
-        if (name_card["status"] == "Administrateur") {
-            
-            create_account();
-        }
 
         input = document.createElement("input");
         input.type = "radio";
@@ -741,10 +731,10 @@ function build_account() {
 
         if (name_card["status"] == "Administrateur" && i == 0) {
             document.getElementById("create_account").style.display = "block";
-        }else{
+        } else {
             document.getElementById("create_account").style.display = "none";
         }
-        
+
         i++;
     }
 
@@ -773,7 +763,7 @@ function change_account(event) {
     if (response.status == "Administrateur") {
         document.getElementById("create_account").style.display = "block";
         create_account();
-    }else{
+    } else {
         document.getElementById("create_account").style.display = "none";
     }
 
@@ -787,6 +777,50 @@ function create_account() {
     console.log("=======Create account=======");
 
 
+
+}
+
+function droit_nfc() {
+    // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // Fonction qui permet de voir les droit de la carte NFC
+    // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    console.log("=======Droit NFC=======");
+    let status_card = document.getElementById("para_nfc_status").innerHTML;
+    liste_droit = {
+        "Administrateur": "Tous les droits",
+        "Technicien": "Droit de création de compte",
+        "R&D": "Droit de lecture",
+        "Secretaire": "Droit de lecture et d'écriture",
+        "Alternant": "Droit de lecture",
+        "Stagiaire": "Droit de lecture"
+    }
+    
+    switch (status_card) {
+        case "Administrateur":
+            notification_alert("Droit NFC", liste_droit["Administrateur"], "OK");
+            break;
+
+        case "Technicien":
+            notification_alert("Droit NFC", liste_droit["Technicien"], "OK");
+            break;
+        case "R&D":
+            notification_alert("Droit NFC", liste_droit["R&D"], "OK");
+            break;
+        case "Secretaire":
+            notification_alert("Droit NFC", liste_droit["Secretaire"], "OK");
+            break;
+        case "Alternant":
+            notification_alert("Droit NFC", liste_droit["Alternant"], "OK");
+            break;
+        case "Stagiaire":
+            notification_alert("Droit NFC", liste_droit["Stagiaire"], "OK");
+            break;
+        default:
+            notification_alert("Droit NFC", "Carte non enregistrée", "OK");
+            break;
+
+    }
 
 }
 // ****************************************************************************************************************************************************************
