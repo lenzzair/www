@@ -50,9 +50,16 @@ const NFC_DATE = document.getElementById("para_nfc_date");
 
 const NFC_BTN_CREATE_ACCOUNT = document.getElementById("btn_create_account");
 
+const DIALOG_NFC = document.getElementById("para_nfc_dialog");
+const GIF_DIALOG_NFC = document.getElementById("gif_dialog");
+const CLOSE_BTN_DIALOG_NFC = document.getElementById("nfcDialogCloseButton");
+const CREATE_ACCOUNT_DIALOG = document.getElementById("nfcCreateAccountButton");
+const DIALOG_ALERT = document.getElementById('nfcDialog');
+
 /**************************************/
 /** Event Listeners                   */
 /**************************************/
+
 document.addEventListener("deviceready", onDeviceReady);
 document.addEventListener("pause", onPause);
 document.addEventListener("resume", onResume);
@@ -73,7 +80,7 @@ BTN_CONTACT.addEventListener("click", search_contact);
 UPDATE_TB_NFC.addEventListener("click", get_nfc);
 // UPDATE_TB_QRCODE.addEventListener("click", get_qrcode);
 
-document.getElementById("nfcDialogCloseButton").addEventListener("click", close_nfc);
+CLOSE_BTN_DIALOG_NFC.addEventListener("click", close_nfc);
 
 UPDATE_NFC_DROIT.addEventListener("click", droit_nfc);
 NFC_BTN_CREATE_ACCOUNT.addEventListener("click", create_account);
@@ -566,10 +573,10 @@ function get_nfc() {
 
     console.log("=========get_nfc=========");
 
-    document.getElementById("para_nfc_dialog").innerHTML = 'Approchez votre carte';
-    document.getElementById("gif_dialog").src = './img/nfc_anime2.gif';
-    document.getElementById("nfcDialogCloseButton").style.display = "none";
-    document.getElementById("nfcCreateAccountButton").style.display = "none";
+    DIALOG_NFC.innerHTML = 'Approchez votre carte';
+    GIF_DIALOG_NFC.src = './img/nfc_anime2.gif';
+    CLOSE_BTN_DIALOG_NFC.style.display = "none";
+    CREATE_ACCOUNT_DIALOG.style.display = "none";
 
 
     nfc.addTagDiscoveredListener(callback_nfc, onSuccess_nfc, onFailure_nfc);
@@ -577,7 +584,7 @@ function get_nfc() {
 
 function onSuccess_nfc() {
     console.log("NFC listener ajouté avec succès");
-    document.getElementById('nfcDialog').style.display = 'flex';
+    DIALOG_ALERT.style.display = 'flex';
 }
 
 function onFailure_nfc(error) {
@@ -609,7 +616,7 @@ function close_nfc() {
     // ------------------------------------------------------------
     console.log("=======close_nfc=======");
     nfc.removeTagDiscoveredListener(callback_close_nfc);
-    document.getElementById('nfcDialog').style.display = 'none';
+    DIALOG_ALERT.style.display = 'none';
 }
 
 function callback_close_nfc() {
@@ -627,9 +634,9 @@ function verif_sessionStorage(tag) {
     }
 
     if (valeur_key.includes(tag)) {
-        document.getElementById("para_nfc_dialog").innerHTML = "Vôtre carte est déjà enregistrée";
-        document.getElementById("gif_dialog").src = './img/nfc_error.gif';
-        document.getElementById("nfcDialogCloseButton").style.display = 'block';
+        DIALOG_NFC.innerHTML = "Vôtre carte est déjà enregistrée";
+        GIF_DIALOG_NFC.src = './img/nfc_error.gif';
+        CLOSE_BTN_DIALOG_NFC.style.display = 'block';
 
         NFC_TILTE.innerHTML = tag;
         let response = JSON.parse(sessionStorage.getItem(tag));
@@ -639,8 +646,8 @@ function verif_sessionStorage(tag) {
         NFC_DATE.innerHTML = response.date;
         build_account();
     } else {
-        document.getElementById("para_nfc_dialog").innerHTML = "Vôtre carte n'est pas enregistrée; appelle du serveur !";
-        document.getElementById("gif_dialog").src = './img/nfc_loading.gif';
+        DIALOG_NFC.innerHTML = "Vôtre carte n'est pas enregistrée; appelle du serveur !";
+        GIF_DIALOG_NFC.src = './img/nfc_loading.gif';
         post_nfc(tag);
     }
 }
@@ -702,10 +709,10 @@ function statechange(event) {
                     if (XHR.status == 200) {
                         console.log("Traitement local de la réponse");
 
-                        document.getElementById("para_nfc_dialog").innerHTML = "Carte Trouvé !";
-                        document.getElementById("gif_dialog").src = './img/nfc_success.gif';
-                        document.getElementById("nfcDialogCloseButton").style.display = 'block';
-                        document.getElementById("nfcCreateAccountButton").style.display = 'none';
+                        DIALOG_NFC.innerHTML = "Carte Trouvé !";
+                        GIF_DIALOG_NFC.src = './img/nfc_success.gif';
+                        CLOSE_BTN_DIALOG_NFC.style.display = 'block';
+                        CREATE_ACCOUNT_DIALOG.style.display = 'none';
 
 
                         let response = JSON.parse(XHR.responseText);
@@ -723,15 +730,15 @@ function statechange(event) {
                     } else if (XHR.status == 404) {
                         console.log("Erreur 404");
                         if (NFC_STATUS.innerHTML == "Administrateur") {
-                            document.getElementById("para_nfc_dialog").innerHTML = "Carte non enregistrée, Voulez vous l'enregistrer ?";
-                            document.getElementById("nfcCreateAccountButton").style.display = 'block';
-                            document.getElementById("nfcCreateAccountButton").addEventListener("click", ajout_input_tag);
+                            DIALOG_NFC.innerHTML = "Carte non enregistrée, Voulez vous l'enregistrer ?";
+                            CREATE_ACCOUNT_DIALOG.style.display = 'block';
+                            CREATE_ACCOUNT_DIALOG.addEventListener("click", ajout_input_tag);
 
                         } else {
-                            document.getElementById("para_nfc_dialog").innerHTML = "Carte non enregistrée !";
+                            DIALOG_NFC.innerHTML = "Carte non enregistrée !";
                         }
-                        document.getElementById("gif_dialog").src = './img/nfc_error.gif';
-                        document.getElementById("nfcDialogCloseButton").style.display = 'block';
+                        GIF_DIALOG_NFC.src = './img/nfc_error.gif';
+                        CLOSE_BTN_DIALOG_NFC.style.display = 'block';
 
                     } else {
                         console.error("Erreur lors de la requête : " + XHR.status);
@@ -739,15 +746,26 @@ function statechange(event) {
                     break;
 
                 case "create":
+                    DIALOG_ALERT.style.display = 'flex';
                     if (XHR.status == 200) {
                         
-                        notification_alert('Création de compte', 'Compte créé avec succès', 'OK');
+                        DIALOG_NFC.innerHTML = "Compte crée !";
+                        GIF_DIALOG_NFC.src = './img/nfc_success.gif';
+                        CLOSE_BTN_DIALOG_NFC.style.display = 'block';
                     }else if (XHR.status == 404) {
-                        notification_alert('Création de compte', 'Erreur lors de la création de compte' + XHR.status, 'OK');
+                        DIALOG_NFC.innerHTML = "Le code ne correspond pas !";
+                        GIF_DIALOG_NFC.src = './img/nfc_error.gif';
+                        CLOSE_BTN_DIALOG_NFC.style.display = 'block';
                     }
                     else {
                         console.error("Erreur lors de la requête : " + XHR.status);
                     }
+                    document.getElementById("InputName").value = "";
+                    document.getElementById("InputDate").value = "";
+                    document.getElementById("InputCard").value = "";
+                    document.getElementById("InputCode").value = "";
+                    
+                    break;
             }
     }
 }
@@ -833,7 +851,6 @@ function change_account(event) {
 
     if (response.status == "Administrateur") {
         document.getElementById("create_account").style.display = "block";
-        create_account();
     } else {
         document.getElementById("create_account").style.display = "none";
     }
@@ -846,7 +863,7 @@ function ajout_input_tag() {
     //      ============================================================
 
     console.log("=======Input tag=======");
-    document.getElementById('nfcDialog').style.display = 'none';
+    DIALOG_ALERT.style.display = 'none';
     document.getElementById("InputCard").value = tag_nfc_scanner;
 
 
@@ -860,7 +877,7 @@ function create_account() {
     let param = "create";
 
     if (document.getElementById("InputName").value == "" || document.getElementById("InputDate").value == "" || document.getElementById("InputCard").value == "" || document.getElementById("InputCode").value == "") {
-        console.log("Champs vide");
+        notification_alert("Création de compte", "Veuillez remplir tous les champs", "OK");
     } else {
       
         let name = document.getElementById("InputName").value;
@@ -884,7 +901,7 @@ function droit_nfc() {
     let status_card = NFC_STATUS.innerHTML;
     liste_droit = {
         "Administrateur": "Tous les droits",
-        "Technicien": "Droit de création de compte",
+        "Technicien": "Accès au log apache",
         "R&D": "Droit de lecture",
         "Secretaire": "Droit de lecture et d'écriture",
         "Alternant": "Droit de lecture",
