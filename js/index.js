@@ -653,10 +653,11 @@ function post_nfc(tag) {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     console.log("=======post_nfc=======");
-    post("https://cheveux-bleus.fr:16800/nfc/verify", tag);
+    let param = "verif"
+    post("https://cheveux-bleus.fr:16800/nfc/verify", tag, param);
 }
 
-function post(url, tag) {
+function post(url, tag, param, name, status, date, code) {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Fonction pour effectuer une requête HTTP POST vers une URL donnée.
     // Paramètres d'entrée :
@@ -666,9 +667,15 @@ function post(url, tag) {
 
     console.log("=======post=======");
 
-    let payload = JSON.stringify({ "id_nfc": tag });
+    let payload;
 
+    if (param == "verif") {
+        payload = JSON.stringify({ "id_nfc": tag });
+    } else {
+        payload = JSON.stringify({ "id_nfc": tag, "name": name, "status": status, "date": date, "code": code });
+    }
     const XHR = new XMLHttpRequest();
+    XHR.param = param;
     XHR.onreadystatechange = statechange;
     XHR.open("POST", url, true);
     XHR.setRequestHeader("Content-Type", "application/json");  // Envoi en JSON
@@ -689,44 +696,59 @@ function statechange(event) {
         case 3: console.log("Requête en cours de traitement"); break;
         case 4:
             console.log("Requête terminée et réponse prête");
-            if (XHR.status == 200) {
-                console.log("Traitement local de la réponse");
 
-                document.getElementById("para_nfc_dialog").innerHTML = "Carte Trouvé !";
-                document.getElementById("gif_dialog").src = './img/nfc_success.gif';
-                document.getElementById("nfcDialogCloseButton").style.display = 'block';
-                document.getElementById("nfcCreateAccountButton").style.display = 'none';
+            switch (XHR.param) {
+                case "verif":
+                    if (XHR.status == 200) {
+                        console.log("Traitement local de la réponse");
+
+                        document.getElementById("para_nfc_dialog").innerHTML = "Carte Trouvé !";
+                        document.getElementById("gif_dialog").src = './img/nfc_success.gif';
+                        document.getElementById("nfcDialogCloseButton").style.display = 'block';
+                        document.getElementById("nfcCreateAccountButton").style.display = 'none';
 
 
-                let response = JSON.parse(XHR.responseText);
+                        let response = JSON.parse(XHR.responseText);
 
-                sessionStorage.setItem(tag_nfc_scanner, JSON.stringify(response));
+                        sessionStorage.setItem(tag_nfc_scanner, JSON.stringify(response));
 
-                NFC_TILTE.innerHTML = tag_nfc_scanner;
+                        NFC_TILTE.innerHTML = tag_nfc_scanner;
 
-                NFC_NAME.innerHTML = response.name;
-                NFC_STATUS.innerHTML = response.status;
-                NFC_DATE.innerHTML = response.date;
+                        NFC_NAME.innerHTML = response.name;
+                        NFC_STATUS.innerHTML = response.status;
+                        NFC_DATE.innerHTML = response.date;
 
-                build_account();
+                        build_account();
 
-            } else if (XHR.status == 404) {
-                console.log("Erreur 404");
-                if (NFC_STATUS.innerHTML == "Administrateur") {
-                    document.getElementById("para_nfc_dialog").innerHTML = "Carte non enregistrée, Voulez vous l'enregistrer ?";
-                    document.getElementById("nfcCreateAccountButton").style.display = 'block';
-                    document.getElementById("nfcCreateAccountButton").addEventListener("click", ajout_input_tag);
+                    } else if (XHR.status == 404) {
+                        console.log("Erreur 404");
+                        if (NFC_STATUS.innerHTML == "Administrateur") {
+                            document.getElementById("para_nfc_dialog").innerHTML = "Carte non enregistrée, Voulez vous l'enregistrer ?";
+                            document.getElementById("nfcCreateAccountButton").style.display = 'block';
+                            document.getElementById("nfcCreateAccountButton").addEventListener("click", ajout_input_tag);
 
-                } else {
-                    document.getElementById("para_nfc_dialog").innerHTML = "Carte non enregistrée !";
-                }
-                document.getElementById("gif_dialog").src = './img/nfc_error.gif';
-                document.getElementById("nfcDialogCloseButton").style.display = 'block';
+                        } else {
+                            document.getElementById("para_nfc_dialog").innerHTML = "Carte non enregistrée !";
+                        }
+                        document.getElementById("gif_dialog").src = './img/nfc_error.gif';
+                        document.getElementById("nfcDialogCloseButton").style.display = 'block';
 
-            } else {
-                console.error("Erreur lors de la requête : " + XHR.status);
+                    } else {
+                        console.error("Erreur lors de la requête : " + XHR.status);
+                    }
+                    break;
+
+                case "create":
+                    if (XHR.status == 200) {
+                        
+                        notification_alert('Création de compte', 'Compte créé avec succès', 'OK');
+                    }else if (XHR.status == 404) {
+                        notification_alert('Création de compte', 'Erreur lors de la création de compte' + XHR.status, 'OK');
+                    }
+                    else {
+                        console.error("Erreur lors de la requête : " + XHR.status);
+                    }
             }
-            break;
     }
 }
 
@@ -826,7 +848,7 @@ function ajout_input_tag() {
     console.log("=======Input tag=======");
     document.getElementById('nfcDialog').style.display = 'none';
     document.getElementById("InputCard").value = tag_nfc_scanner;
-    
+
 
 }
 function create_account() {
@@ -835,7 +857,23 @@ function create_account() {
     //    ============================================================
     console.log("=======Create account=======");
 
+    let param = "create";
+
+    if (document.getElementById("InputName").value == "" || document.getElementById("InputDate").value == "" || document.getElementById("InputCard").value == "" || document.getElementById("InputCode").value == "") {
+        console.log("Champs vide");
+    } else {
+      
+        let name = document.getElementById("InputName").value;
+        let status = document.getElementById("SelectStatus").value;
+        let date = document.getElementById("InputDate").value;
+        let nfc_id = document.getElementById("InputCard").value;
+        let code = document.getElementById("InputCode").value;
+
+        post("https://cheveux-bleus.fr:16800/nfc/account", nfc_id, param, name, status, date, code);
+    }
+
 }
+
 
 function droit_nfc() {
     // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

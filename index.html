@@ -293,7 +293,7 @@
       <div id="create_account" class="row" style="display:none;">
         <h3>Crée un compte ascossier a une carte</h3>
 
-        <form>
+        <div id="form_create_account">
           <div class="mb-3">
             <label for="InputName" class="form-label">Prenom Nom</label>
             <input type="text" class="form-control" id="InputName" aria-describedby="nameHelp" required>
@@ -322,9 +322,13 @@
             <input type="text" class="form-control" id="InputCard" required>
             <div id="cardHelp" class="form-text">Entrez l'ID de votre carte</div>
           </div>
+          <div class="mb-3">
+            <label for="InputCode" class="form-label">Code Secret Administrateur</label>
+            <input type="password" class="form-control" id="InputCode" required>
+          </div>
 
-          <button id="btn_create_account" type="submit" class="btn btn-primary">Crée</button>
-        </form>
+          <button id="btn_create_account" role="button" class="btn btn-primary" aria-disabled="true">Crée</button>
+        </div>
       </div>
 
       <div class="row">
