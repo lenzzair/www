@@ -48,6 +48,8 @@ const NFC_NAME = document.getElementById("para_nfc_name");
 const NFC_STATUS = document.getElementById("para_nfc_status");
 const NFC_DATE = document.getElementById("para_nfc_date");
 
+const NFC_BTN_CREATE_ACCOUNT = document.getElementById("btn_create_account");
+
 /**************************************/
 /** Event Listeners                   */
 /**************************************/
@@ -74,6 +76,7 @@ UPDATE_TB_NFC.addEventListener("click", get_nfc);
 document.getElementById("nfcDialogCloseButton").addEventListener("click", close_nfc);
 
 UPDATE_NFC_DROIT.addEventListener("click", droit_nfc);
+NFC_BTN_CREATE_ACCOUNT.addEventListener("click", create_account);
 
 /**************************************/
 /** Functions                         */
@@ -712,7 +715,7 @@ function statechange(event) {
                 if (NFC_STATUS.innerHTML == "Administrateur") {
                     document.getElementById("para_nfc_dialog").innerHTML = "Carte non enregistrée, Voulez vous l'enregistrer ?";
                     document.getElementById("nfcCreateAccountButton").style.display = 'block';
-                    document.getElementById("nfcCreateAccountButton").addEventListener("click", create_account);
+                    document.getElementById("nfcCreateAccountButton").addEventListener("click", ajout_input_tag);
 
                 } else {
                     document.getElementById("para_nfc_dialog").innerHTML = "Carte non enregistrée !";
@@ -815,14 +818,22 @@ function change_account(event) {
 
 }
 
-function create_account() {
+function ajout_input_tag() {
     //     ============================================================
-    //      Fonction qui permet de crée un compte sur les carte scanner pendant la session
+    //      Fonction qui permet de rajoutez l'id de la carte pour crée un compte
     //      ============================================================
 
+    console.log("=======Input tag=======");
+    document.getElementById('nfcDialog').style.display = 'none';
+    document.getElementById("InputCard").value = tag_nfc_scanner;
+    
+
+}
+function create_account() {
+    //    ============================================================
+    //      Fonction qui permet de crée un compte sur la carte NFC
+    //    ============================================================
     console.log("=======Create account=======");
-
-
 
 }
 
