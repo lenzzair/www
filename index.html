@@ -19,6 +19,7 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!--  Importation du framework bootstrap css  et js -->
   <link rel="icon" href="./img/favicon.ico">
   <title>L2zCore</title>
@@ -259,13 +260,34 @@
           <p id="para_nfc">NFC</p>
 
         </div>
-
+        <!-- Espace graphique -->
         <div class="col user_col">
 
-          <button class="Tb_Button label_td" id="Tb_qrcode" type="button">
-            <i class="bi bi-qr-code-scan"></i>
+          <button class="Tb_Button label_td" id="Tb_graphique" type="button" data-bs-toggle="modal"
+            data-bs-target="#graphiqueModale">
+            <i class="bi bi-bar-chart-line"></i>
           </button>
-          <p id="para_qrcode">QR Code</p>
+          <p id="para_graphique">Graphique</p>
+
+
+          <div class="modal fade" id="graphiqueModale" tabindex="-1" aria-labelledby="graphiqueModale"
+            aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen-sm-down">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Statistique Web</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <canvas id="myChart" width="400" height="400"></canvas>
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
         </div>
 

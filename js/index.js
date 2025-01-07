@@ -19,6 +19,7 @@
 /**  VARIABLES                           */
 /**************************************/
 
+
 const TO_UPDATE_TB_NETWORK = document.getElementById("para_network");
 const UPDATE_TB_NETWORK = document.getElementById("Tb_network");
 
@@ -35,7 +36,7 @@ const BTN_SUPP = document.getElementById("btn-supp");
 const BTN_MAIL = document.getElementById("btn-mail");
 
 const UPDATE_TB_NFC = document.getElementById("Tb_nfc");
-const UPDATE_TB_QRCODE = document.getElementById("Tb_qrcode");
+const UPDATE_TB_GRAPHIQUE = document.getElementById("Tb_graphique");
 
 const BTN_CONTACT = document.getElementById("btn-contact");
 const TO_UPDATE_CONTACT_NUM = document.getElementById("para_contact_num");
@@ -78,7 +79,7 @@ BTN_MAIL.addEventListener("click", send_mail_archive);
 BTN_CONTACT.addEventListener("click", search_contact);
 
 UPDATE_TB_NFC.addEventListener("click", get_nfc);
-// UPDATE_TB_QRCODE.addEventListener("click", get_qrcode);
+UPDATE_TB_GRAPHIQUE.addEventListener("click", affiche_graphique);
 
 CLOSE_BTN_DIALOG_NFC.addEventListener("click", close_nfc);
 
@@ -748,11 +749,11 @@ function statechange(event) {
                 case "create":
                     DIALOG_ALERT.style.display = 'flex';
                     if (XHR.status == 200) {
-                        
+
                         DIALOG_NFC.innerHTML = "Compte crée !";
                         GIF_DIALOG_NFC.src = './img/nfc_success.gif';
                         CLOSE_BTN_DIALOG_NFC.style.display = 'block';
-                    }else if (XHR.status == 404) {
+                    } else if (XHR.status == 404) {
                         DIALOG_NFC.innerHTML = "Le code ne correspond pas !";
                         GIF_DIALOG_NFC.src = './img/nfc_error.gif';
                         CLOSE_BTN_DIALOG_NFC.style.display = 'block';
@@ -764,7 +765,7 @@ function statechange(event) {
                     document.getElementById("InputDate").value = "";
                     document.getElementById("InputCard").value = "";
                     document.getElementById("InputCode").value = "";
-                    
+
                     break;
             }
     }
@@ -879,7 +880,7 @@ function create_account() {
     if (document.getElementById("InputName").value == "" || document.getElementById("InputDate").value == "" || document.getElementById("InputCard").value == "" || document.getElementById("InputCode").value == "") {
         notification_alert("Création de compte", "Veuillez remplir tous les champs", "OK");
     } else {
-      
+
         let name = document.getElementById("InputName").value;
         let status = document.getElementById("SelectStatus").value;
         let date = document.getElementById("InputDate").value;
@@ -936,26 +937,45 @@ function droit_nfc() {
 
 }
 // ****************************************************************************************************************************************************************
-// FONCTION QRCODE
+// FONCTION Graphique
 // ****************************************************************************************************************************************************************
 
-// function get_qrcode() {
-//     ============================================================
-//      Fonction qui permet de lire un QRCode
-//      Utilise le plugin cordova-plugin-qrscanner
-//      ============================================================
+function affiche_graphique() {
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar', // Type de graphique, par exemple 'bar', 'line', 'pie', etc.
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 
-//     console.log("========= get_qrcode =========");
+}
 
-//     cordova.plugins.barcodeScanner.scan(
-//         function (result) {
-//             alert("We got a barcode\n" +
-//                   "Result: " + result.text + "\n" +
-//                   "Format: " + result.format + "\n" +
-//                   "Cancelled: " + result.cancelled);
-//         },
-//         function (error) {
-//             alert("Scanning failed: " + error);
-//         }
-//      );
-// }
