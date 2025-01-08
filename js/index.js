@@ -79,7 +79,7 @@ BTN_MAIL.addEventListener("click", send_mail_archive);
 BTN_CONTACT.addEventListener("click", search_contact);
 
 UPDATE_TB_NFC.addEventListener("click", get_nfc);
-UPDATE_TB_GRAPHIQUE.addEventListener("click", affiche_graphique);
+UPDATE_TB_GRAPHIQUE.addEventListener("click", get_graphique);
 
 CLOSE_BTN_DIALOG_NFC.addEventListener("click", close_nfc);
 
@@ -199,11 +199,12 @@ function get_etat_serveur() {
 
 
     console.log("=========Appelle Serveur========");
-    get("https://cheveux-bleus.fr:16800/docs");
+    param = "header";
+    get("https://cheveux-bleus.fr:16800/docs", param);
 
 }
 
-function get(url) {
+function get(url, param) {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Fonction pour effectuer une requête HTTP GET vers une URL donnée.
     // Paramètres d'entrée :
@@ -211,10 +212,17 @@ function get(url) {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     console.log("=========Appelle GET========");
-    const XHR_srv = new XMLHttpRequest();
-    XHR_srv.onreadystatechange = statechange_server;
-    XHR_srv.open("HEAD", url);
-    XHR_srv.send();
+    const XHR = new XMLHttpRequest();
+    XHR.param = param;
+    XHR.onreadystatechange = statechange_server;
+
+    if (param == "header") {
+        XHR.open("HEAD", url);
+    } else {
+        XHR.open("GET", url);
+    }
+
+    XHR.send();
 }
 
 function statechange_server(event) {
@@ -233,14 +241,37 @@ function statechange_server(event) {
         case 3: console.log("Requête en cours de traitement"); break;
         case 4:
             console.log("Requête terminée et réponse prête");
+
+
+
             if (XHR_srv.status == 200) {
                 console.log("Traitement local de la réponse");
 
-                notification_alert('Etat serveur', 'Le serveur est accessible !', 'Etat serveur');
+                if (XHR_srv.param == "header"){
 
-                TO_UPDATE_TB_SERVER.innerHTML = "Serveur accessible";
-                UPDATE_TB_SERVER.style.color = "green";
-                UPDATE_TB_SERVER.style.border = "2px solid green";
+                    notification_alert('Etat serveur', 'Le serveur est accessible !', 'Etat serveur');
+
+                    TO_UPDATE_TB_SERVER.innerHTML = "Serveur accessible";
+                    UPDATE_TB_SERVER.style.color = "green";
+                    UPDATE_TB_SERVER.style.border = "2px solid green";
+                }else{
+
+                    let reponse_objet = JSON.parse(XHR_srv.responseText);
+                    console.log(reponse_objet);
+
+                   let list_label = [];
+                   let  list_donnee = [];
+                   
+
+                    for (let [label, donnee] of Object.entries(reponse_objet)){
+                        list_label.push(label);
+                        list_donnee.push(donnee);
+                        
+                    }
+                    console.log(list_label + list_donnee);
+                    affiche_graphique(list_label, list_donnee);
+                }
+                
 
             } else {
                 notification_alert('Etat serveur', 'Impossible de joindre le serveur !', 'Etat serveur');
@@ -249,6 +280,11 @@ function statechange_server(event) {
                 UPDATE_TB_SERVER.style.border = "2px solid red";
                 TO_UPDATE_TB_SERVER.innerHTML = "Serveur inaccessible";
             }
+            break;
+
+
+
+
             break;
     }
 }
@@ -939,8 +975,20 @@ function droit_nfc() {
 // ****************************************************************************************************************************************************************
 // FONCTION Graphique
 // ****************************************************************************************************************************************************************
+let label_graphique, donnee_graphique;
 
-function affiche_graphique() {
+function get_graphique() {
+    // ++++++++++++++++++++++++++++++++++++++++++++++++
+    // Fonction qui récupère les info de connexion aux site web qui va permettre de faire le graphique
+    // +++++++++++++++++++++++++++++++++++++++++++++++++
+    console.log("=======Appelle get graphique=======");
+    
+    let param = "graphique" ;
+    get("https://cheveux-bleus.fr:16800/graph", param);
+
+}
+
+function affiche_graphique(label, donnee) {
     const ctx = document.getElementById('myChart').getContext('2d');
     const myChart = new Chart(ctx, {
         type: 'bar', // Type de graphique, par exemple 'bar', 'line', 'pie', etc.
