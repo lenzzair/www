@@ -6,7 +6,10 @@
 - **Prénom** : Lenny
 
 ---
+## Version
 
+- **Version** : 1.0
+- **Date** : Date de sortie: 23/01/2025
 ## Sommaire
 
 1. [Contexte et Objectif](#contexte-et-objectif)
@@ -25,6 +28,7 @@
 ### Contexte
 
 Les administrateurs réseau des petites entreprises doivent gérer une charge de travail croissante. Ce projet vise à développer une **application mobile** centralisant les informations critiques des serveurs pour une supervision efficace.
+Par exemple, un administrateur peut surveiller à distance les performances des serveurs pendant ses déplacements, éviter une surcharge CPU, ou détecter rapidement une tentative de connexion suspecte.
 
 L'application permet de :
 
@@ -42,6 +46,9 @@ L'application inclut :
 - Une interface utilisateur intuitive pour analyser les données en temps réel.
 - Une sécurisation des données sensibles via des jetons JWT.
 - Faciliter l'échange d'informations serveur entre collaborateurs via email.
+- Gestion des contacts via le plugin Cordova.
+- Lecture et gestion des cartes NFC pour l'authentification et la gestion des droits.
+- Visualisation des données sous forme de graphiques interactifs avec Chart.js.
 
 ---
 
@@ -51,6 +58,7 @@ L'application inclut :
 - **Fonctionnalités libres** mais doivent inclure au moins un plugin asynchrone.
 - **Librairies graphiques** :
   - Bootstrap.
+  - Chart.js.
 - **Persistance des données**.
 - Utilisation de **librairies externes**.
 
@@ -65,19 +73,50 @@ L'application inclut :
 - **Librairies graphiques** :
   - **Bootstrap** pour créer des interfaces réactives.
   - **Chart.js** pour des graphiques interactifs.
-  - **Leaflet** pour la cartographie interactive.
 - **Plugins** :
   - **cordova-plugin-email-composer** : Envoi d'emails.
   - **cordova-plugin-contacts-x** : Gestion des contacts.
-  - **cordova-plugin-network-information:** fournit des informations sur la connexion cellulaire et Wi-Fi
+  - **cordova-plugin-network-information** : Fournit des informations sur la connexion cellulaire et Wi-Fi.
+  - **cordova-plugin-dialogs** : Affichage de dialogues natifs.
+  - **cordova-plugin-nfc** : Gestion des interactions NFC.
+  - **cordova-plugin-splashscreen** : Gestion du logo lors du chargement de l'application
+
 - **API** :
-  - API personnelle pour les informations de serveurs Apache.
-  - **IP-API** : Données géographiques basées sur une adresse IP.
+  - **L2zCore API** : API personnelle hébèreger sur le serveur même et qui récupère plusieurs données lier aux serveur
 
-### Gestion de Projet
+  - **Authentification**
 
-- **Notion** : Organisation et suivi des tâches.
-- **GitHub Projects** : Suivi de l'avancement du code.
+    - **Endpoint** : POST /token
+      - **Description** : Envoie en paramètre un _"username"_ et un _"password"_, le serveur vérifie et si _"ok"_ renvoie un token valide 30 minutes.
+  
+  - **Métriques système**
+  
+    - **Endpoint** : GET /system/cpu , /system/memory , /system/disk, /system/uptime
+      - **Description** : Récupère des données métrique du serveur non senssible.
+
+    - **Endpoint** : GET /network/connections
+      - **Description** : Récupère toutes les informations réseaux du serveur (sockets, port en écoute ....), néssecie d'envoie dans la requête les token JWT récupéré par /token.
+
+  - **Logs**
+
+    - **Endpoint** : GET /log/api/today_ip /log/api/week_ip
+      - **Description** : Récupère les adresse ip de se qui envoie une requête a l'API, cette endpoint est protègé par /token
+
+    - **Endpoint** : GET /log/apache/connexion_web/today /log/apache/connexion_web/week
+      - **Description** : Récupère les logs apache simplifier. Aussi protègé par /token
+
+    - **Endpoint** : GET /graph
+      - **Description** : Récupère deux listes avec un mois et le nombre de connexion au site web lier au mois
+
+  - **Gestion NFC**
+
+    - **Endpoint** : POST /nfc/verify
+      - **Description** : Envoie en paramètre id d'une carte nfc qui a été scannée puis l'API vérifie que cette id est présent dans la base de donnée du serveur, si oui renvoie nom, status, date de naissance du propriétaire
+ 
+    - **Endpoint** : POST /nfc/account
+      - **Description** : Permet de crée un compte associer a une nouvelle carte nfc
+
+
 
 ---
 
@@ -85,21 +124,24 @@ L'application inclut :
 
 ### Intégration des Plugins
 
-- Le plugin **cordova-plugin-email-composer** permet d'envoyer des rapports journaliers ou des alertes.
-- Le plugin **cordova-plugin-contacts-x** facilite l'accès aux contacts pour les communications.
+- Le plugin **cordova-plugin-email-composer** permet a un administrateur d'envoyer un rapport détaillé à un collegue avec les métrique de la journé où celle qui ont été archiver
+- Le plugin **cordova-plugin-contacts-x** facilite l'accès aux contacts pour les communications, permet de récupèré l'adresse mail et le numéro a l'aide du nom.
+- Le plugin **cordova-plugin-nfc** permet la lecture des cartes NFC pour l'authentification et la gestion des droits.
+- Le plugin **cordova-plugin-network-information** fournit des informations sur l'état de la connexion réseau.
+- Le plugin **cordova-plugin-dialogs** permet d'afficher des alertes et des dialogues natifs.
 
 ### Communication avec l’API
 
-L'API personnelle structure et renvoie les informations des serveurs Apache, intégrant :
+L'API L2zCore structure et renvoie les informations du serveur Apache, intégrant:
 
 - Les métriques systèmes.
 - Les journaux d'activité.
 - Les données réseau.
+- La base de donnée liées aux cartes NFC
 
 ### Visualisation des Données
 
 - **Chart.js** : Pour des graphiques clairs et interactifs (courbes, barres).
-- **Leaflet** : Pour une cartographie intuitive des serveurs.
 
 ---
 
@@ -116,14 +158,16 @@ L'API personnelle structure et renvoie les informations des serveurs Apache, int
 ### Défis
 
 - **Sécurisation** des données sensibles via JWT.
-- Intégration fluide des plugins et librairies.
-- Visualisation efficace des données en temps réel.
+- **Intégration** fluide des plugins et librairies.
+- **Visualisation** efficace des données en temps réel.
 
 ### Résolutions
 
 - Mise en place d’un système d’authentification robuste.
 - Documentation précise des plugins utilisés.
 - Tests continus pour optimiser la performance.
+- Nouvelle fonctionnalité.
+- Permettre l'integration de l'API sur un nouveau serveur
 
 ---
 
@@ -137,15 +181,15 @@ L'API personnelle structure et renvoie les informations des serveurs Apache, int
 
 ### Liens Utiles
 
-- Bootstrap:  [https://getbootstrap.com/\*\*](https://getbootstrap.com/)
--  Leaflet: [https://leafletjs.com/](https://leafletjs.com/)
+- Bootstrap:  [https://getbootstrap.com/](https://getbootstrap.com/)
 - Chart.js : [https://www.chartjs.org/](https://www.chartjs.org/)
-- \*\*cordova-plugin-email-composer : \*\***[https://www.npmjs.com/package/cordova-plugin-email-composer?activeTab=readme](https://www.npmjs.com/package/cordova-plugin-email-composer?activeTab=readme)**
-- \*\*cordova-plugin-contacts-x : \*\***[https://www.npmjs.com/package/cordova-plugin-contacts-x](https://www.npmjs.com/package/cordova-plugin-contacts-x)**
-- \*\*cordova-plugin-dialogs : \*\* **[https://www.npmjs.com/package/cordova-plugin-dialogs](https://www.npmjs.com/package/cordova-plugin-dialogs)**
-- IP-API :  https\://ip-api.com/
+- **cordova-plugin-email-composer** : [https://www.npmjs.com/package/cordova-plugin-email-composer](https://www.npmjs.com/package/cordova-plugin-email-composer)
+- **cordova-plugin-contacts-x** : [https://www.npmjs.com/package/cordova-plugin-contacts-x](https://www.npmjs.com/package/cordova-plugin-contacts-x)
+- **cordova-plugin-dialogs** : [https://www.npmjs.com/package/cordova-plugin-dialogs](https://www.npmjs.com/package/cordova-plugin-dialogs)
+- **cordova-plugin-network-information** : [https://www.npmjs.com/package/cordova-plugin-network-information](https://www.npmjs.com/package/cordova-plugin-network-information)
+- **cordova-plugin-nfc** : [https://www.npmjs.com/package/cordova-plugin-nfc](https://www.npmjs.com/package/cordova-plugin-nfc)
+- IP-API : [https://ip-api.com/](https://ip-api.com/)
 
 ---
 
-Merci d'avoir consulté cette documentation. N'hésitez pas à contribuer ou poser des [questions ](https://github.com/)[via ](https://github.com/)[mon GitHub]([https://github.com/](https://github.com/lenzzair)).
-
+Merci d'avoir consulté cette documentation. N'hésitez pas à contribuer ou poser des questions via [mon GitHub](https://github.com/lenzzair).
