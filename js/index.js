@@ -989,14 +989,14 @@ function get_graphique() {
 }
 
 function affiche_graphique(label, donnee) {
-    const ctx = document.getElementById('myChart').getContext('2d');
-    const myChart = new Chart(ctx, {
+    const CTX = document.getElementById('myChart').getContext('2d');
+    const MYCHART = new Chart(CTX, {
         type: 'bar', // Type de graphique, par exemple 'bar', 'line', 'pie', etc.
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: label,
             datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                label: 'Nombre de connection web par mois',
+                data: donnee,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
