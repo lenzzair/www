@@ -300,7 +300,7 @@ function statechange(event) {
 
                 let reponse_brut = XHR.responseText;
                 let reponse_objet = JSON.parse(reponse_brut);
-                
+
 
                 switch (XHR.param) {
 
@@ -323,7 +323,7 @@ function statechange(event) {
                         }
                         ARCHIVE_CPU.style.display = "block";
                         temp_cpu = reponse_brut;
-                        
+
                         break;
 
                     case "MEMORY":
@@ -339,7 +339,7 @@ function statechange(event) {
                         }
                         ARCHIVE_MEMORY.style.display = "block";
                         temp_memory = reponse_brut;
-                       
+
                         break;
 
                     case "DISK":
@@ -484,15 +484,15 @@ function put_archive(id_archivage) {
     let year = now.getFullYear(); // Année complète
     // Construire la date au format souhaité
     let formattedDate = `${day}/${month}/${year}`;
-   
+
 
     let info_archive;
-    
+
     switch (id_archivage) {
         case "cpu":
             info_archive = temp_cpu;
             break;
-    
+
         case "memory":
             info_archive = temp_memory;
             break;
@@ -521,7 +521,7 @@ function put_archive(id_archivage) {
     }
     console.log(info_archive);
     console.log(temp_cpu);
-    
+
     localStorage.setItem("archive_" + id_archivage + "_" + formattedDate, info_archive);
 
     console.log("Donnée ajouter aux localstorage");
@@ -563,7 +563,7 @@ function callback_archive(buttonIndex) {
         );
     }
     if (buttonIndex === 2) {
-       
+
         navigator.notification.alert(
             "Données non pas été archivé",  // message
             callback_reponse,  // callback
