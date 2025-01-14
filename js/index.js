@@ -86,6 +86,7 @@ CLOSE_BTN_DIALOG_NFC.addEventListener("click", close_nfc);
 UPDATE_NFC_DROIT.addEventListener("click", droit_nfc);
 NFC_BTN_CREATE_ACCOUNT.addEventListener("click", create_account);
 
+document.getElementById("qrcode").addEventListener("click", startScanning);
 /**************************************/
 /** Functions                         */
 /**************************************/
@@ -99,7 +100,7 @@ function onDeviceReady() {
     document.getElementById("utilisateur").style.display = "block";
     start_account_nfc();
 
-
+    
 }
 
 function notification_alert(titre, message, buttonName) {
@@ -1029,3 +1030,56 @@ function affiche_graphique(label, donnee) {
 }
 
 
+
+function startScanning() {
+    console.log("Initialisation du scanner...");
+
+    // Préparer le scanner
+    QRScanner.prepare((err, status) => {
+        if (err) {
+            console.error("Erreur lors de la préparation : ", err.message || err);
+            return;
+        }
+        if (status.authorized) {
+            console.log("Scanner prêt. Activation de la caméra...");
+
+           
+            // Afficher la caméra (doit être après la préparation)
+            QRScanner.show(function(status){
+                console.log(status);
+              });
+
+            // Optionnel : Activer la lampe torche
+            QRScanner.enableLight((lightErr) => {
+                if (lightErr) {
+                    console.warn("Impossible d'activer la lampe torche : ", lightErr.message || lightErr);
+                } else {
+                    console.log("Lampe torche activée.");
+                }
+            });
+
+            // Démarrer le scan
+            QRScanner.scan((scanErr, contents) => {
+                if (scanErr) {
+                    if (scanErr.name === 'SCAN_CANCELED') {
+                        console.warn("Scan annulé par l'utilisateur.");
+                    } else {
+                        console.error("Erreur lors du scan : ", scanErr.message || scanErr);
+                    }
+                } else {
+                    alert('Le QR Code contient : ' + contents);
+                }
+
+                // Désactiver la lampe torche après le scan
+                QRScanner.disableLight();
+
+                // Détruire l'interface après le scan
+                QRScanner.destroy();
+            });
+        } else if (status.denied) {
+            alert("Permission refusée. Activez l'accès à la caméra dans les paramètres.");
+        } else {
+            console.log("Permission non autorisée mais demandable.");
+        }
+    });
+}
