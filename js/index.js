@@ -99,6 +99,7 @@ function onDeviceReady() {
     document.getElementById("utilisateur").style.display = "block";
     start_account_nfc();
 
+
 }
 
 function notification_alert(titre, message, buttonName) {
@@ -1026,4 +1027,5 @@ function affiche_graphique(label, donnee) {
     });
 
 }
+
 
