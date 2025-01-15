@@ -100,7 +100,7 @@ function onDeviceReady() {
     document.getElementById("utilisateur").style.display = "block";
     start_account_nfc();
 
-    
+
 }
 
 function notification_alert(titre, message, buttonName) {
@@ -249,31 +249,31 @@ function statechange_server(event) {
             if (XHR_srv.status == 200) {
                 console.log("Traitement local de la réponse");
 
-                if (XHR_srv.param == "header"){
+                if (XHR_srv.param == "header") {
 
                     notification_alert('Etat serveur', 'Le serveur est accessible !', 'Etat serveur');
 
                     TO_UPDATE_TB_SERVER.innerHTML = "Serveur accessible";
                     UPDATE_TB_SERVER.style.color = "green";
                     UPDATE_TB_SERVER.style.border = "2px solid green";
-                }else{
+                } else {
 
                     let reponse_objet = JSON.parse(XHR_srv.responseText);
                     console.log(reponse_objet);
 
-                   let list_label = [];
-                   let  list_donnee = [];
-                   
+                    let list_label = [];
+                    let list_donnee = [];
 
-                    for (let [label, donnee] of Object.entries(reponse_objet)){
+
+                    for (let [label, donnee] of Object.entries(reponse_objet)) {
                         list_label.push(label);
                         list_donnee.push(donnee);
-                        
+
                     }
                     console.log(list_label + list_donnee);
                     affiche_graphique(list_label, list_donnee);
                 }
-                
+
 
             } else {
                 notification_alert('Etat serveur', 'Impossible de joindre le serveur !', 'Etat serveur');
@@ -984,8 +984,8 @@ function get_graphique() {
     // Fonction qui récupère les info de connexion aux site web qui va permettre de faire le graphique
     // +++++++++++++++++++++++++++++++++++++++++++++++++
     console.log("=======Appelle get graphique=======");
-    
-    let param = "graphique" ;
+
+    let param = "graphique";
     get("https://cheveux-bleus.fr:16800/graph", param);
 
 }
@@ -1031,8 +1031,12 @@ function affiche_graphique(label, donnee) {
 
 
 
+
 function startScanning() {
     console.log("Initialisation du scanner...");
+
+	document.getElementById("body").style = "display: none !important";
+// SECTION_INFO_VILLE_AVION.classList.add("cache"); // On cache les infos de la ville et des avions
 
     // Préparer le scanner
     QRScanner.prepare((err, status) => {
@@ -1043,11 +1047,10 @@ function startScanning() {
         if (status.authorized) {
             console.log("Scanner prêt. Activation de la caméra...");
 
-           
             // Afficher la caméra (doit être après la préparation)
             QRScanner.show(function(status){
-                console.log(status);
-              });
+				console.log(status);
+			  });
 
             // Optionnel : Activer la lampe torche
             QRScanner.enableLight((lightErr) => {
@@ -1067,7 +1070,7 @@ function startScanning() {
                         console.error("Erreur lors du scan : ", scanErr.message || scanErr);
                     }
                 } else {
-                    alert('Le QR Code contient : ' + contents);
+                    notification_alert('Le QR Code contient : ' + contents);
                 }
 
                 // Désactiver la lampe torche après le scan
@@ -1075,6 +1078,10 @@ function startScanning() {
 
                 // Détruire l'interface après le scan
                 QRScanner.destroy();
+
+				// SECTION_INFO_VILLE_AVION.classList.remove("cache"); // On affiche les infos de la ville et des avions
+			
+				// document.getElementById("body_inde").style = "none";
             });
         } else if (status.denied) {
             alert("Permission refusée. Activez l'accès à la caméra dans les paramètres.");
