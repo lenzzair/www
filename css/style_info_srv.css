@@ -23,3 +23,12 @@ h1 {
 
     display: none;
 }
+.spinner-border{
+    display: none;
+}
+.cache{
+    display: none;
+}
+.visibility{
+    display: block !important;
+}
