@@ -92,7 +92,7 @@ L'application inclut :
 | GET     | `/system/cpu`                    | Récupère les informations CPU du serveur.                                                          | Non              | Aucun                     |
 | GET     | `/system/memory`                 | Récupère les informations de mémoire du serveur.                                                   | Non              | Aucun                     |
 | GET     | `/system/disk`                   | Récupère les informations d'espace disque du serveur.                                              | Non              | 
-Aucun
+Aucun                     |
 | GET     | `/system/uptime`                 | Récupère les informations du nombre de temps que le serveur est allumé                             | Non              |
 Aucun                     |
 | GET     | `/network/connections`           | Récupère les informations sur les connexions réseau du serveur (sockets, ports, etc.).             | Oui              | Token JWT                 |
