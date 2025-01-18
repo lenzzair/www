@@ -93,7 +93,7 @@ L'application inclut :
 | GET     | `/system/memory`                 | Récupère les informations de mémoire du serveur.                                                   | Non              | Aucun                     |
 | GET     | `/system/disk`                   | Récupère les informations d'espace disque du serveur.                                              | Non              | Aucun                     |
 | GET     | `/system/uptime`                 | Récupère les informations du nombre de temps que le serveur est allumé                             | Non              | Aucun                     |
-| GET     | `/network/connections`           | Récupère les informations sur les connexions réseau du serveur (sockets, ports, etc.).             | Oui              | Token JWT                 |
+| GET     | `/network/connections`           | Récupère les informations sur les connexions réseau du serveur (sockets, ports, etc.).             | Oui              | Aucun                     |
 | GET     | `/log/api/today_ip`              | Récupère les adresses IP des requêtes API du jour.                                                  | Oui              | Aucun                     |
 | GET     | `/log/apache/connexion_web/today`| Récupère les logs Apache des connexions du jour.                                                   | Oui              | Aucun                     |
 | POST    | `/nfc/verify`                    | Vérifie une carte NFC scannée en envoyant son `id` et récupère les informations associées.          | Oui              | `nfc_id`                  |
@@ -171,7 +171,7 @@ L'API L2zCore structure et renvoie les informations du serveur Apache, intégran
 - **cordova-plugin-dialogs** : [https://www.npmjs.com/package/cordova-plugin-dialogs](https://www.npmjs.com/package/cordova-plugin-dialogs)
 - **cordova-plugin-network-information** : [https://www.npmjs.com/package/cordova-plugin-network-information](https://www.npmjs.com/package/cordova-plugin-network-information)
 - **cordova-plugin-nfc** : [https://www.npmjs.com/package/cordova-plugin-nfc](https://www.npmjs.com/package/cordova-plugin-nfc)
-- IP-API : [https://ip-api.com/](https://ip-api.com/)
+- **L2zCore API ** : (_nom de domaine provisoire_) [https://cheveux-bleus.fr:16800/docs](https://cheveux-bleus.fr:16800/docs)
 
 ---
 

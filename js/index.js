@@ -86,7 +86,7 @@ CLOSE_BTN_DIALOG_NFC.addEventListener("click", close_nfc);
 UPDATE_NFC_DROIT.addEventListener("click", droit_nfc);
 NFC_BTN_CREATE_ACCOUNT.addEventListener("click", create_account);
 
-document.getElementById("qrcode").addEventListener("click", startScanning);
+
 /**************************************/
 /** Functions                         */
 /**************************************/
@@ -1029,64 +1029,3 @@ function affiche_graphique(label, donnee) {
 
 }
 
-
-
-
-function startScanning() {
-    console.log("Initialisation du scanner...");
-
-	document.getElementById("body").style = "display: none !important";
-// SECTION_INFO_VILLE_AVION.classList.add("cache"); // On cache les infos de la ville et des avions
-
-    // Préparer le scanner
-    QRScanner.prepare((err, status) => {
-        if (err) {
-            console.error("Erreur lors de la préparation : ", err.message || err);
-            return;
-        }
-        if (status.authorized) {
-            console.log("Scanner prêt. Activation de la caméra...");
-
-            // Afficher la caméra (doit être après la préparation)
-            QRScanner.show(function(status){
-				console.log(status);
-			  });
-
-            // Optionnel : Activer la lampe torche
-            QRScanner.enableLight((lightErr) => {
-                if (lightErr) {
-                    console.warn("Impossible d'activer la lampe torche : ", lightErr.message || lightErr);
-                } else {
-                    console.log("Lampe torche activée.");
-                }
-            });
-
-            // Démarrer le scan
-            QRScanner.scan((scanErr, contents) => {
-                if (scanErr) {
-                    if (scanErr.name === 'SCAN_CANCELED') {
-                        console.warn("Scan annulé par l'utilisateur.");
-                    } else {
-                        console.error("Erreur lors du scan : ", scanErr.message || scanErr);
-                    }
-                } else {
-                    notification_alert('Le QR Code contient : ' + contents);
-                }
-
-                // Désactiver la lampe torche après le scan
-                QRScanner.disableLight();
-
-                // Détruire l'interface après le scan
-                QRScanner.destroy();
-
-				// SECTION_INFO_VILLE_AVION.classList.remove("cache"); // On affiche les infos de la ville et des avions
-			
-				// document.getElementById("body_inde").style = "none";
-            });
-        } else if (status.denied) {
-            alert("Permission refusée. Activez l'accès à la caméra dans les paramètres.");
-        } else {
-            console.log("Permission non autorisée mais demandable.");
-        }
-    });
-}
