@@ -89,9 +89,12 @@ L'application inclut :
 | Méthode | Endpoint                        | Description                                                                                         | Authentification | Paramètres                |
 |---------|----------------------------------|-----------------------------------------------------------------------------------------------------|------------------|---------------------------|
 | POST    | `/token`                         | Crée un token d'authentification en envoyant un `username` et un `password`.                         | Oui              | `username`, `password`    |
-| GET     | `/system/cpu`                    | Récupère les informations CPU du serveur.                                                          | Oui              | Aucun                     |
-| GET     | `/system/memory`                 | Récupère les informations de mémoire du serveur.                                                   | Oui              | Aucun                     |
-| GET     | `/system/disk`                   | Récupère les informations d'espace disque du serveur.                                              | Oui              | Aucun                     |
+| GET     | `/system/cpu`                    | Récupère les informations CPU du serveur.                                                          | Non              | Aucun                     |
+| GET     | `/system/memory`                 | Récupère les informations de mémoire du serveur.                                                   | Non              | Aucun                     |
+| GET     | `/system/disk`                   | Récupère les informations d'espace disque du serveur.                                              | Non              | 
+Aucun
+| GET     | `/system/uptime`                 | Récupère les informations du nombre de temps que le serveur est allumé                             | Non              |
+Aucun                     |
 | GET     | `/network/connections`           | Récupère les informations sur les connexions réseau du serveur (sockets, ports, etc.).             | Oui              | Token JWT                 |
 | GET     | `/log/api/today_ip`              | Récupère les adresses IP des requêtes API du jour.                                                  | Oui              | Aucun                     |
 | GET     | `/log/apache/connexion_web/today`| Récupère les logs Apache des connexions du jour.                                                   | Oui              | Aucun                     |
