@@ -84,37 +84,19 @@ L'application inclut :
 - **API** :
   - **L2zCore API** : API personnelle hébèreger sur le serveur même et qui récupère plusieurs données lier aux serveur
 
-  - **Authentification**
+  ## Endpoints de l'API
 
-    - **Endpoint** : POST /token
-      - **Description** : Envoie en paramètre un _"username"_ et un _"password"_, le serveur vérifie et si _"ok"_ renvoie un token valide 30 minutes.
-  
-  - **Métriques système**
-  
-    - **Endpoint** : GET /system/cpu , /system/memory , /system/disk, /system/uptime
-      - **Description** : Récupère des données métrique du serveur non senssible.
-
-    - **Endpoint** : GET /network/connections
-      - **Description** : Récupère toutes les informations réseaux du serveur (sockets, port en écoute ....), néssecie d'envoie dans la requête les token JWT récupéré par /token.
-
-  - **Logs**
-
-    - **Endpoint** : GET /log/api/today_ip /log/api/week_ip
-      - **Description** : Récupère les adresse ip de se qui envoie une requête a l'API, cette endpoint est protègé par /token
-
-    - **Endpoint** : GET /log/apache/connexion_web/today /log/apache/connexion_web/week
-      - **Description** : Récupère les logs apache simplifier. Aussi protègé par /token
-
-    - **Endpoint** : GET /graph
-      - **Description** : Récupère deux listes avec un mois et le nombre de connexion au site web lier au mois
-
-  - **Gestion NFC**
-
-    - **Endpoint** : POST /nfc/verify
-      - **Description** : Envoie en paramètre id d'une carte nfc qui a été scannée puis l'API vérifie que cette id est présent dans la base de donnée du serveur, si oui renvoie nom, status, date de naissance du propriétaire
- 
-    - **Endpoint** : POST /nfc/account
-      - **Description** : Permet de crée un compte associer a une nouvelle carte nfc
+| Méthode | Endpoint                        | Description                                                                                         | Authentification | Paramètres                |
+|---------|----------------------------------|-----------------------------------------------------------------------------------------------------|------------------|---------------------------|
+| POST    | `/token`                         | Crée un token d'authentification en envoyant un `username` et un `password`.                         | Oui              | `username`, `password`    |
+| GET     | `/system/cpu`                    | Récupère les informations CPU du serveur.                                                          | Oui              | Aucun                     |
+| GET     | `/system/memory`                 | Récupère les informations de mémoire du serveur.                                                   | Oui              | Aucun                     |
+| GET     | `/system/disk`                   | Récupère les informations d'espace disque du serveur.                                              | Oui              | Aucun                     |
+| GET     | `/network/connections`           | Récupère les informations sur les connexions réseau du serveur (sockets, ports, etc.).             | Oui              | Token JWT                 |
+| GET     | `/log/api/today_ip`              | Récupère les adresses IP des requêtes API du jour.                                                  | Oui              | Aucun                     |
+| GET     | `/log/apache/connexion_web/today`| Récupère les logs Apache des connexions du jour.                                                   | Oui              | Aucun                     |
+| POST    | `/nfc/verify`                    | Vérifie une carte NFC scannée en envoyant son `id` et récupère les informations associées.          | Oui              | `nfc_id`                  |
+| POST    | `/nfc/account`                   | Crée un compte associé à une nouvelle carte NFC.                                                   | Oui              | `nfc_id`, `user_info`     |
 
 
 
