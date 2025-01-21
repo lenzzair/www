@@ -155,10 +155,31 @@ function get_cpu() {
     param = "CPU"
     get("https://cheveux-bleus.fr:16800/system/cpu", param);
 }
+```
 
+- Cette fonction va crée une nouvelle instance XMLHttpRequest et va envoyer une requête GET sur L2zCore API en fonction de l'url qui a été appellé. Et va appeler statechange qui va traiter la réponse du serveur.
+```javascript
 
-
-
+function get(url, param, token)
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// Fonction pour effectuer une requête HTTP GET vers une URL donnée.
+// Paramètres d'entrée :
+// - url (string) : L'URL de la ressource à laquelle effectuer la requête.
+// La fonction utilise un objet XMLHttpRequest pour envoyer la requête.
+// - param (object) : Paramètres supplémentaires (actuellement inutilisés ici).
+// - token (string) : Jeton d'authentification pour l'en-tête Authorization.
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+    console.log("URL appelle");
+    const XHR = new XMLHttpRequest();
+    XHR.param = param;
+    XHR.onreadystatechange = statechange;
+    XHR.open("GET", url);
+    XHR.setRequestHeader("Accept", "application/json");
+    XHR.setRequestHeader("Authorization", `Bearer ${token}`);
+    XHR.send();
+}
+```
 
 ## Défis et Résolutions
 
