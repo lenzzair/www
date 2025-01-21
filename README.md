@@ -230,10 +230,10 @@ function statechange(event) {
                         break;
 
 ```
-
-### Fonctionnement des plugins principaux
-
-#### NFC
+<img src="./img_readme/photo_infosrv.jpg" alt="capture d'ecran de la récupération cpu" width=500>
+## Fonctionnement des plugins principaux:
+ ---
+### NFC
 
 Le but du plugin NFC est de pouvoir se connecter a son compte qui est lié avec sa carte de travaille est qui permet d'acceder a certaine fonctionnalité.
 
@@ -254,11 +254,34 @@ function get_nfc() {
     CREATE_ACCOUNT_DIALOG.style.display = "none";
 
 
-    nfc.addTagDiscoveredListener(callback_nfc, onSuccess_nfc, onFailure_nfc);  // si une entré nfc est lu elle lancera OnSuccess
+    nfc.addTagDiscoveredListener(callback_nfc, onSuccess_nfc, onFailure_nfc);  // si une entré nfc est lu elle lancera callback_nfc
 }
 ```
-#### Capture d'ecran lorsque l'utilisateur lance la capture nfc
-<img src="./img_readme/photo_nfc.jpg" alt="capture d'ecran du fonctionnement de get nfc" width="600">
+### Capture d'ecran lorsque l'utilisateur lance la capture nfc
+<img src="./img_readme/photo_nfc.jpg" alt="capture d'ecran du fonctionnement de get nfc" width="500">
+
+lorsqu'un puce nfc est lu cela appelle callback_nfc qui lance verife() qui permet de voir si la carte scannée n'est pas deja presente dans le session storage si non, elle envoie en POST l'id de la puce nfc au serveur lui demandant si un compte est associer a l'id de la carte
+
+```javascript
+function callback_nfc(nfcEvent) {
+    // ------------------------------------------------------------
+    // Fonction qui permet de lire une puce NFC
+    // Se déclenche lorsqu'une puce NFC est détectée
+    // ------------------------------------------------------------
+
+    console.log("=======callback_nfc=======");
+
+    let tag_nfc = nfcEvent.tag;
+    let ndefId = nfc.bytesToHexString(tag_nfc.id);
+
+    tag_nfc_scanner = ndefId;
+    build_account();
+    verif_sessionStorage(tag_nfc_scanner);
+
+    UPDATE_TB_NFC.style.color = "green";
+    UPDATE_TB_NFC.style.border = "2px solid green";
+}
+```
 
 ## Défis et Résolutions
 
