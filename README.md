@@ -231,6 +231,7 @@ function statechange(event) {
 
 ```
 <img src="./img_readme/photo_infosrv.jpg" alt="capture d'ecran de la récupération cpu" width=500>
+
 ## Fonctionnement des plugins principaux:
  ---
 ### NFC
