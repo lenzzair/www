@@ -108,9 +108,9 @@ L'application inclut :
 ### Intégration des Plugins
 
 - Le plugin **cordova-plugin-email-composer** permet a un administrateur d'envoyer un rapport détaillé à un collegue avec les métrique de la journé où celle qui ont été archiver
-- Le plugin **cordova-plugin-contacts-x** facilite l'accès aux contacts pour les communications, permet de récupèré l'adresse mail et le numéro a l'aide du nom.
+- Le plugin **cordova-plugin-contacts-x** facilite l'accès aux contacts pour les communications, permet de récupèré l'adresse mail et le numéro a l'aide du nom d'un collègue.
 - Le plugin **cordova-plugin-nfc** permet la lecture des cartes NFC pour l'authentification et la gestion des droits.
-- Le plugin **cordova-plugin-network-information** fournit des informations sur l'état de la connexion réseau.
+- Le plugin **cordova-plugin-network-information** fournit des informations sur l'état de la connexion réseau, si le téléphone est bien connecter a internet.
 - Le plugin **cordova-plugin-dialogs** permet d'afficher des alertes et des dialogues natifs.
 
 ### Communication avec l’API
@@ -157,7 +157,7 @@ function get_cpu() {
 }
 ```
 
-- Cette fonction va crée une nouvelle instance XMLHttpRequest et va envoyer une requête GET sur L2zCore API en fonction de l'url qui a été appellé. Et va appeler statechange qui va traiter la réponse du serveur.
+ Cette fonction va crée une nouvelle instance XMLHttpRequest et va envoyer une requête GET sur L2zCore API en fonction de l'url qui a été appellé. Et va appeler statechange qui va traiter la réponse du serveur.
 ```javascript
 
 function get(url, param, token)
@@ -180,6 +180,84 @@ function get(url, param, token)
     XHR.send();
 }
 ```
+
+Cette fonction montre un exemple du traitement d'une des réponse possible de l'api
+XHR.param est la pour pouvoir déterminer quelle endpoint a été appeler et donc comment la traiter
+
+```javascript
+function statechange(event) {
+    console.log("StateChange appelle");
+    const XHR = event.target;
+
+
+    switch (XHR.readyState) {
+        case 0: console.log("Requête non initialisée"); break
+        case 1: console.log("Connexion établie avec le serveur"); break;
+        case 2: console.log("Requête reçue"); break;
+        case 3: console.log("Requête en cours de traitement"); break;
+        case 4:
+            console.log("Requête terminée et réponse prête");
+
+            if (XHR.status == 200) {
+                console.log("Traitement local de la réponse");
+
+                let reponse_brut = XHR.responseText;
+                let reponse_objet = JSON.parse(reponse_brut);
+
+  
+                switch (XHR.param) {
+
+                    case "CPU":
+                        console.log("Reponse CPU : " + XHR.param);
+                        TO_UPDATE_CPU.innerHTML = "";
+                        // Mise à jour du contenu HTML
+                        // Parcoure dictionnaire
+                        for (let [index, nom] of Object.entries(reponse_objet)) {
+                            if (typeof nom === "object" && !Array.isArray(nom)) {
+                                // Si la valeur est un objet, on parcourt ses propriétés
+                                TO_UPDATE_CPU.innerHTML += `<strong>${index} :</strong><br>`;
+                                for (let [subIndex, subNom] of Object.entries(nom)) {
+                                    TO_UPDATE_CPU.innerHTML += `&nbsp;&nbsp;- ${subIndex}: ${subNom}<br>`;
+                                }
+                            } else {
+                                // Affichage direct pour les valeurs primitives
+                                TO_UPDATE_CPU.innerHTML += `<strong>${index} :</strong> ${nom}<br>`;
+                            }
+                        }
+                        ARCHIVE_CPU.style.display = "block";
+                        temp_cpu = reponse_brut;
+
+                        break;
+
+```
+
+### Fonctionnement des plugins principaux
+
+#### NFC
+
+Le but du plugin NFC est de pouvoir se connecter a son compte qui est lié avec sa carte de travaille est qui permet d'acceder a certaine fonctionnalité.
+
+
+```javascript
+function get_nfc() {
+    // ============================================================
+    // Fonction qui permet de lire une puce NFC
+    // Utilise le plugin cordova-plugin-nfc
+    // ============================================================
+
+    console.log("=========get_nfc=========");
+    // ceci affiche une boite de dialog qui s'affiche lorsque l'on appuie sur le bouton de connexion a nfc et 
+    // active l'ecoute nfc sur le téléphone
+    DIALOG_NFC.innerHTML = 'Approchez votre carte';
+    GIF_DIALOG_NFC.src = './img/nfc_anime2.gif';
+    CLOSE_BTN_DIALOG_NFC.style.display = "none";
+    CREATE_ACCOUNT_DIALOG.style.display = "none";
+
+
+    nfc.addTagDiscoveredListener(callback_nfc, onSuccess_nfc, onFailure_nfc);  // si une entré nfc est lu elle lancera OnSuccess
+}
+```
+![Activation de nfc](./img_readme/photo_nfc.jpg)
 
 ## Défis et Résolutions
 
