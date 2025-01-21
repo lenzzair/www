@@ -257,7 +257,8 @@ function get_nfc() {
     nfc.addTagDiscoveredListener(callback_nfc, onSuccess_nfc, onFailure_nfc);  // si une entré nfc est lu elle lancera OnSuccess
 }
 ```
-![Activation de nfc](./img_readme/photo_nfc.jpg)
+#### Capture d'ecran lorsque l'utilisateur lance la capture nfc
+<img src="./img_readme/photo_nfc.jpg" alt="capture d'ecran du fonctionnement de get nfc" width="600">
 
 ## Défis et Résolutions
 
