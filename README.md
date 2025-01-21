@@ -136,6 +136,30 @@ L'API L2zCore structure et renvoie les informations du serveur Apache, intégran
 
 ---
 
+## Fonctionnement des parties principales
+
+## Utilisation de l'API
+
+#### Commentaire: 
+
+Cette fonction va faire un appelle a la fonction get() en lui envoyant comme paramètre:
+- **param** : param va noous permettre a la suite de savoir qu'elle endpoint a été appeler et donc comment traiter la réponse
+- **token** : ici il n'y a pas token car les donnée cpu ne sont pas classé senssible mais sinon token va récupéré dans les cookie le token valide
+```javascript
+function get_cpu() {
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Appelle API qui récupère le CPU en temps réel du serveur
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    console.log("CPU Appelle");
+    param = "CPU"
+    get("https://cheveux-bleus.fr:16800/system/cpu", param);
+}
+
+
+
+
+
 ## Défis et Résolutions
 
 ### Défis

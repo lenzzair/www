@@ -287,8 +287,7 @@ function statechange(event) {
     console.log("StateChange appelle");
     const XHR = event.target;
 
-    document.getElementById(XHR.param + "_logo").classList.add("cache");
-    document.getElementById(XHR.param + "_load").classList.add("visibility");
+
     switch (XHR.readyState) {
         case 0: console.log("Requête non initialisée"); break
         case 1: console.log("Connexion établie avec le serveur"); break;
@@ -303,7 +302,7 @@ function statechange(event) {
                 let reponse_brut = XHR.responseText;
                 let reponse_objet = JSON.parse(reponse_brut);
 
-
+  
                 switch (XHR.param) {
 
                     case "CPU":
