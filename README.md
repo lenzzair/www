@@ -1,6 +1,6 @@
 # README : Application mobile de Supervision de Serveurs ( Saé Développer des applications communicantes )
 
-## <span style="color:red">Auteur<span> 
+## Auteur
 
 - **Nom** : Lambert
 - **Prénom** : Lenny
@@ -230,6 +230,8 @@ function statechange(event) {
                         break;
 
 ```
+
+Le bouton "Archiver" va permettre d'archiver les données afficher par la réponse en passant par le local storage
 <img src="./img_readme/photo_infosrv.jpg" alt="capture d'ecran de la récupération cpu" width=500>
 
 ## Fonctionnement des plugins principaux:
@@ -262,7 +264,7 @@ function get_nfc() {
 <img src="./img_readme/photo_nfc.jpg" alt="capture d'ecran du fonctionnement de get nfc" width="500">
 
 lorsqu'un puce nfc est lu cela appelle callback_nfc qui lance verife() qui permet de voir si la carte scannée n'est pas deja presente dans le session storage si non, elle envoie en POST l'id de la puce nfc au serveur lui demandant si un compte est associer a l'id de la carte
-
+ 
 ```javascript
 function callback_nfc(nfcEvent) {
     // ------------------------------------------------------------
@@ -283,7 +285,7 @@ function callback_nfc(nfcEvent) {
     UPDATE_TB_NFC.style.border = "2px solid green";
 }
 ```
-
+Lorsque le serveur a verifier que l'id de la carte nfc correspond a une ligne de sa base de donnée alors il renvoie les info les a la carte et l'application les traite et build le compte dans le session storage
 ## Défis et Résolutions
 
 ### Défis
