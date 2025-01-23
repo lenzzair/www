@@ -392,24 +392,29 @@ function get_archive_active() {
 function del_archive() {
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     // Fonction qui permet de supprimer l'archive active
-    // fait appel a la fonction get_archive_active pour récupérer l'archive active
+    // fait appel à la fonction get_archive_active pour récupérer l'archive active
     // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     console.log("Appel de supprimer_archive");
 
-
-    let [titre_localstorage, archives_a_supprimer] = get_archive_active();
+    // Appel de la fonction pour récupérer les données nécessaires
+    let result = get_archive_active();
+    let titre_localstorage = result[0];
+    let archives_a_supprimer = result[1];
 
     if (titre_localstorage && archives_a_supprimer.length > 0) {
-
+        // Suppression de l'élément du localStorage
         localStorage.removeItem(titre_localstorage);
 
-        archives_a_supprimer.forEach(archive => {
+        // Parcours et suppression des éléments actifs
+        for (let i = 0; i < archives_a_supprimer.length; i++) {
+            let archive = archives_a_supprimer[i];
             archive.classList.remove("active");
             archive.remove();
-        });
-        notification_alert('Archive', 'L\'archive a été supprimée !', 'OK');
+        }
 
+        // Notification de succès
+        notification_alert('Archive', 'L\'archive a été supprimée !', 'OK');
     } else {
         console.error("Pas d'éléments actifs à supprimer.");
     }
@@ -621,7 +626,7 @@ function get_nfc() {
     CLOSE_BTN_DIALOG_NFC.style.display = "none";
     CREATE_ACCOUNT_DIALOG.style.display = "none";
 
-
+    // Rajoute le listeneur nfc
     nfc.addTagDiscoveredListener(callback_nfc, onSuccess_nfc, onFailure_nfc);
 }
 

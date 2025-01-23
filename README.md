@@ -14,8 +14,9 @@
     - ``` 
         git clone https://github.com/lenzzair/www.git
         npm install
-        npm run build
-        npm start
+        cordova platform add android
+        cordova build android
+        cordova run android
 ## Sommaire
 
 1. [Contexte et Objectif](#contexte-et-objectif)
