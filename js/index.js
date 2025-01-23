@@ -69,9 +69,13 @@ document.addEventListener("backbutton", onBackButton);
 document.addEventListener("online", onOnline, false);
 document.addEventListener("offline", onOffline, false);
 
+// lance l'état du network
 UPDATE_TB_NETWORK.addEventListener("click", get_etat_network);
+// Check si le serveur est accessible
 UPDATE_TB_SERVER.addEventListener("click", get_etat_serveur);
+// Permet d'envoyer un mail simple
 UPDATE_TB_MAIL.addEventListener("click", send_mail);
+// Va dans la section archive
 UPDATE_TB_ARCHIVE.addEventListener("click", put_archive);
 
 BTN_SUPP.addEventListener("click", del_archive);
@@ -264,7 +268,7 @@ function statechange_server(event) {
                     let list_label = [];
                     let list_donnee = [];
 
-
+                    // Permet de parcourire un dictionnaire ou un objet puis je push dans mes liste les réponse du label et des donner
                     for (let [label, donnee] of Object.entries(reponse_objet)) {
                         list_label.push(label);
                         list_donnee.push(donnee);
@@ -311,7 +315,7 @@ function put_archive() {
 
     let dico_localStorage = localStorage;
 
-
+    //  permet de mettre a jour a chaque lancement
     while (div_parent.firstChild) {
         div_parent.removeChild(div_parent.firstChild);
         div_parent_2.removeChild(div_parent_2.firstChild);
@@ -344,7 +348,7 @@ function put_archive() {
 
         for (let [index, val] of Object.entries(value_obj)) {
 
-
+            // Verifie si valeur est un objet
             if (typeof val === 'object') {
                 div.innerHTML += `<strong>${index}</strong> : <br>`;
                 for (let [subDicoIndex, subDicoVal] of Object.entries(val)) {
@@ -431,7 +435,7 @@ function send_mail(contact, archive_title, archive_content) {
     console.log("========Appelle SendMail========");
 
     let contact_to_send = contact;
-    //Verifie si contact_to_send est une chaine de caractère et si elle est vide
+    //Verifie si contact_to_send est une chaine de caractère et si elle est vide, .trime regarde si se n'est pas que des espace blanc
     if (typeof contact_to_send !== 'string' || contact_to_send.trim() === '') {
 
         contact_to_send = 'sonikpi.log@gmail.com';
@@ -524,12 +528,12 @@ function onSuccess(contacts) {
     console.log("========Appelle onSuccess========");
 
     for (let i = 0; i < contacts.length; i++) {
-
+        // si il trouve un numéro il l'affiche
         if (contacts[i].phoneNumbers) {
 
             TO_UPDATE_CONTACT_NUM.innerHTML = "Numéro de téléphone = " + contacts[i].phoneNumbers[0].value + "\n\n";
         }
-
+        // si il trouve un mail il l'affiche
         if (contacts[i].emails) {
 
             console.log("Email = " + contacts[i].emails[0].value);
@@ -813,7 +817,7 @@ function statechange(event) {
 
 function build_account() {
     //     ============================================================
-    //      Fonction qui permet de changer de compte sur les carte scanner pendant la session
+    //      Fonction qui permet crée les bouton les au compte connecter sur le session storage
     //      ============================================================
 
     console.log("=======Build account=======");
@@ -826,12 +830,13 @@ function build_account() {
     }
     let contenue_session_storage = sessionStorage;
     let i = 0;
+    // Parcoure le session storage
     for (let [key, value] of Object.entries(contenue_session_storage)) {
 
 
         name_card = JSON.parse(value);
 
-
+        // crée les bouton pour voir sur quelle compte on c'est connecter
         input = document.createElement("input");
         input.type = "radio";
         input.id = "card_nfc" + i;
@@ -855,8 +860,10 @@ function build_account() {
         LISTE_CARDS_ENRGISTRE.append(input);
         LISTE_CARDS_ENRGISTRE.append(label);
 
+        // Rajoute un addeventlistener sur les input crée pour pouvoir changer de compte
         document.getElementById("card_nfc" + i).addEventListener("change", change_account);
 
+        // Si c'est un compte admin on affiche la possibilitér de pouvoir crée une carte
         if (name_card["status"] == "Administrateur" && i == 0) {
             document.getElementById("create_account").style.display = "block";
         } else {
@@ -878,7 +885,8 @@ function change_account(event) {
     console.log("=======Change account=======");
 
     let card_nfc = event.target.id;
-    let card_nfc_value = document.getElementById(card_nfc).nextElementSibling.innerHTML.split("<br>")[0];
+    // permet de récupérer l'id de la carte par rapport a l'id du button du compte qui a été séléctionner
+    let card_nfc_value = document.querySelector(`label[for='${card_nfc}']`).innerHTML.split("<br>")[0];
     console.log(card_nfc_value);
     let response = JSON.parse(sessionStorage.getItem(card_nfc_value));
 
@@ -899,6 +907,7 @@ function change_account(event) {
 function ajout_input_tag() {
     //     ============================================================
     //      Fonction qui permet de rajoutez l'id de la carte pour crée un compte
+    //      Fonction qui est appeler lorsque l'administrateur appuie sur le button crée un compte
     //      ============================================================
 
     console.log("=======Input tag=======");

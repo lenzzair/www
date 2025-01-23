@@ -521,7 +521,7 @@ function put_archive(id_archivage) {
 
     }
     console.log(info_archive);
-    console.log(temp_cpu);
+    
 
     localStorage.setItem("archive_" + id_archivage + "_" + formattedDate, info_archive);
 
