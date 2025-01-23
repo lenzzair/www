@@ -273,7 +273,7 @@ function statechange_server(event) {
                         list_label.push(label);
                         list_donnee.push(donnee);
 
-                    }
+                    } 
                     console.log(list_label + list_donnee);
                     affiche_graphique(list_label, list_donnee);
                 }
