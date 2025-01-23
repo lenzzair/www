@@ -11,11 +11,11 @@
 - **Version** : 1.0
 - **Date** : Date de sortie: 23/01/2025
 - **Instalation** : 
-    - ``` git clone https://github.com/lenzzair/www.git
-          npm install
-          npm run build
-          npm start
-     ```
+    - ``` 
+        git clone https://github.com/lenzzair/www.git
+        npm install
+        npm run build
+        npm start
 ## Sommaire
 
 1. [Contexte et Objectif](#contexte-et-objectif)
