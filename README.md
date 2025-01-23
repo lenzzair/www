@@ -10,6 +10,12 @@
 
 - **Version** : 1.0
 - **Date** : Date de sortie: 23/01/2025
+- **Instalation** : 
+    - ``` git clone https://github.com/lenzzair/www.git
+          npm install
+          npm run build
+          npm start
+     ```
 ## Sommaire
 
 1. [Contexte et Objectif](#contexte-et-objectif)
@@ -321,8 +327,8 @@ Lorsque le serveur a verifier que l'id de la carte nfc correspond a une ligne de
 - **cordova-plugin-dialogs** : [https://www.npmjs.com/package/cordova-plugin-dialogs](https://www.npmjs.com/package/cordova-plugin-dialogs)
 - **cordova-plugin-network-information** : [https://www.npmjs.com/package/cordova-plugin-network-information](https://www.npmjs.com/package/cordova-plugin-network-information)
 - **cordova-plugin-nfc** : [https://www.npmjs.com/package/cordova-plugin-nfc](https://www.npmjs.com/package/cordova-plugin-nfc)
-- **L2zCore API ** : (_nom de domaine provisoire_) [https://cheveux-bleus.fr:16800/docs](https://cheveux-bleus.fr:16800/docs)
+- **L2zCore API** : (_nom de domaine provisoire_) [https://cheveux-bleus.fr:16800/docs](https://cheveux-bleus.fr:16800/docs)
 
 ---
 
-Merci d'avoir consulté cette documentation. N'hésitez pas à contribuer ou poser des questions via [mon GitHub](https://github.com/lenzzair).
+Merci d'avoir consulté cette documentation. N'hésitez pas à contribuer ou poser des questions via [mon GitHub](https://github.com/lenzzair) ou mon [mail](mailto:lenny@l-lambert.fr).
