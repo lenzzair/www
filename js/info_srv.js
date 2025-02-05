@@ -160,7 +160,7 @@ function get_cpu() {
 
     console.log("CPU Appelle");
     param = "CPU"
-    get("https://cheveux-bleus.fr:16800/system/cpu", param);
+    get("https://api.l-lambert.fr:16800/system/cpu", param);
 }
 
 function get_memory() {
