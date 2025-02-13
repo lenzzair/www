@@ -122,6 +122,22 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "Connection"
       ]
+    },
+    {
+      "id": "cordova-plugin-splashscreen.SplashScreen",
+      "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
+      "pluginId": "cordova-plugin-splashscreen",
+      "clobbers": [
+        "navigator.splashscreen"
+      ]
+    },
+    {
+      "id": "cordova-plugin-qrscanner.QRScanner",
+      "file": "plugins/cordova-plugin-qrscanner/www/www.min.js",
+      "pluginId": "cordova-plugin-qrscanner",
+      "clobbers": [
+        "QRScanner"
+      ]
     }
   ];
   module.exports.metadata = {
@@ -129,6 +145,8 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-contacts": "3.0.1",
     "cordova-plugin-dialogs": "2.0.2",
     "cordova-plugin-email-composer": "0.10.1",
-    "cordova-plugin-network-information": "3.0.0"
+    "cordova-plugin-network-information": "3.0.0",
+    "cordova-plugin-splashscreen": "6.0.1",
+    "cordova-plugin-qrscanner": "3.0.1"
   };
 });
