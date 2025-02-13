@@ -31,7 +31,7 @@ function post_token() {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
     console.log("POST token Appelle");
-    post("https://cheveux-bleus.fr:16800/token");
+    post("https://l-lambert.fr:16800/token");
 }
 
 /**************************************/

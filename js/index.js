@@ -206,7 +206,7 @@ function get_etat_serveur() {
 
     console.log("=========Appelle Serveur========");
     param = "header";
-    get("https://cheveux-bleus.fr:16800/docs", param);
+    get("https://l-lambert.fr:16800/docs", param);
 
 }
 
@@ -709,7 +709,7 @@ function post_nfc(tag) {
 
     console.log("=======post_nfc=======");
     let param = "verif"
-    post("https://cheveux-bleus.fr:16800/nfc/verify", tag, param);
+    post("https://l-lambert.fr:16800/nfc/verify", tag, param);
 }
 
 function post(url, tag, param, name, status, date, code) {
@@ -939,7 +939,7 @@ function create_account() {
         let nfc_id = document.getElementById("InputCard").value;
         let code = document.getElementById("InputCode").value;
 
-        post("https://cheveux-bleus.fr:16800/nfc/account", nfc_id, param, name, status, date, code);
+        post("https://l-lambert.fr:16800/nfc/account", nfc_id, param, name, status, date, code);
     }
 
 }
@@ -1000,7 +1000,7 @@ function get_graphique() {
     console.log("=======Appelle get graphique=======");
 
     let param = "graphique";
-    get("https://cheveux-bleus.fr:16800/graph", param);
+    get("https://l-lambert.fr:16800/graph", param);
 
 }
 

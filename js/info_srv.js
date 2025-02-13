@@ -160,7 +160,8 @@ function get_cpu() {
 
     console.log("CPU Appelle");
     param = "CPU"
-    get("https://api.l-lambert.fr:16800/system/cpu", param);
+    token = get_cookie("token_access");
+    get("https://l-lambert.fr:16800/system/cpu", param, token);
 }
 
 function get_memory() {
@@ -170,7 +171,8 @@ function get_memory() {
 
     console.log("MEMORY appelle");
     param = "MEMORY"
-    get("https://cheveux-bleus.fr:16800/system/memory", param);
+    token = get_cookie("token_access");
+    get("https://l-lambert.fr:16800/system/memory", param, token);
 }
 
 function get_disk() {
@@ -180,7 +182,8 @@ function get_disk() {
 
     console.log("DISK appelle");
     param = "DISK";
-    get("https://cheveux-bleus.fr:16800/system/disk", param);
+    token = get_cookie("token_access");
+    get("https://l-lambert.fr:16800/system/disk", param, token);
 }
 
 function get_uptime() {
@@ -190,7 +193,8 @@ function get_uptime() {
 
     console.log("UPTIME Appelle");
     param = "UPTIME";
-    get("https://cheveux-bleus.fr:16800/system/uptime", param);
+    token = get_cookie("token_access");
+    get("https://l-lambert.fr:16800/system/uptime", param, token);
 }
 
 // Fonction admin
@@ -205,7 +209,7 @@ function get_network() {
     console.log("NETWORK Appelle");
     param = "NETWORK";
     token = get_cookie("token_access");
-    get("https://cheveux-bleus.fr:16800/network/connections", param, token);
+    get("https://l-lambert.fr:16800/network/connections", param, token);
 }
 
 function get_log_api_today() {
@@ -217,7 +221,7 @@ function get_log_api_today() {
     console.log("LOG API TODAY");
     param = "API_TODAY";
     token = get_cookie("token_access");
-    get("https://cheveux-bleus.fr:16800/log/api/today_ip", param, token);
+    get("https://l-lambert.fr:16800/log/api/today_ip", param, token);
 }
 
 function get_log_api_week() {
@@ -229,7 +233,7 @@ function get_log_api_week() {
     console.log("LOG API WEEK");
     param = "API_WEEK";
     token = get_cookie("token_access");
-    get("https://cheveux-bleus.fr:16800/log/api/week_ip", param, token);
+    get("https://l-lambert.fr:16800/log/api/week_ip", param, token);
 }
 
 function get_log_apache_today() {
@@ -241,7 +245,7 @@ function get_log_apache_today() {
     console.log("LOG APACHE TODAY");
     param = "APACHE_TODAY";
     token = get_cookie("token_access");
-    get("https://cheveux-bleus.fr:16800/log/apache/connexion_web/today", param, token);
+    get("https://l-lambert.fr:16800/log/apache/connexion_web/today", param, token);
 }
 
 function get_log_apache_week() {
@@ -253,7 +257,7 @@ function get_log_apache_week() {
     console.log("LOG APACHE WEEK");
     param = "APACHE_WEEK";
     token = get_cookie("token_access");
-    get("https://cheveux-bleus.fr:16800/log/apache/connexion_web/week", param, token);
+    get("https://l-lambert.fr:16800/log/apache/connexion_web/week", param, token);
 }
 
 
